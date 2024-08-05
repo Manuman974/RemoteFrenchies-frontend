@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, TouchableOpacity, } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from './HomeScreen';
 
 export default function SignInScreen({ navigation }) {
     return (
