@@ -38,7 +38,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E1E1E1',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   image: {
     // borderColor: 'green',
     // borderWidth: '1',
-    width: 210,
+    width: 230,
     height: 90,
   },
   image1: {
