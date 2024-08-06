@@ -66,7 +66,7 @@ export default function SignUpScreen({ navigation }) {
             <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <View style={styles.icon}>
                     <TouchableOpacity onPress={() => navigation.navigate('Home')} activeOpacity={0.8}>
-                        <Icon name='arrow-left' style={styles.reply} size='30' color='black' />
+                        <Icon name='arrow-left' style={styles.reply} size={30} color='black' />
                     </TouchableOpacity>
                 </View>
                 <Image style={styles.image} source={require('../assets/Logo-Remote-Frenchies.png')} />
