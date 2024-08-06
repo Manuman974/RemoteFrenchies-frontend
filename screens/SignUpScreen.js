@@ -18,6 +18,7 @@ import { login } from '../reducers/user';
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default function SignUpScreen({ navigation }) {
+    const frontendAddress = process.env.EXPO_PUBLIC_FRONTEND_ADDRESS
     const dispatch = useDispatch();
 
     const [signUpFirstname, setSignUpFirstname] = useState('');
@@ -39,7 +40,7 @@ export default function SignUpScreen({ navigation }) {
             return;
         }
 
-        fetch(`${FRONT_ADDRESS}/users/signup`, {
+        fetch(`${frontendAddress}/users/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ firstname: signUpFirstname, lastname: signUpLastname, job: signUpJob, business: signUpBusiness, main_address: signUpCity, e_mail: signUpE_mail, password: signUpPassword }),

@@ -18,6 +18,7 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 
 export default function SignInScreen({ navigation }) {
+    const frontendAddress = process.env.EXPO_PUBLIC_FRONTEND_ADDRESS
     const dispatch = useDispatch();
 
     const [signInE_mail, setSignInE_mail] = useState('');
@@ -34,7 +35,7 @@ export default function SignInScreen({ navigation }) {
             return;
         }
 
-        fetch('http://192.168.1.39:3000/users/signin', {
+        fetch(`${frontendAddress}/users/signin`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
