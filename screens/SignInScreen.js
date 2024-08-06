@@ -18,7 +18,7 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 
 export default function SignInScreen({ navigation }) {
-    const frontendAddress = process.env.EXPO_PUBLIC_FRONTEND_ADDRESS
+    const frontendAddress = process.env.EXPO_PUBLIC_FRONTEND_ADDRESS;
     const dispatch = useDispatch();
 
     const [signInE_mail, setSignInE_mail] = useState('');
