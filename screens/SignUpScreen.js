@@ -39,7 +39,8 @@ export default function SignUpScreen({ navigation }) {
             return;
         }
 
-        fetch('http://192.168.1.39:3000/users/signup', {
+
+        fetch('http://192.168.94.186:3000/users/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ firstname: signUpFirstname, lastname: signUpLastname, job: signUpJob, business: signUpBusiness, main_address: signUpCity, e_mail: signUpE_mail, password: signUpPassword }),
@@ -54,7 +55,7 @@ export default function SignUpScreen({ navigation }) {
                     setSignUpCity('');
                     setSignUpE_mail('');
                     setSignUpPassword('');
-                    navigation.navigate('TabNavigator')
+                    navigation.navigate('Onboarding')
                 } else {
                     setError('Tous les champs doivent être remplis')
                 }
@@ -66,7 +67,7 @@ export default function SignUpScreen({ navigation }) {
             <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <View style={styles.icon}>
                     <TouchableOpacity onPress={() => navigation.navigate('Home')} activeOpacity={0.8}>
-                        <Icon name='arrow-left' style={styles.reply} size='30' color='black' />
+                        <Icon name='arrow-left' style={styles.reply} size={30} color='#000000' />
                     </TouchableOpacity>
                 </View>
                 <Image style={styles.image} source={require('../assets/Logo-Remote-Frenchies.png')} />
@@ -74,42 +75,42 @@ export default function SignUpScreen({ navigation }) {
                 <Text style={styles.errorText}>{error}</Text>
                 <ScrollView contentContainerStyle={styles.scrollViewContent} style={styles.scrollView}>
                     <View style={styles.input}>
-
+    
                         <TextInput
                             placeholder="Nom"
                             style={styles.nom}
                             onChangeText={(value) => setSignUpFirstname(value)}
                             value={signUpFirstname}
                         />
-
+    
                         <TextInput
                             placeholder="Prénom"
                             style={styles.nom}
                             onChangeText={(value) => setSignUpLastname(value)}
                             value={signUpLastname}
                         />
-
+    
                         <TextInput
                             placeholder="Métier"
                             style={styles.nom}
                             onChangeText={(value) => setSignUpJob(value)}
                             value={signUpJob}
                         />
-
+    
                         <TextInput
                             placeholder="Entreprise"
                             style={styles.nom}
                             onChangeText={(value) => setSignUpBusiness(value)}
                             value={signUpBusiness}
                         />
-
+    
                         <TextInput
                             placeholder="Ville"
                             style={styles.nom}
                             onChangeText={(value) => setSignUpCity(value)}
                             value={signUpCity}
                         />
-
+    
                         <TextInput
                             placeholder="Adresse email"
                             style={styles.nom}
@@ -119,7 +120,7 @@ export default function SignUpScreen({ navigation }) {
                             onChangeText={(value) => setSignUpE_mail(value)}
                             value={signUpE_mail}
                         />
-
+    
                         <TextInput
                             placeholder="Mot de passe"
                             style={styles.nom}
@@ -163,9 +164,9 @@ const styles = StyleSheet.create({
     text: {
         width: 300,
         height: 92,
-        fontFamily: 'Poppins',
-        fontWeight: '600',
-        fontSize: 24,
+        // fontFamily: 'Poppins',
+        // fontWeight: '600',
+        // fontSize: 24,
         lineHeight: 36,
         textAlign: 'center',
         marginTop: 20,
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
         borderColor: '#8f8f8f',
         width: 290,
         height: 50,
-        BorderRadius: 10,
+        borderRadius: 10,
         padding: 6,
     },
     button: {

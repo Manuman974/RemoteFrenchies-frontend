@@ -8,7 +8,6 @@ import {
     Image,
     KeyboardAvoidingView,
     Platform,
-    SafeAreaView,
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
@@ -18,6 +17,7 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 
 export default function SignInScreen({ navigation }) {
+
     const dispatch = useDispatch();
 
     const [signInE_mail, setSignInE_mail] = useState('');
@@ -34,7 +34,7 @@ export default function SignInScreen({ navigation }) {
             return;
         }
 
-        fetch('http://192.168.1.39:3000/users/signin', {
+        fetch('http://192.168.94.186:3000/users/signin', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
@@ -60,7 +60,7 @@ export default function SignInScreen({ navigation }) {
                 </TouchableOpacity>
                 <Image style={styles.image} source={require('../assets/Logo-Remote-Frenchies.png')} />
             </View>
-            <Text style={styles.text}>Renseigne tes identifiants</Text>
+            <Text style={styles.h1}>Renseigne tes identifiants</Text>
             <View style={styles.input}>
                 <TextInput
                     placeholder="Adresse email"
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         // borderColor: 'red',
         width: 190,
         height: 92,
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-SemiBold',
         fontWeight: '600',
         fontSize: 24,
         lineHeight: 36,

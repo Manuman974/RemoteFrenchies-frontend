@@ -14,9 +14,9 @@ import {
 import { CheckBox, Button, ThemeProvider } from '@rneui/themed';
 import React, { useState } from 'react';
 
-export default function OnboardingScreen({ navigation }) {
+export default function OnboardingScreen({ navigation, route }) {
 
-  const globalStyle = require('../globalStyle');
+  // const userId = route.params.userId;
 
   // Initialisez l'état avec un objet où les clés sont les identifiants des checkboxes
   const initialCheckboxes = {
@@ -41,22 +41,22 @@ export default function OnboardingScreen({ navigation }) {
     }));
   };
 
+  const handleSubmit = () => {
 
-  //   fetch('http://192.168.94.186:3000/users/on_boarding', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ acompleter })
-  //       .then(response => response.json())
-  //       .then(data => {
-  //         if (data.result) {
-  // dispatch(onboarding)({acompleter})
-  //           navigation.navigate('Recherche')
-  //         } else {
-  //           setError('Cocher les cases qui vous correspond')
-  //         }
-  //       })
-  //     });
-
+    fetch('http://192.168.94.186:3000/on_boarding', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ on_boarding:checkboxes }) //userId
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        navigation.navigate('Recherche')
+        // if (data.result) {
+        //   dispatch(login({ userId, on_boarding:checkboxes }))
+        //   setCheckboxes(initialCheckboxes);
+        // }
+      });
+  }
 
 
   return (
@@ -65,12 +65,12 @@ export default function OnboardingScreen({ navigation }) {
         <View>
           <Image style={styles.image} source={require('../assets/Logo 1.png')} />
           <View style={styles.title}>
-            <Text style={globalStyle.h1} >Apprenons à se connaitre</Text>
+            <Text style={styles.h1} >Apprenons à se connaitre</Text>
           </View>
         </View>
 
         <View style={styles.containerInfos}>
-          <Text style={globalStyle.h2}>Quel est ton mode de télétravail ?</Text>
+          <Text style={styles.h2}>Quel est ton mode de télétravail ?</Text>
           <View style={styles.containerCheckBox}>
             <CheckBox
               checked={checkboxes.remote} // Identifiant unique dans initialCheckboxes
@@ -80,7 +80,7 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>Remote</Text>
+            <Text style={styles.h5}>Remote</Text>
           </View>
           <View style={styles.containerCheckBox}>
             <CheckBox
@@ -91,7 +91,7 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>Hybride</Text>
+            <Text style={styles.h5}>Hybride</Text>
           </View>
           <View style={styles.containerCheckBox}>
             <CheckBox
@@ -102,12 +102,12 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>Interréssé par le télétravail</Text>
+            <Text style={styles.h5}>Interréssé par le télétravail</Text>
           </View>
 
         </View>
         <View style={styles.containerInfos}>
-          <Text style={globalStyle.h2}>Pourquoi utilise-tu Remote Frenchies ?</Text>
+          <Text style={styles.h2}>Pourquoi utilise-tu Remote Frenchies ?</Text>
           <View style={styles.containerCheckBox}>
             <CheckBox
               checked={checkboxes.encounter}
@@ -117,7 +117,7 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>Rencontrer d'autres télétravailleur</Text>
+            <Text style={styles.h5}>Rencontrer d'autres télétravailleur</Text>
           </View>
           <View style={styles.containerCheckBox}>
             <CheckBox
@@ -128,7 +128,7 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>Partager ses compétences</Text>
+            <Text style={styles.h5}>Partager ses compétences</Text>
           </View>
           <View style={styles.containerCheckBox}>
             <CheckBox
@@ -139,12 +139,12 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>Partager des hobbies</Text>
+            <Text style={styles.h5}>Partager des hobbies</Text>
           </View>
 
         </View>
         <View style={styles.containerInfos}>
-          <Text style={globalStyle.h2}>Quel type de Remote es-tu ?</Text>
+          <Text style={styles.h2}>Quel type de Remote es-tu ?</Text>
           <View style={styles.containerCheckBox}>
             <CheckBox
               checked={checkboxes.welcome_remoters}
@@ -154,7 +154,7 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>J'aime accueillir des télétravailleurs</Text>
+            <Text style={styles.h5}>J'aime accueillir des télétravailleurs</Text>
           </View>
           <View style={styles.containerCheckBox}>
             <CheckBox
@@ -165,7 +165,7 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>J'aime aller chez d'autres télétravailleurs</Text>
+            <Text style={styles.h5}>J'aime aller chez d'autres télétravailleurs</Text>
           </View>
           <View style={styles.containerCheckBox}>
             <CheckBox
@@ -176,11 +176,11 @@ export default function OnboardingScreen({ navigation }) {
               uncheckedIcon="checkbox-blank-outline"
               checkedColor="#49B48C"
             />
-            <Text style={globalStyle.h5}>Les deux</Text>
+            <Text style={styles.h5}>Les deux</Text>
           </View>
         </View>
         <View style={styles.btn1}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recherche')} style={styles.button1} activeOpacity={0.8}>
+          <TouchableOpacity onPress={handleSubmit} style={styles.button1} activeOpacity={0.8}>
             <Text style={styles.textButton}>Continuer</Text>
           </TouchableOpacity>
         </View>
@@ -216,6 +216,23 @@ const styles = StyleSheet.create({
     width: 250,
     alignSelf: 'center',
     marginTop: 60,
+  },
+
+  h1: {
+    fontSize: 24,
+    textAlign: 'center',
+    fontFamily: 'Poppins-SemiBold',
+    alignSelf: 'center',
+  },
+
+  h2: {
+    fontSize: 18,
+    fontFamily: 'Poppins-SemiBold'
+  },
+
+  h5: {
+    fontSize: 15,
+    fontFamily: 'Poppins-Regular'
   },
 
   title: {

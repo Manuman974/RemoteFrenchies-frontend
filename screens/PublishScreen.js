@@ -8,15 +8,12 @@ import {
 
 export default function PublishScreen({ navigation }) {
 
-  const globalStyle = require('../globalStyle');
-
-
   return (
     <View style={styles.container}>
       <View>
         <Image style={styles.image} source={require('../assets/Image-annonce-publiee.png')} />
         <View style={styles.title}>
-          <Text style={globalStyle.h1} >Votre annonce a bien été publiée</Text>
+          <Text style={styles.h1} >Votre annonce a bien été publiée</Text>
         </View>
         <View style={styles.btn1}>
           <TouchableOpacity onPress={() => navigation.navigate('MesAnnonces')} style={styles.button1} activeOpacity={0.8}>
@@ -50,6 +47,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  h1: {
+    fontSize: 24,
+    textAlign: 'center',
+},
   btn1: {
     // borderColor: 'red',
     // borderWidth: '1',
