@@ -4,10 +4,11 @@
 .pnp.js
 yarn.lock
 
+
 # testing
 /coverage
 
-# next.js
+# next.jsgit commit -m"
 /.next/
 /out/
 
@@ -25,7 +26,8 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env*.local
+.env*.local 
+.env
 
 # vercel
 .vercel
