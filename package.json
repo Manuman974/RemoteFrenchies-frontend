@@ -16,11 +16,16 @@
     ]
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.2.3",
     "@react-navigation/bottom-tabs": "6",
     "@react-navigation/native": "6",
     "@react-navigation/native-stack": "6",
-    "@reduxjs/toolkit": "^2.2.7",
+    "@rneui/base": "^4.0.0-rc.8",
+    "@rneui/themed": "^4.0.0-rc.8",
     "expo": "^51.0.14",
+    "expo-app-loading": "^2.1.1",
+    "expo-font": "~12.0.9",
+    "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
