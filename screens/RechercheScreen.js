@@ -17,11 +17,10 @@ import MapView, { Marker } from "react-native-maps";
 
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
+
   //useLayoutEffect : hook pour configurer les options de navigation juste avant que le composant soit rendu.
   // Garantit que les options du <header> pour cette page s'appliquent correctement
-
   // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
-
   //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
 
   useLayoutEffect(() => {
@@ -44,8 +43,10 @@ export default function RechercheScreen({ navigation }) {
   //SECTION MAP
 
   // = > INITIALISATION DES ETATS
+  const BACKEND_ADDRESS = "http://192.168.8.42:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
-  const [city, setCity] = useState("");
+  const [cityInput, setCityInput] = useState("");
+  const [users, setUsers] = useState([]);
 
   // = > ACTIONS
 
@@ -60,8 +61,8 @@ export default function RechercheScreen({ navigation }) {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
             // Pour zoomer automatiquement sur la carte
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
           });
         });
       }
@@ -69,8 +70,22 @@ export default function RechercheScreen({ navigation }) {
   }, []);
 
   const handleSearch = () => {
-    setCity("");
+    if (cityInput.length === 0) {
+      return;
+    }
     console.log("Icône cliquée!");
+    //1ère requête : Obtenir les données des utilisateurs d'une ville
+    fetch(`${BACKEND_ADDRESS}/users/search/${cityInput}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          console.log("DATA USERS", data.userCity);
+          setUsers(data.userCity);
+          setCityInput("");
+        }
+      });
+
+    //2ème requête : Rechercher les coordonnées géo de la ville
   };
 
   //SECTION REMOTERS
@@ -130,8 +145,8 @@ export default function RechercheScreen({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Autour de moi"
-            onChangeText={(value) => setCity(value)}
-            value={city}
+            onChangeText={(value) => setCityInput(value)}
+            value={cityInput}
           />
           <TouchableOpacity
             style={styles.iconInput}
@@ -219,18 +234,18 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: 290,
+    width: 280,
     height: 50,
     borderRadius: 10,
     borderColor: "#8F8F8F",
     borderWidth: 1,
     backgroundColor: "#DDDDDD",
     paddingLeft: 20,
-    marginLeft: 20,
+    marginLeft: 22,
   },
 
   iconInput: {
-    right: 40,
+    marginLeft: 5,
   },
 
   mapContainer: {
