@@ -46,7 +46,10 @@ export default function RechercheScreen({ navigation }) {
   const BACKEND_ADDRESS = "http://192.168.8.42:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
-  const [markers, setMarkers] = useState([]);
+  const [cityCoordinates, setCityCoordinates] = useState([]);
+  const [remoterProfiles, setRemoterProfiles] = useState([]);
+  const [searchDone, setSearchDone] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // = > ACTIONS
 
@@ -71,6 +74,7 @@ export default function RechercheScreen({ navigation }) {
 
   const handleSearch = () => {
     if (cityInput.length === 0) {
+      setErrorMessage("Veuillez entrer un nom de ville.");
       return;
     }
     console.log("Icône cliquée!");
@@ -78,101 +82,72 @@ export default function RechercheScreen({ navigation }) {
     fetch(`${BACKEND_ADDRESS}/users/search/${cityInput}`)
       .then((response) => response.json())
       .then((data) => {
-        if (data.result) {
-          // Nettoyer les noms de ville pour enlever les accolades
-          const cities = data.userCity.map((data) =>
-            data.main_address.city.replace(/[\{\}]/g, "").trim()
-          );
-          console.log("CITIES : ", cities);
+        console.log("USERCITY :", data.userCity);
+        //Ajouter dans la parenthèse du if lorsque qu'une fiche sera créee avec "proposition" : "&& data.proposition"
+        if (data.result === true) {
+          const coordinates = data.userCity.map((city) => {
+            return {
+              latitude: city.main_address.latitude,
+              longitude: city.main_address.longitude,
+            };
+          });
 
-          setCityInput("");
+          const remoters = data.userCity.map((user) => {
+            return {
+              id: user.id,
+              firstname: user.firstname,
+              lastname: user.lastname,
+              job: user.job,
+              city: user.main_address.city,
+            };
+          });
 
-          //2ème requête : Rechercher les coordonnées géo de la ville
-          // A modifier après modification du back côté signup
-          //   const markersData = cities.map((city) => {
-          //     fetch(`https://api-adresse.data.gouv.fr/search/?q=${city}`)
-          //       .then((response) => response.json())
-          //       .then((data) => {
-          //         // Aucune action n'est réalisée si aucune ville trouvée par l'API
-          //         if (data.features.length === 0) {
-          //           return;
-          //         }
-          //         const cityData = {
-          //           latitude: data.features[0].geometry.coordinates[1],
-          //           longitude: data.features[0].geometry.coordinates[0],
-          //         };
-
-          //         let tableau = [...cityData];
-          //         // tableau.push(cityData);
-          //         console.log("TABLEAU: ", tableau);
-
-          //         console.log("INFOS FETCH API :", cityData);
-
-          // return cityData;
-
-          // return setMarkers({
-          //   latitude: cityData.latitude,
-          //   longitude: cityData.longitude,
-          // });
-          //       });
-          //   });
-          //   console.log("MARKERSDATA : ", markersData);
-          //   setMarkers(markers.push(markersData));
-          //   console.log("MARKERS : ", markers);
+          setCityCoordinates(coordinates);
+          setRemoterProfiles(remoters);
+          setErrorMessage("");
+          setSearchDone(true);
+        } else {
+          setCityCoordinates([]);
+          setRemoterProfiles([]);
+          setErrorMessage("");
+          setSearchDone(true);
         }
       });
   };
 
-  //   const renderMarkers = () => {
-  //     return markers.map((marker, i) => (
-  //       <Marker
-  //         key={i}
-  //         coordinate={{
-  //           latitude: marker.latitude,
-  //           longitude: marker.longitude,
-  //         }}
-  //         title={cityInput}
-  //         pinColor="green"
-  //       />
-  //     ));
-  //   };
+  console.log("Remoters Profile : ", remoterProfiles);
+
+  const markers = cityCoordinates.map((data, i) => {
+    return (
+      <Marker
+        key={i}
+        coordinate={{ latitude: data.latitude, longitude: data.longitude }}
+        title="cityMarker"
+        pinColor="green"
+      />
+    );
+  });
 
   //SECTION REMOTERS
 
-  //Données Remoters en dur et les afficher style ScrollView avec Flatlist :
-  const dataRemoter = [
-    {
-      id: "1",
-      image: require("../assets/photoJerome.png"),
-      remoterName: "Remy Gaillard",
-      remoterJob: "Développeur web",
-      remoterCity: "Lyon 8",
-    },
-    {
-      id: "2",
-      image: require("../assets/photoJerome.png"),
-      remoterName: "Remy Gaillard",
-      remoterJob: "Développeur web",
-      remoterCity: "Lyon 8",
-    },
-    {
-      id: "3",
-      image: require("../assets/photoJerome.png"),
-      remoterName: "Remy Gaillard",
-      remoterJob: "Développeur web",
-      remoterCity: "Lyon 8",
-    },
-  ];
-
+  //Cette fonction va de pair avec le composant <Flatlist> (qui permet de swiper vers la gauche)
+  // Elle permet de récupérer les propriétés et les utiliser dans le composant.
   const renderItem = ({ item }) => (
     <View style={styles.remoterProfile}>
-      <Image source={item.image} style={styles.photoRemoter} />
-      <Text style={styles.remoterName}>{item.remoterName}</Text>
-      <Text style={styles.remoterJob}>{item.remoterJob}</Text>
+      <Image
+        source={require("../assets/photoJerome.png")}
+        style={styles.photoRemoter}
+      />
+      <View style={styles.remoterNameContainer}>
+        <Text style={styles.remoterFirstname}>{item.firstname}</Text>
+        <Text style={styles.remoterLastname}>{item.lastname}</Text>
+      </View>
+
+      <Text style={styles.remoterJob}>{item.job}</Text>
       <View style={styles.remoterCityContainer}>
         <FontAwesome name="map-marker" style={styles.icon} size={18} />
 
-        <Text style={styles.remoterCity}>{item.remoterCity}</Text>
+        <Text style={styles.remoterCity}>{item.city}</Text>
       </View>
       <TouchableOpacity
         onPress={() => navigation.navigate("RemoterSelected")}
@@ -204,6 +179,9 @@ export default function RechercheScreen({ navigation }) {
             <FontAwesome name="search" size={23} color="#c0c1c1" />
           </TouchableOpacity>
         </View>
+        {errorMessage ? (
+          <Text style={{ color: "red", margin: 10 }}>{errorMessage}</Text>
+        ) : null}
         <View style={styles.mapContainer}>
           <MapView
             mapType="terrain"
@@ -217,17 +195,31 @@ export default function RechercheScreen({ navigation }) {
                 pinColor="#F08372"
               />
             )}
-            {/* {markers} */}
+            {markers}
           </MapView>
         </View>
         <View style={styles.profilesContainer}>
-          <FlatList
-            data={dataRemoter}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          />
+          {searchDone && remoterProfiles.length > 0 ? (
+            <FlatList
+              data={remoterProfiles}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          ) : (
+            searchDone && (
+              <>
+                <Text style={styles.noRemoterMessage}>
+                  😅 Oups ! Nous n'avons pas encore de Remoters dans cette
+                  ville.
+                </Text>
+                <Text style={styles.noRemoterMessage}>
+                  Essayez une autre ville !
+                </Text>
+              </>
+            )
+          )}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -315,7 +307,8 @@ const styles = StyleSheet.create({
     borderColor: "green",
     borderWidth: 3,
     width: 291,
-    marginTop: 10,
+
+    marginTop: 20,
   },
 
   remoterProfile: {
@@ -332,7 +325,23 @@ const styles = StyleSheet.create({
     borderRadius: 150,
   },
 
-  remoterName: {
+  remoterNameContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "pink",
+    borderWidth: 2,
+  },
+
+  remoterFirstname: {
+    fontFamily: "poppins",
+    fontSize: 14,
+    lineHeight: 21,
+    fontWeight: "bold",
+    marginRight: 5,
+  },
+
+  remoterLastname: {
     fontFamily: "poppins",
     fontSize: 14,
     lineHeight: 21,
@@ -352,7 +361,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderColor: "blue",
     borderWidth: 2,
-    width: 65,
+
     height: 21,
   },
 
@@ -388,5 +397,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     color: "#FFFFFF",
+  },
+  noRemoterMessage: {
+    fontFamily: "poppins",
+    fontSize: 14,
+    lineHeight: 21,
+    marginBottom: 8,
   },
 });
