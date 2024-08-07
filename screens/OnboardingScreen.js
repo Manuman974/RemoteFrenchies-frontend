@@ -13,11 +13,12 @@ import {
 } from 'react-native';
 import { CheckBox, Button, ThemeProvider } from '@rneui/themed';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function OnboardingScreen({ navigation, route }) {
 
   // const userId = route.params.userId;
-
+  const user = useSelector((state) => state.user.value);
   // Initialisez l'état avec un objet où les clés sont les identifiants des checkboxes
   const initialCheckboxes = {
     remote: false,
@@ -33,7 +34,7 @@ export default function OnboardingScreen({ navigation, route }) {
 
   const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
 
-  // Mise à jour de l'état avec setCkeckboxes //
+  // Mise à jour de l'état avec setCkeckboxes // Modifier pour avoir un code plus compréhensible
   const toggleCheckbox = (key) => {
     setCheckboxes(prevState => ({
       ...prevState,
@@ -42,20 +43,22 @@ export default function OnboardingScreen({ navigation, route }) {
   };
 
   const handleSubmit = () => {
+    try {
+      fetch('http://192.168.94.186:3000/onboarding', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({token: user.token, checkboxes:checkboxes})
+      }).then(response => response.json())
+        .then(data => {
+          console.log(data)
+          navigation.navigate('Recherche')
+          // if (data.result) {
+          //   dispatch(login({ userId, on_boarding:checkboxes }))
+          //   setCheckboxes(initialCheckboxes);
+          // }
+        });
+    }catch (error) {console.error(error);}
 
-    fetch('http://192.168.94.186:3000/on_boarding', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ on_boarding:checkboxes }) //userId
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        navigation.navigate('Recherche')
-        // if (data.result) {
-        //   dispatch(login({ userId, on_boarding:checkboxes }))
-        //   setCheckboxes(initialCheckboxes);
-        // }
-      });
   }
 
 
