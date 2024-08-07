@@ -46,7 +46,7 @@ export default function RechercheScreen({ navigation }) {
   const BACKEND_ADDRESS = "http://192.168.8.42:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
-  const [users, setUsers] = useState([]);
+  const [markers, setMarkers] = useState([]);
 
   // = > ACTIONS
 
@@ -74,19 +74,68 @@ export default function RechercheScreen({ navigation }) {
       return;
     }
     console.log("Icône cliquée!");
-    //1ère requête : Obtenir les données des utilisateurs d'une ville
+    //1ère requête : Rechercher les données des utilisateurs d'une ville
     fetch(`${BACKEND_ADDRESS}/users/search/${cityInput}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          console.log("DATA USERS", data.userCity);
-          setUsers(data.userCity);
+          // Nettoyer les noms de ville pour enlever les accolades
+          const cities = data.userCity.map((data) =>
+            data.main_address.city.replace(/[\{\}]/g, "").trim()
+          );
+          console.log("CITIES : ", cities);
+
           setCityInput("");
+
+          //2ème requête : Rechercher les coordonnées géo de la ville
+          // A modifier après modification du back côté signup
+          //   const markersData = cities.map((city) => {
+          //     fetch(`https://api-adresse.data.gouv.fr/search/?q=${city}`)
+          //       .then((response) => response.json())
+          //       .then((data) => {
+          //         // Aucune action n'est réalisée si aucune ville trouvée par l'API
+          //         if (data.features.length === 0) {
+          //           return;
+          //         }
+          //         const cityData = {
+          //           latitude: data.features[0].geometry.coordinates[1],
+          //           longitude: data.features[0].geometry.coordinates[0],
+          //         };
+
+          //         let tableau = [...cityData];
+          //         // tableau.push(cityData);
+          //         console.log("TABLEAU: ", tableau);
+
+          //         console.log("INFOS FETCH API :", cityData);
+
+          // return cityData;
+
+          // return setMarkers({
+          //   latitude: cityData.latitude,
+          //   longitude: cityData.longitude,
+          // });
+          //       });
+          //   });
+          //   console.log("MARKERSDATA : ", markersData);
+          //   setMarkers(markers.push(markersData));
+          //   console.log("MARKERS : ", markers);
         }
       });
-
-    //2ème requête : Rechercher les coordonnées géo de la ville
   };
+
+  //   const renderMarkers = () => {
+  //     return markers.map((marker, i) => (
+  //       <Marker
+  //         key={i}
+  //         coordinate={{
+  //           latitude: marker.latitude,
+  //           longitude: marker.longitude,
+  //         }}
+  //         title={cityInput}
+  //         pinColor="green"
+  //       />
+  //     ));
+  //   };
 
   //SECTION REMOTERS
 
