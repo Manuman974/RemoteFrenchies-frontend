@@ -18,7 +18,7 @@ import { login } from '../reducers/user';
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default function SignUpScreen({ navigation }) {
-    const frontendAddress = process.env.EXPO_PUBLIC_FRONTEND_ADDRESS;
+    // const frontendAddress = process.env.EXPO_PUBLIC_FRONTEND_ADDRESS;
     const dispatch = useDispatch();
 
     const [signUpFirstname, setSignUpFirstname] = useState('');
@@ -36,16 +36,19 @@ export default function SignUpScreen({ navigation }) {
 
     const handleRegister = () => {
         if (!validateEmail(signUpE_mail)) {
+           
             setError('Adresse email invalide');
             return;
         }
 
-        fetch(`${frontendAddress}/users/signup`, {
+        fetch('http://192.168.1.78:3000/users/signup', {
+            
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ firstname: signUpFirstname, lastname: signUpLastname, job: signUpJob, business: signUpBusiness, main_address: signUpCity, e_mail: signUpE_mail, password: signUpPassword }),
         }).then(response => response.json())
             .then(data => {
+                
                 if (data.result) {
                     dispatch(login({ firstname: signUpFirstname, lastname: signUpLastname, job: signUpJob, business: signUpBusiness, main_address: signUpCity, e_mail: signUpE_mail, token: data.token }));
                     setSignUpFirstname('');
@@ -67,7 +70,7 @@ export default function SignUpScreen({ navigation }) {
             <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <View style={styles.icon}>
                     <TouchableOpacity onPress={() => navigation.navigate('Home')} activeOpacity={0.8}>
-                        <Icon name='arrow-left' style={styles.reply} size='30' color='black' />
+                        <Icon name='arrow-left'  size={30} color="#000000" />
                     </TouchableOpacity>
                 </View>
                 <Image style={styles.image} source={require('../assets/Logo-Remote-Frenchies.png')} />
