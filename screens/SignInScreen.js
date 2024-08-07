@@ -57,7 +57,7 @@ export default function SignInScreen({ navigation }) {
                 <TouchableOpacity onPress={() => navigation.navigate('Home')} activeOpacity={0.8}>
                     <Icon name='arrow-left' style={styles.reply} size={30} color='black' />
                 </TouchableOpacity>
-                <Image style={styles.image} source={require('../assets/Logo-Remote-Frenchies.png')} />
+                <Image style={styles.image} source={require('../assets/Logo 1.png')} />
             </View>
             <Text style={styles.h1}>Renseigne tes identifiants</Text>
             <View style={styles.input}>
@@ -105,9 +105,24 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginBottom: 150,
     },
+
+    h1: {
+        marginTop: 30,
+        fontSize: 24,
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
+        alignSelf: 'center',
+        width: '80%',
+      },
+
     textButton: {
-        color: 'white',
-        paddingTop: 7,
+        color: '#ffffff',
+        height: 30,
+        fontSize: 16,
+        paddingTop: 5,
+        fontSize: 14,
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
 
     },
     text: {
@@ -131,28 +146,32 @@ const styles = StyleSheet.create({
         marginTop: 60,
     },
     nom: {
+        margin: 10,
         backgroundColor: '#DDD',
         borderWidth: 1,
         borderColor: '#8f8f8f',
         width: 290,
         height: 50,
-        BorderRadius: 10,
+        borderRadius: 10,
         padding: 6,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 13,
+        alignSelf: 'center',
     },
     icon: {
-        // borderWidth: 1,
-        // borderColor: 'red',
+marginTop: 50,
         width: '100%',
         height: 190,
         paddingLeft: 20,
     },
     image: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-        marginLeft: 40,
-    },
+        resizeMode: 'contain',
+        width: 250,
+        alignSelf: 'center',
+      },
+
     errorText: {
         color: 'red',
-        marginBottom: 10,
+        marginTop: 10,
     },
 });

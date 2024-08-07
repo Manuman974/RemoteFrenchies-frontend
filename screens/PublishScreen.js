@@ -52,8 +52,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
 },
   btn1: {
-    // borderColor: 'red',
-    // borderWidth: '1',
     width: '100%',
     height: 80,
     alignItems: 'center',
@@ -61,8 +59,6 @@ const styles = StyleSheet.create({
   },
 
   button1: {
-    // borderColor: 'red',
-    // borderWidth: '1',
     alignItems: 'center',
     paddingTop: 8,
     height: 50,
