@@ -13,6 +13,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/user';
+import CustomTextInput from '../components/CustomTextInput';
+import CustomButton from '../components/CustomButton';
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -62,27 +64,29 @@ export default function SignInScreen({ navigation }) {
             </View>
             <Text style={styles.text}>Renseigne tes identifiants</Text>
             <View style={styles.input}>
-                <TextInput
+                <CustomTextInput
                     placeholder="Adresse email"
-                    style={styles.nom}
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                    autoComplete="email"
-                    onChangeText={(value) => setSignInE_mail(value)}
                     value={signInE_mail}
+                    onChangeText={setSignInE_mail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoComplete="email"
                 />
 
-                <TextInput
+                <CustomTextInput
                     placeholder="Mot de passe"
-                    style={styles.nom}
-                    onChangeText={(value) => setSignInPassword(value)}
                     value={signInPassword}
+                    onChangeText={setSignInPassword}
+                    secureTextEntry={true}
                 />
             </View>
             <Text style={styles.errorText}>{error}</Text>
-            <TouchableOpacity onPress={handleConnection} style={styles.button} activeOpacity={0.8}>
-                <Text style={styles.textButton}>Continuer</Text>
-            </TouchableOpacity>
+            <CustomButton
+                title="Continuer"
+                onPress={handleConnection}
+                style={styles.button}
+                textStyle={styles.textButton}
+            />
         </KeyboardAvoidingView>
     );
 }
@@ -131,14 +135,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: 60,
     },
-    nom: {
+    input1: {
         backgroundColor: '#DDD',
         borderWidth: 1,
         borderColor: '#8f8f8f',
         width: 290,
         height: 50,
-        BorderRadius: 10,
-        padding: 6,
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 10,
     },
     icon: {
         // borderWidth: 1,

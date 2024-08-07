@@ -14,6 +14,7 @@ import { CheckBox, Button, ThemeProvider } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
+//import CustomCheckBox from './components/CustomCheckBox';
 //import { useDispatch } from 'react-redux';
 
 const initialCheckboxes = {
@@ -152,6 +153,11 @@ export default function ProposerScreen({ navigation }) {
                             />
                             <Text style={styles.label}>Connection Fibre</Text>
                         </View>
+                        {/* <CustomCheckBox
+                            checked={checkboxes.fiber_connection}
+                            onPress={() => toggleCheckbox('fiber_connection')}
+                            label="Connection Fibre"
+                        /> */}
 
                         <View style={styles.checkboxContainer}>
                             <CheckBox
