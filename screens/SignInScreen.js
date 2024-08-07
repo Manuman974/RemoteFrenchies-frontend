@@ -17,7 +17,6 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 
 export default function SignInScreen({ navigation }) {
-
     const dispatch = useDispatch();
 
     const [signInE_mail, setSignInE_mail] = useState('');

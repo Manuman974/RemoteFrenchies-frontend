@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "locapic-part1",
-    "slug": "locapic-part1",
+    "name": "remote-frenchies",
+    "slug": "remote-frenchies",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,9 +28,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-font"
-    ]
+    }
   }
 }
