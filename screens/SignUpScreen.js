@@ -14,8 +14,11 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/user';
+import CustomTextInput from '../components/CustomTextInput';
+import CustomButton from '../components/CustomButton';
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[%#@$!^&*])[A-Za-z\d%#@$!^&*]{8,}$/;
 
 export default function SignUpScreen({ navigation }) {
     // const frontendAddress = process.env.EXPO_PUBLIC_FRONTEND_ADDRESS;
@@ -34,6 +37,10 @@ export default function SignUpScreen({ navigation }) {
         return EMAIL_REGEX.test(email);
     };
 
+    const validatePassword = (password) => {
+        return PASSWORD_REGEX.test(password);
+    };
+
     const handleRegister = () => {
         if (!validateEmail(signUpE_mail)) {
            
@@ -41,6 +48,10 @@ export default function SignUpScreen({ navigation }) {
             return;
         }
 
+        if (!validatePassword(signUpPassword)) {
+            setError('Le mot de passe doit contenir au moins 8 caractères, dont 1 majuscule, 1 chiffre et 1 caractère spécial');
+            return;
+        }
 
         fetch('http://192.168.1.78:3000/users/signup', {
             method: 'POST',
@@ -73,68 +84,66 @@ export default function SignUpScreen({ navigation }) {
                         <Icon name='arrow-left' style={styles.reply} size={30} color='#000000' />
                     </TouchableOpacity>
                 </View>
-                <Image style={styles.image} source={require('../assets/Logo-Remote-Frenchies.png')} />
-                <Text style={styles.text}>Créer ton profil Remote Frenchies</Text>
-                <Text style={styles.errorText}>{error}</Text>
-                <ScrollView contentContainerStyle={styles.scrollViewContent} style={styles.scrollView}>
+                <Image style={styles.image} source={require('../assets/Logo 1.png')} />
+                <Text style={styles.h1}>Créer ton profil Remote Frenchies</Text>
+                <ScrollView contentContainerStyle={styles.scrollViewContent} style={styles.scrollView}> 
+
                     <View style={styles.input}>
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Nom"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpFirstname(value)}
                             value={signUpFirstname}
+                            onChangeText={setSignUpFirstname}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Prénom"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpLastname(value)}
                             value={signUpLastname}
+                            onChangeText={setSignUpLastname}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Métier"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpJob(value)}
                             value={signUpJob}
+                            onChangeText={setSignUpJob}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Entreprise"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpBusiness(value)}
                             value={signUpBusiness}
+                            onChangeText={setSignUpBusiness}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Ville"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpCity(value)}
                             value={signUpCity}
+                            onChangeText={setSignUpCity}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Adresse email"
-                            style={styles.nom}
-                            autoCapitalize="none"
-                            keyboardType="email-address"
-                            autoComplete="email"
-                            onChangeText={(value) => setSignUpE_mail(value)}
                             value={signUpE_mail}
+                            onChangeText={setSignUpE_mail}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            autoComplete="email"
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Mot de passe"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpPassword(value)}
                             value={signUpPassword}
+                            onChangeText={setSignUpPassword}
+                            secureTextEntry={true}
                         />
                     </View>
-                    <TouchableOpacity onPress={handleRegister} style={styles.button} activeOpacity={0.8}>
-                        <Text style={styles.textButton}>Continuer</Text>
-                    </TouchableOpacity>
+                    <CustomButton
+                        title="Continuer"
+                        onPress={handleRegister}
+                        style={styles.button}
+                        textStyle={styles.textButton}
+                    />
                 </ScrollView>
+                <Text style={styles.errorText}>{error}</Text>
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
@@ -144,26 +153,26 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: 'white',
+        justifyContent: 'flex-start',
     },
     container: {
+        marginTop: 30,
         flex: 1,
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
     },
     icon: {
-        // borderWidth: 1,
-        // borderColor: 'red',
+marginTop: 30,
         width: '100%',
         paddingLeft: 20,
 
     },
     image: {
-        width: 218,
-        height: 66,
-        marginTop: 10,
-
-    },
+        resizeMode: 'contain',
+        width: 250,
+        alignSelf: 'center',
+      },
     text: {
         width: 300,
         height: 92,
@@ -174,50 +183,64 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
     },
+
+    h1: {
+        marginTop: 10,
+        fontSize: 24,
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
+        alignSelf: 'center',
+      },
+
     scrollView: {
-        flex: 1,
-        width: '100%',
+        marginTop: 0,
     },
     scrollViewContent: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 20,
+        alignSelf: 'center',
+        paddingVertical: 200,
+        paddingTop: 0,
     },
     input: {
-        // borderWidth: 1,
-        // borderColor: 'red',
         width: 290,
         height: 400,
-        justifyContent: 'space-between',
         marginTop: 20,
     },
     nom: {
+        margin: 10,
         backgroundColor: '#DDD',
         borderWidth: 1,
         borderColor: '#8f8f8f',
         width: 290,
         height: 50,
         borderRadius: 10,
-        padding: 6,
+        padding: 10,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 13,
+        alignSelf: 'center',
     },
     button: {
         // borderColor: 'red',
         // borderWidth: '1',
-        alignItems: 'center',
+        alignSelf: 'center',
         paddingTop: 8,
         height: 50,
         width: '70%',
-        marginTop: 40,
+        marginTop: 100,
         backgroundColor: '#49B48C',
         borderRadius: 40,
     },
     textButton: {
-        color: 'white',
-        paddingTop: 7,
+        color: '#ffffff',
+        height: 30,
+        fontSize: 16,
+        paddingTop: 5,
+        fontSize: 14,
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
 
     },
     errorText: {
         color: 'red',
-        marginBottom: 10,
+        marginBottom: 20,
     },
 });

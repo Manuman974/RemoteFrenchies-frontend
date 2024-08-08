@@ -13,13 +13,12 @@ export default function HomeScreen({ navigation }) {
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.containerLogo}>
-        <Image style={styles.image} source={require('../assets/Logo-Remote-Frenchies.png')} />
+        <Image style={styles.image} source={require('../assets/Logo 1.png')} />
         <Image style={styles.image1} source={require('../assets/Logo.png')} />
       </View>
-      <Text style={styles.title}>Remote Frenchies,</Text>
-      <Text style={styles.title1}>c'est quoi ?</Text>
-      <Text style={styles.title2}>Partage tes meilleurs pratiques de télétravail selon ta discipline métier. Rencontre tes pairs qui font partie de la communauté.</Text>
-      <Text style={styles.title3}>Allons coworker les uns chez les autres en rencontrant des Remote Frenchies près de chez toi.</Text>
+      <Text style={styles.h1}>Remote Frenchies, c'est quoi ?</Text>
+      <Text style={styles.body}>Partage tes meilleurs pratiques de télétravail selon ta discipline métier. Rencontre tes pairs qui font partie de la communauté.</Text>
+      <Text style={styles.body}>Allons coworker les uns chez les autres en rencontrant des Remote Frenchies près de chez toi.</Text>
       {/* <TextInput style={styles.input} placeholder="Nickname" /> */}
       <View style={styles.btn}>
         <TouchableOpacity onPress={() => navigation.navigate('SignUp')} style={styles.button} activeOpacity={0.8}>
@@ -48,14 +47,13 @@ const styles = StyleSheet.create({
 
   },
   image: {
-    // borderColor: 'green',
-    // borderWidth: '1',
-    width: 230,
-    height: 90,
+    resizeMode: 'contain',
+    width: 250,
+    alignSelf: 'center',
+    marginTop: 30,
   },
   image1: {
-    // borderColor: 'red',
-    // borderWidth: '1',
+    marginTop: 20,
     width: 210,
     height: 150,
   },
@@ -76,6 +74,24 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
   },
+
+  h1: {
+    marginTop: 10,
+    width: '80%',
+    fontSize: 24,
+    textAlign: 'center',
+    fontFamily: 'Poppins-SemiBold',
+    alignSelf: 'center',
+  },
+
+  body: {
+    width: '80%',
+    fontSize: 13,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
+    alignSelf: 'center'
+  },
+
   title2: {
     // borderColor: 'red',
     // borderWidth: '1',
@@ -123,9 +139,11 @@ const styles = StyleSheet.create({
   textButton: {
     color: '#ffffff',
     height: 30,
-    fontWeight: '600',
     fontSize: 16,
     paddingTop: 5,
+    fontSize: 14,
+    textAlign: 'center',
+    fontFamily: 'Poppins-SemiBold',
 
   },
   btn1: {

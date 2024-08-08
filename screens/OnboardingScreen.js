@@ -52,10 +52,6 @@ export default function OnboardingScreen({ navigation, route }) {
         .then(data => {
           console.log(data)
           navigation.navigate('Recherche')
-          // if (data.result) {
-          //   dispatch(login({ userId, on_boarding:checkboxes }))
-          //   setCheckboxes(initialCheckboxes);
-          // }
         });
     }catch (error) {console.error(error);}
 
