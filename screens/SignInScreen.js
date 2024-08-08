@@ -12,6 +12,8 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
+import CustomTextInput from "../components/CustomTextInput";
+import CustomButton from "../components/CustomButton";
 
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -28,14 +30,13 @@ export default function SignInScreen({ navigation }) {
   };
 
   const handleConnection = () => {
+    console.log("test");
     if (!validateEmail(signInE_mail)) {
       setError("Adresse email invalide");
       return;
     }
-    z;
-    const BACKEND_ADDRESS = "http://192.168.8.42:3000";
 
-    fetch(`${BACKEND_ADDRESS}/users/signin`, {
+    fetch("http://192.168.1.78:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
@@ -43,6 +44,7 @@ export default function SignInScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
+          console.log(data.result);
           dispatch(login({ e_mail: signInE_mail, token: data.token }));
           setSignInE_mail("");
           setSignInPassword("");
@@ -75,31 +77,28 @@ export default function SignInScreen({ navigation }) {
       </View>
       <Text style={styles.h1}>Renseigne tes identifiants</Text>
       <View style={styles.input}>
-        <TextInput
+        <CustomTextInput
           placeholder="Adresse email"
-          style={styles.nom}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          autoComplete="email"
-          onChangeText={(value) => setSignInE_mail(value)}
           value={signInE_mail}
+          onChangeText={setSignInE_mail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoComplete="email"
         />
-
-        <TextInput
+        <CustomTextInput
           placeholder="Mot de passe"
-          style={styles.nom}
-          onChangeText={(value) => setSignInPassword(value)}
           value={signInPassword}
+          onChangeText={setSignInPassword}
+          secureTextEntry={true}
         />
       </View>
       <Text style={styles.errorText}>{error}</Text>
-      <TouchableOpacity
+      <CustomButton
+        title="Continuer"
         onPress={handleConnection}
         style={styles.button}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.textButton}>Continuer</Text>
-      </TouchableOpacity>
+        textStyle={styles.textButton}
+      />
     </KeyboardAvoidingView>
   );
 }
