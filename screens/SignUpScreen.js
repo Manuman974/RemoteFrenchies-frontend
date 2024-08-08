@@ -55,7 +55,7 @@ export default function SignUpScreen({ navigation }) {
       return;
     }
 
-    fetch("http://192.168.1.78:3000/users/signup", {
+    fetch("http://192.168.8.42:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
