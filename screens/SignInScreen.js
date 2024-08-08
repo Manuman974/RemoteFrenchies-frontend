@@ -43,7 +43,8 @@ export default function SignInScreen({ navigation }) {
         }).then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    dispatch(login({ e_mail: signInE_mail, token: data.token }));
+                    console.log(data.result)
+                    dispatch(login({ e_mail: signInE_mail, token: data.token, id: data.id }));
                     setSignInE_mail('');
                     setSignInPassword('');
                     setError('');
@@ -72,7 +73,6 @@ export default function SignInScreen({ navigation }) {
                     autoCapitalize="none"
                     autoComplete="email"
                 />
-
                 <CustomTextInput
                     placeholder="Mot de passe"
                     value={signInPassword}

@@ -16,6 +16,7 @@
     ]
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "8.0.1",
     "@react-navigation/bottom-tabs": "6",
     "@react-navigation/native": "6",
     "@react-navigation/native-stack": "6",

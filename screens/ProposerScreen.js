@@ -3,19 +3,18 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity,
     TextInput,
     KeyboardAvoidingView,
     Platform,
     SafeAreaView,
     ScrollView,
 } from "react-native";
-import { CheckBox, Button, ThemeProvider } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
-//import CustomCheckBox from './components/CustomCheckBox';
-//import { useDispatch } from 'react-redux';
+import CustomTextInput from '../components/CustomTextInput';
+import CustomCheckBox from '../components/CustomCheckbox';
+import CustomButton from '../components/CustomButton';
+import { useDispatch, useSelector } from 'react-redux';
 
 const initialCheckboxes = {
     fiber_connection: false,
@@ -24,7 +23,8 @@ const initialCheckboxes = {
 }
 
 export default function ProposerScreen({ navigation }) {
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.value); 
 
     const [adresse, setAdresse] = useState('');
     const [jourAccueil, setJourAccueil] = useState('');
@@ -37,14 +37,36 @@ export default function ProposerScreen({ navigation }) {
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
-        fetch('http://192.168.1.39:3000/users/proposition', {
+        fetch('http://192.168.1.39:3000/proposition', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ address: adresse, welcome_day: jourAccueil, reception_hours: heureAccueil, fiber_connection: checkboxes, coffee_tea: checkboxes, dedicated_office: checkboxes, other: autresAvantages, description: messageAnnonce }),
+            body: JSON.stringify({ 
+                main_address: adresse, 
+                welcome_day: jourAccueil, 
+                reception_hours: heureAccueil, 
+                fiber_connection: checkboxes.fiber_connection, 
+                coffee_tea: checkboxes.coffee_tea, 
+                dedicated_office: checkboxes.dedicated_office, 
+                other: autresAvantages, 
+                description: messageAnnonce,
+                user: user.id, 
+                }),
+
         }).then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    //dispatch({ address: adresse, welcome_day: jourAccueil, reception_hours: heureAccueil, fiber_connection: checkboxes, coffee_tea: checkboxes, dedicated_office: checkboxes, other: autresAvantages, description: messageAnnonce });
+                    console.log(data)
+                    dispatch({
+                            user: user.id,
+                            main_address: adresse,
+                            welcome_day: jourAccueil,
+                            reception_hours: heureAccueil,
+                            fiber_connection: checkboxes.fiber_connection,
+                            coffee_tea: checkboxes.coffee_tea,
+                            dedicated_office: checkboxes.dedicated_office,
+                            other: autresAvantages,
+                            description: messageAnnonce
+                    });
                     setAdresse('');
                     setJourAccueil('');
                     setHeureAccueil('');
@@ -53,7 +75,7 @@ export default function ProposerScreen({ navigation }) {
                     setMessageAnnonce('');
                     setImage(null);
                     navigation.navigate('TabNavigator')
-                } 
+                }
             });
     };
 
@@ -76,14 +98,14 @@ export default function ProposerScreen({ navigation }) {
         }
 
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images, // Filtre pour les images uniquement
+            allowsEditing: true, // Permet de modifier l'image avant de la sélectionner
+            aspect: [4, 3], // Définit le rapport d'aspect pour la modification
+            quality: 1, // Définit la qualité de l'image (1 pour la qualité maximale)
         });
-
+        // Vérifie si l'utilisateur n'a pas annulé la sélection
         if (!result.cancelled) {
-            setImage(result.uri);
+            setImage(result.uri); // Met à jour l'état avec l'URI de l'image sélectionnée
         }
     };
 
@@ -118,90 +140,66 @@ export default function ProposerScreen({ navigation }) {
 
                     <Text style={styles.sectionTitle1}>Accueillir un télétravailleur</Text>
 
-                    <TextInput
+                    <CustomTextInput
                         placeholder="Adresse"
-                        style={styles.input1}
-                        onChangeText={(value) => setAdresse(value)}
                         value={adresse}
-                    />
-                    <TextInput
-                        placeholder="Jour d’accueil"
-                        style={styles.input1}
-                        onChangeText={(value) => setJourAccueil(value)}
-                        value={jourAccueil}
-                    />
-                    <TextInput
-                        placeholder="Heure d’accueil"
-                        style={styles.input1}
-                        onChangeText={(value) => setHeureAccueil(value)}
-                        value={heureAccueil}
+                        onChangeText={setAdresse}
                     />
 
+                    <CustomTextInput
+                        placeholder="Jour d’accueil DD/MM/YYYY"
+                        value={jourAccueil}
+                        onChangeText={setJourAccueil}
+                    />
+
+                    <CustomTextInput
+                        placeholder="Heure d’accueil hh:mm"
+                        value={heureAccueil}
+                        onChangeText={setHeureAccueil}
+                    />
                     <View style={styles.separator} />
 
                     <View style={styles.checkboxes}>
                         <Text style={styles.sectionTitle2}>Mes avantages</Text>
-                        <View style={styles.checkboxContainer}>
-                            <CheckBox
-                                checked={checkboxes.fiber_connection} // Identifiant unique dans initialCheckboxes
-                                onPress={() => toggleCheckbox('fiber_connection')} // Identifie la checkbox grâce à son argument 'remote'
-                                // Use ThemeProvider to make change for all checkbox
-                                iconType="material-community"
-                                checkedIcon="checkbox-marked"
-                                uncheckedIcon="checkbox-blank-outline"
-                                checkedColor="#49B48C"
-                            />
-                            <Text style={styles.label}>Connection Fibre</Text>
-                        </View>
-                        {/* <CustomCheckBox
+
+                        <CustomCheckBox
                             checked={checkboxes.fiber_connection}
                             onPress={() => toggleCheckbox('fiber_connection')}
                             label="Connection Fibre"
-                        /> */}
+                        />
 
-                        <View style={styles.checkboxContainer}>
-                            <CheckBox
-                                checked={checkboxes.coffee_tea} // Identifiant unique dans initialCheckboxes
-                                onPress={() => toggleCheckbox('coffee_tea')} // Identifie la checkbox grâce à son argument 'remote'
-                                // Use ThemeProvider to make change for all checkbox
-                                iconType="material-community"
-                                checkedIcon="checkbox-marked"
-                                uncheckedIcon="checkbox-blank-outline"
-                                checkedColor="#49B48C"
-                            />
-                            <Text style={styles.label}>Café / Thé</Text>
-                        </View>
+                        <CustomCheckBox
+                            checked={checkboxes.coffee_tea}
+                            onPress={() => toggleCheckbox('coffee_tea')}
+                            label="Café / Thé"
+                        />
 
-                        <View style={styles.checkboxContainer}>
-                            <CheckBox
-                                checked={checkboxes.dedicated_office} // Identifiant unique dans initialCheckboxes
-                                onPress={() => toggleCheckbox('dedicated_office')} // Identifie la checkbox grâce à son argument 'remote'
-                                // Use ThemeProvider to make change for all checkbox
-                                iconType="material-community"
-                                checkedIcon="checkbox-marked"
-                                uncheckedIcon="checkbox-blank-outline"
-                                checkedColor="#49B48C"
-                            />
-                            <Text style={styles.label}>Bureau dédié</Text>
-                        </View>
+                        <CustomCheckBox
+                            checked={checkboxes.dedicated_office}
+                            onPress={() => toggleCheckbox('dedicated_office')}
+                            label="Bureau dédié"
+                        />
                     </View>
-                    <TextInput
+                    <CustomTextInput
                         placeholder="Autres : exemples (Vues, matériels sup...)"
-                        style={styles.input1}
-                        onChangeText={(value) => setAutresAvantages(value)}
                         value={autresAvantages}
+                        onChangeText={setAutresAvantages}
                     />
-
                     <View style={styles.separator} />
 
-                    <View style={styles.photoButtonsContainer}>
-                        <TouchableOpacity onPress={openImagePickerAsync} style={styles.photoButton} activeOpacity={0.8}>
-                            <Text style={styles.photoButtonText}>Choisir une photo</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={openCameraAsync} style={styles.photoButton} activeOpacity={0.8}>
-                            <Text style={styles.photoButtonText}>Prendre une photo</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <CustomButton
+                        title="Choisir une photo"
+                        onPress={openImagePickerAsync}
+                        style={styles.button}
+                        textStyle={styles.textButton}
+                    />
+                    
+                    <CustomButton
+                        title="Prendre une photo"
+                        onPress={openCameraAsync}
+                        style={styles.button}
+                        textStyle={styles.textButton}
+                    />
 
                     {image && <Image source={{ uri: image }} style={styles.image} />}
 
@@ -212,9 +210,12 @@ export default function ProposerScreen({ navigation }) {
                         value={messageAnnonce}
                     />
 
-                    <TouchableOpacity onPress={handleSubmit} style={styles.submitButton} activeOpacity={0.8}>
-                        <Text style={styles.submitButtonText}>Publier</Text>
-                    </TouchableOpacity>
+                    <CustomButton
+                        title="Publier"
+                        onPress={handleSubmit}
+                        style={styles.button}
+                        textStyle={styles.textButton}
+                    />
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>
@@ -269,6 +270,11 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingLeft: 30,
     },
+    CustomTextInput: {
+        // borderWidth: 1,
+        // borderColor: 'red',
+        width: 290,
+    },
     sectionTitle2: {
         // borderWidth: 1,
         // borderColor: 'red',
@@ -276,16 +282,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         alignSelf: 'flex-start',
         marginLeft: 20,
-        marginBottom: 10,
-    },
-    input1: {
-        backgroundColor: '#DDD',
-        borderWidth: 1,
-        borderColor: '#8f8f8f',
-        width: 290,
-        height: 50,
-        borderRadius: 10,
-        padding: 10,
         marginBottom: 10,
     },
     input2: {
@@ -296,67 +292,12 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 10,
         padding: 10,
-        marginBottom: 10,
+        marginBottom: 20,
+        marginTop: 20,
     },
     checkboxes: {
         // borderWidth: 1,
         // borderColor: 'red',
         width: 330,
-    },
-    checkboxContainer: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-        flexDirection: 'row',
-        marginBottom: 20,
-        alignItems: 'center',
-    },
-    checkbox: {
-        alignSelf: "center",
-    },
-    label: {
-        margin: 8,
-    },
-    photoButton: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-        alignItems: 'center',
-        paddingTop: 8,
-        height: 50,
-        width: '100%',
-        marginTop: 20,
-        marginBottom: 30,
-
-        backgroundColor: '#49B48C',
-        borderRadius: 40,
-    },
-    photoButtonText: {
-        color: 'white',
-        paddingTop: 7,
-    },
-    image: {
-        width: '100%',
-        height: 200,
-        marginVertical: 10,
-    },
-    submitButton: {
-        alignItems: 'center',
-        paddingTop: 8,
-        height: 50,
-        width: '70%',
-        marginTop: 40,
-        backgroundColor: '#49B48C',
-        borderRadius: 40,
-    },
-    submitButtonText: {
-        color: 'white',
-        paddingTop: 7,
-    },
-    photoButtonsContainer: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-        width: '70%',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        marginBottom: 20,
     },
 });

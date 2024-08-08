@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
-        marginLeft: 10,
     },
 });
 
