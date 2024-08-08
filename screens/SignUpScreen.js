@@ -14,8 +14,11 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/user';
+import CustomTextInput from '../components/CustomTextInput';
+import CustomButton from '../components/CustomButton';
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)(?=.*[%#@$!^&*])[A-Za-z\d%#@$!^&*]{8,}$/;
 
 export default function SignUpScreen({ navigation }) {
     // const frontendAddress = process.env.EXPO_PUBLIC_FRONTEND_ADDRESS;
@@ -34,6 +37,10 @@ export default function SignUpScreen({ navigation }) {
         return EMAIL_REGEX.test(email);
     };
 
+    const validatePassword = (password) => {
+        return PASSWORD_REGEX.test(password);
+    };
+
     const handleRegister = () => {
         if (!validateEmail(signUpE_mail)) {
            
@@ -41,8 +48,12 @@ export default function SignUpScreen({ navigation }) {
             return;
         }
 
+        if (!validatePassword(signUpPassword)) {
+            setError('Le mot de passe doit contenir au moins 8 caractères, dont 1 majuscule, 1 chiffre et 1 caractère spécial');
+            return;
+        }
 
-        fetch('http://192.168.94.186:3000/users/signup', {
+        fetch('http://192.168.1.39:3000/users/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ firstname: signUpFirstname, lastname: signUpLastname, job: signUpJob, business: signUpBusiness, main_address: signUpCity, e_mail: signUpE_mail, password: signUpPassword }),
@@ -76,65 +87,61 @@ export default function SignUpScreen({ navigation }) {
                 <Image style={styles.image} source={require('../assets/Logo 1.png')} />
                 <Text style={styles.h1}>Créer ton profil Remote Frenchies</Text>
                 <ScrollView contentContainerStyle={styles.scrollViewContent} style={styles.scrollView}> 
-           
+
                     <View style={styles.input}>
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Nom"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpFirstname(value)}
                             value={signUpFirstname}
+                            onChangeText={setSignUpFirstname}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Prénom"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpLastname(value)}
                             value={signUpLastname}
+                            onChangeText={setSignUpLastname}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Métier"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpJob(value)}
                             value={signUpJob}
+                            onChangeText={setSignUpJob}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Entreprise"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpBusiness(value)}
                             value={signUpBusiness}
+                            onChangeText={setSignUpBusiness}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Ville"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpCity(value)}
                             value={signUpCity}
+                            onChangeText={setSignUpCity}
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Adresse email"
-                            style={styles.nom}
-                            autoCapitalize="none"
-                            keyboardType="email-address"
-                            autoComplete="email"
-                            onChangeText={(value) => setSignUpE_mail(value)}
                             value={signUpE_mail}
+                            onChangeText={setSignUpE_mail}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            autoComplete="email"
                         />
-    
-                        <TextInput
+
+                        <CustomTextInput
                             placeholder="Mot de passe"
-                            style={styles.nom}
-                            onChangeText={(value) => setSignUpPassword(value)}
                             value={signUpPassword}
+                            onChangeText={setSignUpPassword}
+                            secureTextEntry={true}
                         />
-                    <TouchableOpacity onPress={handleRegister} style={styles.button} activeOpacity={0.8}>
-                        <Text style={styles.textButton}>Continuer</Text>
-                    </TouchableOpacity>
                     </View>
-                    
+                    <CustomButton
+                        title="Continuer"
+                        onPress={handleRegister}
+                        style={styles.button}
+                        textStyle={styles.textButton}
+                    />
                 </ScrollView>
                 <Text style={styles.errorText}>{error}</Text>
             </KeyboardAvoidingView>
@@ -218,7 +225,7 @@ marginTop: 30,
         paddingTop: 8,
         height: 50,
         width: '70%',
-        marginTop: 40,
+        marginTop: 100,
         backgroundColor: '#49B48C',
         borderRadius: 40,
     },
