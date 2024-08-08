@@ -73,10 +73,10 @@ export default function SignUpScreen({ navigation }) {
                         <Icon name='arrow-left' style={styles.reply} size={30} color='#000000' />
                     </TouchableOpacity>
                 </View>
-                <Image style={styles.image} source={require('../assets/Logo-Remote-Frenchies.png')} />
-                <Text style={styles.text}>Créer ton profil Remote Frenchies</Text>
-                <Text style={styles.errorText}>{error}</Text>
-                <ScrollView contentContainerStyle={styles.scrollViewContent} style={styles.scrollView}>
+                <Image style={styles.image} source={require('../assets/Logo 1.png')} />
+                <Text style={styles.h1}>Créer ton profil Remote Frenchies</Text>
+                <ScrollView contentContainerStyle={styles.scrollViewContent} style={styles.scrollView}> 
+           
                     <View style={styles.input}>
     
                         <TextInput
@@ -130,11 +130,13 @@ export default function SignUpScreen({ navigation }) {
                             onChangeText={(value) => setSignUpPassword(value)}
                             value={signUpPassword}
                         />
-                    </View>
                     <TouchableOpacity onPress={handleRegister} style={styles.button} activeOpacity={0.8}>
                         <Text style={styles.textButton}>Continuer</Text>
                     </TouchableOpacity>
+                    </View>
+                    
                 </ScrollView>
+                <Text style={styles.errorText}>{error}</Text>
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
@@ -144,26 +146,26 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: 'white',
+        justifyContent: 'flex-start',
     },
     container: {
+        marginTop: 30,
         flex: 1,
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
     },
     icon: {
-        // borderWidth: 1,
-        // borderColor: 'red',
+marginTop: 30,
         width: '100%',
         paddingLeft: 20,
 
     },
     image: {
-        width: 218,
-        height: 66,
-        marginTop: 10,
-
-    },
+        resizeMode: 'contain',
+        width: 250,
+        alignSelf: 'center',
+      },
     text: {
         width: 300,
         height: 92,
@@ -174,36 +176,45 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
     },
+
+    h1: {
+        marginTop: 10,
+        fontSize: 24,
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
+        alignSelf: 'center',
+      },
+
     scrollView: {
-        flex: 1,
-        width: '100%',
+        marginTop: 0,
     },
     scrollViewContent: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 20,
+        alignSelf: 'center',
+        paddingVertical: 200,
+        paddingTop: 0,
     },
     input: {
-        // borderWidth: 1,
-        // borderColor: 'red',
         width: 290,
         height: 400,
-        justifyContent: 'space-between',
         marginTop: 20,
     },
     nom: {
+        margin: 10,
         backgroundColor: '#DDD',
         borderWidth: 1,
         borderColor: '#8f8f8f',
         width: 290,
         height: 50,
         borderRadius: 10,
-        padding: 6,
+        padding: 10,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 13,
+        alignSelf: 'center',
     },
     button: {
         // borderColor: 'red',
         // borderWidth: '1',
-        alignItems: 'center',
+        alignSelf: 'center',
         paddingTop: 8,
         height: 50,
         width: '70%',
@@ -212,12 +223,17 @@ const styles = StyleSheet.create({
         borderRadius: 40,
     },
     textButton: {
-        color: 'white',
-        paddingTop: 7,
+        color: '#ffffff',
+        height: 30,
+        fontSize: 16,
+        paddingTop: 5,
+        fontSize: 14,
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
 
     },
     errorText: {
         color: 'red',
-        marginBottom: 10,
+        marginBottom: 20,
     },
 });
