@@ -87,7 +87,7 @@ export default function SignUpScreen({ navigation }) {
                 <Image style={styles.image} source={require('../assets/Logo 1.png')} />
                 <Text style={styles.h1}>Créer ton profil Remote Frenchies</Text>
                 <ScrollView contentContainerStyle={styles.scrollViewContent} style={styles.scrollView}> 
-           
+
                     <View style={styles.input}>
 
                         <CustomTextInput

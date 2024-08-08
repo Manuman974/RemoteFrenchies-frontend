@@ -30,12 +30,13 @@ export default function SignInScreen({ navigation }) {
     };
 
     const handleConnection = () => {
+        console.log('test')
         if (!validateEmail(signInE_mail)) {
             setError('Adresse email invalide');
             return;
         }
 
-        fetch('http://192.168.94.186:3000/users/signin', {
+        fetch('http://192.168.1.39:8081/users/signin', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
@@ -43,7 +44,7 @@ export default function SignInScreen({ navigation }) {
             .then(data => {
                 if (data.result) {
                     console.log(data.result)
-                    dispatch(login({ e_mail: signInE_mail, token: data.token, id: data.id }));
+                    dispatch(login({ e_mail: signInE_mail, token: data.token, }));
                     setSignInE_mail('');
                     setSignInPassword('');
                     setError('');
