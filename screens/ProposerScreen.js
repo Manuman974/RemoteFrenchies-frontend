@@ -74,7 +74,7 @@ export default function ProposerScreen({ navigation }) {
                     setAutresAvantages('');
                     setMessageAnnonce('');
                     setImage(null);
-                    navigation.navigate('TabNavigator')
+                    navigation.navigate('PublishScreen')
                 }
             });
     };
