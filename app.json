@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Remote_Frenchies",
-    "slug": "Remote_Frenchies",
+    "name": "remote-frenchies",
+    "slug": "remote-frenchies",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
