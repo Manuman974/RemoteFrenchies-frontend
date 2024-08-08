@@ -42,7 +42,7 @@ export default function SignUpScreen({ navigation }) {
         }
 
 
-        fetch('http://192.168.94.186:3000/users/signup', {
+        fetch('http://192.168.1.78:3000/users/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ firstname: signUpFirstname, lastname: signUpLastname, job: signUpJob, business: signUpBusiness, main_address: signUpCity, e_mail: signUpE_mail, password: signUpPassword }),

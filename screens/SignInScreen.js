@@ -33,7 +33,7 @@ export default function SignInScreen({ navigation }) {
             return;
         }
 
-        fetch('http://192.168.94.186:3000/users/signin', {
+        fetch('http://192.168.1.78:3000/users/signin', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
