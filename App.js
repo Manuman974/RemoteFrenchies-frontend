@@ -1,32 +1,54 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import HomeScreen from "./screens/HomeScreen";
-import RechercheScreen from "./screens/RechercheScreen";
-import ProposerScreen from "./screens/ProposerScreen";
-import MessageScreen from "./screens/MessageScreen";
-import ProfilScreen from "./screens/ProfilScreen";
-import BlogScreen from "./screens/BlogScreen";
-import SignInScreen from "./screens/SignInScreen";
-import SignUpScreen from "./screens/SignUpScreen";
+
+
+
+
 import RemoterSelectedScreen from "./screens/RemoterSelectedScreen";
 import { View, Text } from "react-native";
 import PwdScreen from "./screens/PwdScreen";
 
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import user from "./reducers/user";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import HomeScreen from './screens/HomeScreen';
+import RechercheScreen from './screens/RechercheScreen';
+import ProposerScreen from './screens/ProposerScreen';
+import MessageScreen from './screens/MessageScreen';
+import ProfilScreen from './screens/ProfilScreen';
+import BlogScreen from './screens/BlogScreen';
+import SignInScreen from './screens/SignInScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import OnboardingScreen from './screens/OnboardingScreen';
+import PublishScreen from './screens/PublishScreen';
+import React, { useEffect, useState } from 'react';
 
-const store = configureStore({
+import {Provider} from 'react-redux';
+import {configureStore} from '@reduxjs/toolkit';
+import user from './reducers/user';
+
+const store = configureStore ({
   reducer: { user },
 });
+
+// Import des modules necessaires pour mporter une font
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+// Empêcher l'affichage de l'écran de chargement automatique au démarrage
+SplashScreen.preventAutoHideAsync();
+
+const fetchFonts = async () => {
+  await Font.loadAsync({
+    'Poppins-SemiBold': require('./assets/fonts/Poppins-SemiBold.ttf'),
+    'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf')
+  });
+};
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -102,21 +124,49 @@ const TabNavigator = () => {
 };
 
 export default function App() {
+
+  // Préparer et charger les fonts
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        await fetchFonts();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+        SplashScreen.hideAsync();
+      }
+    };
+
+    prepare();
+  }, []);
+
+  if (!isReady) {
+    return null; // ou un écran de chargement personnalisé
+  }
+
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="Pwd" component={PwdScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen
+        
+    
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="SignIn" component={SignInScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="Pwd" component={PwdScreen} />
+        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        <Stack.Screen name="Recherche" component={RechercheScreen} />
+        <Stack.Screen
             name="RemoterSelected"
             component={RemoterSelectedScreen}
           />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        </Stack.Navigator>
-      </NavigationContainer>
+        <Stack.Screen name="PublishScreen" component={PublishScreen} />
+        <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      </Stack.Navigator>
+    </NavigationContainer>
     </Provider>
   );
 }
