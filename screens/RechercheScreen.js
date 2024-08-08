@@ -64,8 +64,8 @@ export default function RechercheScreen({ navigation }) {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
             // Pour zoomer automatiquement sur la carte
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
+            latitudeDelta: 0.15,
+            longitudeDelta: 0.15,
           });
         });
       }
@@ -92,9 +92,9 @@ export default function RechercheScreen({ navigation }) {
             };
           });
 
-          const remoters = data.userCity.map((user) => {
+          const remoters = data.userCity.map((user, i) => {
             return {
-              id: user.id,
+              id: i,
               firstname: user.firstname,
               lastname: user.lastname,
               job: user.job,
