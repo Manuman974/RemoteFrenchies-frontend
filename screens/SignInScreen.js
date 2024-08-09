@@ -36,7 +36,7 @@ export default function SignInScreen({ navigation }) {
       return;
     }
 
-    fetch("http://192.168.1.39:3000/users/signin", {
+    fetch("http://192.168.94.186:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
@@ -44,8 +44,18 @@ export default function SignInScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          console.log(data.result);
-          dispatch(login({ e_mail: signInE_mail, token: data.token }));
+          console.log(data);
+          dispatch(
+            login({
+              firstname: data.firstname,
+              lastname: data.lastname,
+              job: data.job,
+              business: data.business,
+              main_adress: data.main_adress,
+              e_mail: signInE_mail,
+              token: data.token,
+            })
+          );
           setSignInE_mail("");
           setSignInPassword("");
           setError("");

@@ -146,6 +146,15 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+          <Stack.Screen name="Pwd" component={PwdScreen} />
+          <Stack.Screen name="Recherche" component={RechercheScreen} />
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
+
           <Stack.Screen
             name="RemoterSelected"
             component={RemoterSelectedScreen}
@@ -153,15 +162,7 @@ export default function App() {
               headerShown: true,
             }}
           />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="Pwd" component={PwdScreen} />
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-          <Stack.Screen name="Recherche" component={RechercheScreen} />
-
           <Stack.Screen name="PublishScreen" component={PublishScreen} />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

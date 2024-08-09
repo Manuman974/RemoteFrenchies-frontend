@@ -12,7 +12,7 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../reducers/user";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
@@ -129,11 +129,54 @@ export default function SignUpScreen({ navigation }) {
               onChangeText={setSignUpFirstname}
             />
 
+<<<<<<< HEAD
             <CustomTextInput
               placeholder="Prénom"
               value={signUpLastname}
               onChangeText={setSignUpLastname}
             />
+=======
+        fetch("http://192.168.94.186:3000/users/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                firstname: signUpFirstname,
+                lastname: signUpLastname,
+                job: signUpJob,
+                business: signUpBusiness,
+                main_address: signUpCity,
+                e_mail: signUpE_mail,
+                password: signUpPassword,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.result) {
+                    dispatch(
+                        login({
+                            firstname: signUpFirstname,
+                            lastname: signUpLastname,
+                            job: signUpJob,
+                            business: signUpBusiness,
+                            main_address: signUpCity,
+                            e_mail: signUpE_mail,
+                            token: data.token,
+                        })
+                    );
+                    setSignUpFirstname("");
+                    setSignUpLastname("");
+                    setSignUpJob("");
+                    setSignUpBusiness("");
+                    setSignUpCity("");
+                    setSignUpE_mail("");
+                    setSignUpPassword("");
+                    navigation.navigate("Onboarding");
+                } else {
+                    setError("Tous les champs doivent être remplis");
+                }
+            });
+    };
+>>>>>>> main
 
             <CustomTextInput
               placeholder="Métier"
