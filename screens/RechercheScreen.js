@@ -46,7 +46,7 @@ export default function RechercheScreen({ navigation }) {
   //SECTION MAP
 
   // = > INITIALISATION DES ETATS
-  const BACKEND_ADDRESS = "http://192.168.1.39:3000";
+  const BACKEND_ADDRESS = "http://192.168.8.42:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
   const [cityCoordinates, setCityCoordinates] = useState([]);
@@ -167,7 +167,7 @@ export default function RechercheScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <CustomHeader navigation={navigation} title="Colorier" />
+      {/* <CustomHeader navigation={navigation} title="Colorier" /> */}
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.inputContainer}>
           <TextInput
