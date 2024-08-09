@@ -49,6 +49,7 @@ export default function SignInScreen({ navigation }) {
           setSignInE_mail("");
           setSignInPassword("");
           setError("");
+
           navigation.navigate("TabNavigator");
         } else {
           setError("Email ou Mot de passe invalide");
