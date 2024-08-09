@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 
-export default function AnnouncementScreen() {
+export default function AnnouncementScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Text>Mes annonces</Text>
