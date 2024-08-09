@@ -12,7 +12,7 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../reducers/user";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
@@ -24,6 +24,8 @@ const PASSWORD_REGEX =
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value); 
+
 
   const [signUpFirstname, setSignUpFirstname] = useState("");
   const [signUpLastname, setSignUpLastname] = useState("");
@@ -55,7 +57,7 @@ export default function SignUpScreen({ navigation }) {
       return;
     }
 
-    fetch("http://192.168.1.78:3000/users/signup", {
+    fetch("http://192.168.94.186:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -89,6 +91,7 @@ export default function SignUpScreen({ navigation }) {
           setSignUpCity("");
           setSignUpE_mail("");
           setSignUpPassword("");
+          console.log(user.firstname);
           navigation.navigate("Onboarding");
         } else {
           setError("Tous les champs doivent être remplis");

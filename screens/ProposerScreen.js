@@ -37,7 +37,7 @@ export default function ProposerScreen({ navigation }) {
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
-        fetch('http://192.168.1.39:3000/proposition', {
+        fetch('http://192.168.94.186:3000/proposition', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
