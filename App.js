@@ -20,6 +20,7 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import PublishScreen from './screens/PublishScreen';
+import AnnouncementScreen from './screens/AnnouncementScreen';
 import React, { useEffect, useState } from 'react';
 
 import {Provider} from 'react-redux';
@@ -108,13 +109,7 @@ const TabNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen
-        name="Recherche"
-        component={RechercheScreen}
-        options={{
-          headerShown: true,
-        }}
-      />
+      <Tab.Screen name="Recherche" component={RechercheScreen} options={{ headerShown: true, }} />
       <Tab.Screen name="Proposer" component={ProposerScreen} />
       <Tab.Screen name="Message" component={MessageScreen} />
       <Tab.Screen name="Profil" component={ProfilScreen} />
@@ -159,11 +154,9 @@ export default function App() {
         <Stack.Screen name="Pwd" component={PwdScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         <Stack.Screen name="Recherche" component={RechercheScreen} />
-        <Stack.Screen
-            name="RemoterSelected"
-            component={RemoterSelectedScreen}
-          />
+        <Stack.Screen name="RemoterSelected" component={RemoterSelectedScreen} />
         <Stack.Screen name="PublishScreen" component={PublishScreen} />
+        <Stack.Screen name="Annoucement" component={AnnouncementScreen} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

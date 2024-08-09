@@ -15,6 +15,7 @@ import CustomTextInput from '../components/CustomTextInput';
 import CustomCheckBox from '../components/CustomCheckbox';
 import CustomButton from '../components/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
+//import { login } from '../reducers/user';
 
 const initialCheckboxes = {
     fiber_connection: false,
@@ -37,7 +38,8 @@ export default function ProposerScreen({ navigation }) {
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
-        fetch('http://192.168.1.78:3000/proposition', {
+        console.log('token :', user.token)
+        fetch('http://192.168.1.39:3000/proposition', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
@@ -49,24 +51,13 @@ export default function ProposerScreen({ navigation }) {
                 dedicated_office: checkboxes.dedicated_office, 
                 other: autresAvantages, 
                 description: messageAnnonce,
-                user: user.id, 
+                token: user.token, 
                 }),
 
         }).then(response => response.json())
             .then(data => {
+                console.log(data)
                 if (data.result) {
-                    console.log(data)
-                    dispatch({
-                            user: user.id,
-                            main_address: adresse,
-                            welcome_day: jourAccueil,
-                            reception_hours: heureAccueil,
-                            fiber_connection: checkboxes.fiber_connection,
-                            coffee_tea: checkboxes.coffee_tea,
-                            dedicated_office: checkboxes.dedicated_office,
-                            other: autresAvantages,
-                            description: messageAnnonce
-                    });
                     setAdresse('');
                     setJourAccueil('');
                     setHeureAccueil('');
@@ -104,7 +95,7 @@ export default function ProposerScreen({ navigation }) {
             quality: 1, // Définit la qualité de l'image (1 pour la qualité maximale)
         });
         // Vérifie si l'utilisateur n'a pas annulé la sélection
-        if (!result.cancelled) {
+        if (!result.canceled) {
             setImage(result.uri); // Met à jour l'état avec l'URI de l'image sélectionnée
         }
     };
@@ -123,7 +114,7 @@ export default function ProposerScreen({ navigation }) {
             quality: 1,
         });
 
-        if (!result.cancelled) {
+        if (!result.canceled) {
             setImage(result.uri);
         }
     };

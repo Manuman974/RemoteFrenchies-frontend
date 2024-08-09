@@ -16,7 +16,7 @@ export default function PublishScreen({ navigation }) {
           <Text style={styles.h1} >Votre annonce a bien été publiée</Text>
         </View>
         <View style={styles.btn1}>
-          <TouchableOpacity onPress={() => navigation.navigate('MesAnnonces')} style={styles.button1} activeOpacity={0.8}>
+          <TouchableOpacity onPress={() => navigation.navigate('Announcement')} style={styles.button1} activeOpacity={0.8}>
             <Text style={styles.textButton}>Voir mes annonces</Text>
           </TouchableOpacity>
         </View>
