@@ -42,56 +42,11 @@ export default function SignUpScreen({ navigation }) {
         return PASSWORD_REGEX.test(password);
     };
 
-  const handleRegister = () => {
-    if (!validateEmail(signUpE_mail)) {
-      setError("Adresse email invalide");
-      return;
-    }
-
-    if (!validatePassword(signUpPassword)) {
-      setError(
-        "Le mot de passe doit contenir au moins 8 caractères, dont 1 majuscule, 1 chiffre et 1 caractère spécial"
-      );
-      return;
-    }
-
-    fetch("http://192.168.1.98:3000/users/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstname: signUpFirstname,
-        lastname: signUpLastname,
-        job: signUpJob,
-        business: signUpBusiness,
-        main_address: signUpCity,
-        e_mail: signUpE_mail,
-        password: signUpPassword,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          dispatch(
-            login({
-              firstname: signUpFirstname,
-              lastname: signUpLastname,
-              job: signUpJob,
-              business: signUpBusiness,
-              main_address: signUpCity,
-              e_mail: signUpE_mail,
-              token: data.token,
-            })
-          );
-          setSignUpFirstname("");
-          setSignUpLastname("");
-          setSignUpJob("");
-          setSignUpBusiness("");
-          setSignUpCity("");
-          setSignUpE_mail("");
-          setSignUpPassword("");
-          navigation.navigate("Onboarding");
-        } else {
-          setError("Tous les champs doivent être remplis");
+    const handleRegister = () => {
+        console.log("test");
+        if (!validateEmail(signUpE_mail)) {
+            setError("Adresse email invalide");
+            return;
         }
 
         if (!validatePassword(signUpPassword)) {
