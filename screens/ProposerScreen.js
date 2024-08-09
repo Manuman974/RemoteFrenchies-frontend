@@ -23,7 +23,6 @@ const initialCheckboxes = {
 }
 
 export default function ProposerScreen({ navigation }) {
-    const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value); 
 
     const [adresse, setAdresse] = useState('');
@@ -49,24 +48,12 @@ export default function ProposerScreen({ navigation }) {
                 dedicated_office: checkboxes.dedicated_office, 
                 other: autresAvantages, 
                 description: messageAnnonce,
-                user: user.id, 
+                token: user.token, 
                 }),
 
         }).then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    console.log(data)
-                    dispatch({
-                            user: user.id,
-                            main_address: adresse,
-                            welcome_day: jourAccueil,
-                            reception_hours: heureAccueil,
-                            fiber_connection: checkboxes.fiber_connection,
-                            coffee_tea: checkboxes.coffee_tea,
-                            dedicated_office: checkboxes.dedicated_office,
-                            other: autresAvantages,
-                            description: messageAnnonce
-                    });
                     setAdresse('');
                     setJourAccueil('');
                     setHeureAccueil('');
