@@ -9,12 +9,15 @@ import {
     SafeAreaView,
     ScrollView,
 } from "react-native";
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomCheckBox from '../components/CustomCheckbox';
 import CustomButton from '../components/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
+import { addPhoto } from '../reducers/user';
+
 
 const initialCheckboxes = {
     fiber_connection: false,
@@ -23,7 +26,8 @@ const initialCheckboxes = {
 }
 
 export default function ProposerScreen({ navigation }) {
-    const user = useSelector((state) => state.user.value); 
+    const user = useSelector((state) => state.user.value);
+    const dispatch = useDispatch(); 
 
     const [adresse, setAdresse] = useState('');
     const [jourAccueil, setJourAccueil] = useState('');
@@ -91,7 +95,7 @@ export default function ProposerScreen({ navigation }) {
             quality: 1, // Définit la qualité de l'image (1 pour la qualité maximale)
         });
         // Vérifie si l'utilisateur n'a pas annulé la sélection
-        if (!result.cancelled) {
+        if (!result.canceled) {
             setImage(result.uri); // Met à jour l'état avec l'URI de l'image sélectionnée
         }
     };
@@ -109,10 +113,35 @@ export default function ProposerScreen({ navigation }) {
             aspect: [4, 3],
             quality: 1,
         });
-
-        if (!result.cancelled) {
+        if (!result.canceled) {
             setImage(result.uri);
-        }
+        
+            const formData = new FormData();
+            const uri = result.uri;
+
+            
+        
+            formData.append("photoFromFront", { 
+                uri: `${uri}`,
+                name: "photo.jpg",
+                type: "image/jpeg",
+            });
+        
+            fetch('http://192.168.1.98:3000/upload', {
+                method: "POST",
+                body: formData,
+                
+            })
+            .then((response) => response.json())
+            .then((data) => { 
+                if (data) {
+                    console.log(data)
+                    data.result && dispatch(addPhoto(data.url));
+                } else {
+                    alert("Échec du téléchargement de la photo");
+                }
+            })
+            };
     };
 
     return (
