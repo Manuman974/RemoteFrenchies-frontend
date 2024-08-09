@@ -11,47 +11,17 @@ import {
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomProfilButton from "../components/CustomProfilButton";
-import { useDispatch, useEffect, useSelector } from 'react-redux';
-import { login } from "../reducers/user";
+import {  useSelector } from 'react-redux';
+
 
 
 export default function ProfilScreen({ navigation }) {
-    const dispatch = useDispatch();
+    
     const user = useSelector((state) => state.user.value); 
 
     
-//     useEffect(() => {
-//         if (!user.token) {
-//           return;
-//         }
 
-//     fetch('http://192.168.94.186:3000/users')
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log(data)
-//       data.result && dispatch(login(data.firstname));
-//     });
-// })
-
-    // const handleConnection = () => {
-    //       fetch('http://192.168.94.186:3000/users', {
-    //         method: 'GET',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({token: user.token, firstname, lastname})
-    //       }).then(response => response.json())
-    //         .then(data => {
-    //             if (data.result) {
-    //           console.log(data)
-    //           dispatch(login({
-    //             firstname:firstname,
-    //             lastname:lastname,
-    //           });
-    //           navigation.navigate('TabNavigator')
-    //         }
-    //         });
     
-    //   }
-    console.log(user)
     return (
         <KeyboardAvoidingView>
             <SafeAreaView style={styles.safeArea}>
