@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux';
 export default function ProfilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value); 
 
-    
     return (
         <KeyboardAvoidingView>
             <SafeAreaView style={styles.safeArea}>

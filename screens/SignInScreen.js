@@ -30,30 +30,30 @@ export default function SignInScreen({ navigation }) {
     };
 
     const handleConnection = () => {
-        console.log("test");
-        if (!validateEmail(signInE_mail)) {
-            setError("Adresse email invalide");
-            return;
-        }
+      console.log("test");
+      if (!validateEmail(signInE_mail)) {
+          setError("Adresse email invalide");
+          return;
+      }
 
-        fetch("http://192.168.94.186:3000/users/signin", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.result) {
-                    console.log(data.result);
-                    dispatch(login({ e_mail: signInE_mail, token: data.token }));
-                    setSignInE_mail("");
-                    setSignInPassword("");
-                    setError("");
-                    navigation.navigate("TabNavigator");
-                } else {
-                    setError("Email ou Mot de passe invalide");
-                }
-            });
+    fetch("http://192.168.94.186:3000/users/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          console.log(data);
+          dispatch(login({ firstname:data.firstname, lastname:data.lastname, job:data.job, business:data.business, main_adress:data.main_adress, e_mail: signInE_mail, token: data.token }));
+          setSignInE_mail("");
+          setSignInPassword("");
+          setError("");
+          navigation.navigate("TabNavigator");
+        } else {
+          setError("Email ou Mot de passe invalide");
+      }
+        });
     };
 
     return (
