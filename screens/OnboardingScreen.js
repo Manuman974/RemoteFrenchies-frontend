@@ -14,6 +14,7 @@ import {
 import { CheckBox, Button, ThemeProvider } from '@rneui/themed';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import CustomButton from "../components/CustomButton";
 
 export default function OnboardingScreen({ navigation, route }) {
 
@@ -51,7 +52,7 @@ export default function OnboardingScreen({ navigation, route }) {
       }).then(response => response.json())
         .then(data => {
           console.log(data)
-          navigation.navigate('Recherche')
+          navigation.navigate('TabNavigator')
         });
     }catch (error) {console.error(error);}
 
@@ -178,10 +179,13 @@ export default function OnboardingScreen({ navigation, route }) {
             <Text style={styles.h5}>Les deux</Text>
           </View>
         </View>
-        <View style={styles.btn1}>
-          <TouchableOpacity onPress={handleSubmit} style={styles.button1} activeOpacity={0.8}>
-            <Text style={styles.textButton}>Continuer</Text>
-          </TouchableOpacity>
+        <View>
+        <CustomButton
+            title="Continuer"
+            onPress={handleSubmit}
+            style={styles.button}
+            textStyle={styles.textButton}
+          />
         </View>
       </View>
     </ScrollView>
@@ -239,6 +243,15 @@ const styles = StyleSheet.create({
     marginTop: 30,
     alignSelf: 'center',
   },
+  button: {
+    backgroundColor: '#49B48C',
+    padding: 10,
+    borderRadius: 40,
+    alignItems: 'center',
+    marginVertical: 10,
+    height: 50,
+    width: '70%',
+},
 
   btn1: {
     width: '100%',

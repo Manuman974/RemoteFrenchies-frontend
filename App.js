@@ -151,13 +151,18 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Pwd" component={PwdScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        <Stack.Screen name="Pwd" component={PwdScreen} />
         <Stack.Screen name="Recherche" component={RechercheScreen} />
-        <Stack.Screen name="RemoterSelected" component={RemoterSelectedScreen} />
-        <Stack.Screen name="PublishScreen" component={PublishScreen} />
-        <Stack.Screen name="Annoucement" component={AnnouncementScreen} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
+        <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
+        
+        <Stack.Screen
+            name="RemoterSelected"
+            component={RemoterSelectedScreen}
+          />
+        <Stack.Screen name="PublishScreen" component={PublishScreen} />
+        
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>

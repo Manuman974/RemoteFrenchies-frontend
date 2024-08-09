@@ -12,7 +12,7 @@ import {
     ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../reducers/user";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
