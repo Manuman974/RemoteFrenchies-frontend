@@ -14,6 +14,7 @@ import {
 import { CheckBox, Button, ThemeProvider } from "@rneui/themed";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CustomButton from "../components/CustomButton";
 
 export default function OnboardingScreen({ navigation, route }) {
   // const userId = route.params.userId;
@@ -43,7 +44,7 @@ export default function OnboardingScreen({ navigation, route }) {
 
   const handleSubmit = () => {
     try {
-      fetch("http://192.168.8.42:3000/onboarding", {
+      fetch("192.168.94.186:3000/onboarding", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: user.token, checkboxes: checkboxes }),
@@ -183,14 +184,13 @@ export default function OnboardingScreen({ navigation, route }) {
             <Text style={styles.h5}>Les deux</Text>
           </View>
         </View>
-        <View style={styles.btn1}>
-          <TouchableOpacity
+        <View>
+          <CustomButton
+            title="Continuer"
             onPress={handleSubmit}
-            style={styles.button1}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.textButton}>Continuer</Text>
-          </TouchableOpacity>
+            style={styles.button}
+            textStyle={styles.textButton}
+          />
         </View>
       </View>
     </ScrollView>
@@ -247,6 +247,15 @@ const styles = StyleSheet.create({
     width: "80%",
     marginTop: 30,
     alignSelf: "center",
+  },
+  button: {
+    backgroundColor: "#49B48C",
+    padding: 10,
+    borderRadius: 40,
+    alignItems: "center",
+    marginVertical: 10,
+    height: 50,
+    width: "70%",
   },
 
   btn1: {
