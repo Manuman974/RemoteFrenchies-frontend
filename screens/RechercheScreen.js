@@ -118,7 +118,7 @@ export default function RechercheScreen({ navigation }) {
       });
   };
 
-  console.log("Remoters Profile : ", remoterProfiles);
+  // console.log("Remoters Profile : ", remoterProfiles);
 
   const markers = cityCoordinates.map((data, i) => {
     return (
