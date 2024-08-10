@@ -127,7 +127,7 @@ export default function ProposerScreen({ navigation }) {
                 type: "image/jpeg",
             });
         
-            fetch('http://192.168.1.98:3000/upload', {
+            fetch('192.168.94.186:3000/upload', {
                 method: "POST",
                 body: formData,
                 

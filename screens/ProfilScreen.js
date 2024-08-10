@@ -2,26 +2,18 @@ import {
     StyleSheet,
     View,
     Text,
-    TextInput,
     KeyboardAvoidingView,
-    Platform,
     SafeAreaView,
-    ScrollView,
     TouchableOpacity,
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomProfilButton from "../components/CustomProfilButton";
-import {  useSelector } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 
 
 export default function ProfilScreen({ navigation }) {
-    
     const user = useSelector((state) => state.user.value); 
 
-    
-
-    
     return (
         <KeyboardAvoidingView>
             <SafeAreaView style={styles.safeArea}>
