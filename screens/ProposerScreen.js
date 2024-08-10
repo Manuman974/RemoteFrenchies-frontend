@@ -36,7 +36,6 @@ export default function ProposerScreen({ navigation }) {
     const [autresAvantages, setAutresAvantages] = useState('');
     const [messageAnnonce, setMessageAnnonce] = useState('');
     const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
-    const [image, setImage] = useState(null);
 
 
     const handleSubmit = () => {
@@ -67,7 +66,6 @@ export default function ProposerScreen({ navigation }) {
                     setCheckboxes(initialCheckboxes);
                     setAutresAvantages('');
                     setMessageAnnonce('');
-                    setImage(null);
                     navigation.navigate('PublishScreen')
                 }
             });
@@ -100,8 +98,6 @@ export default function ProposerScreen({ navigation }) {
         // Vérifie si l'utilisateur n'a pas annulé la sélection
         if (!result.canceled) {
             console.log(result)
-            // Met à jour l'état avec l'URI de l'image sélectionnée
-            setImage(result.assets[0].uri);
 
             // Préparer les données pour l'envoi
             const formData = new FormData();
@@ -146,8 +142,6 @@ export default function ProposerScreen({ navigation }) {
             console.log(result.assets[0].uri)
         // Si l'utilisateur n'a pas annulé la prise de photo
         if (!result.canceled) {
-            // Met à jour l'état avec l'URI de l'image sélectionnée
-            setImage(result.assets[0].uri);
             
             // Préparer les données pour l'envoi
             const formData = new FormData();
