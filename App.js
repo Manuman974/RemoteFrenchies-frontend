@@ -1,6 +1,4 @@
-import RemoterSelectedScreen from "./screens/RemoterSelectedScreen";
 import { View, Text } from "react-native";
-import PwdScreen from "./screens/PwdScreen";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -8,16 +6,18 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
 import RechercheScreen from "./screens/RechercheScreen";
+import RemoterSelectedScreen from "./screens/RemoterSelectedScreen";
+import ChatScreen from "./screens/ChatScreen";
 import ProposerScreen from "./screens/ProposerScreen";
 import MessageScreen from "./screens/MessageScreen";
 import ProfilScreen from "./screens/ProfilScreen";
 import BlogScreen from "./screens/BlogScreen";
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
+import PwdScreen from "./screens/PwdScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import PublishScreen from "./screens/PublishScreen";
 import React, { useEffect, useState } from "react";
-
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
@@ -103,13 +103,7 @@ const TabNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen
-        name="Recherche"
-        component={RechercheScreen}
-        options={{
-          headerShown: true,
-        }}
-      />
+      <Tab.Screen name="Recherche" component={RechercheScreen} />
       <Tab.Screen name="Proposer" component={ProposerScreen} />
       <Tab.Screen name="Message" component={MessageScreen} />
       <Tab.Screen name="Profil" component={ProfilScreen} />
@@ -146,15 +140,13 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-          <Stack.Screen name="Pwd" component={PwdScreen} />
-          <Stack.Screen name="Recherche" component={RechercheScreen} />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
-
+          <Stack.Screen
+            name="Recherche"
+            component={RechercheScreen}
+            options={{
+              headerShown: true,
+            }}
+          />
           <Stack.Screen
             name="RemoterSelected"
             component={RemoterSelectedScreen}
@@ -162,7 +154,16 @@ export default function App() {
               headerShown: true,
             }}
           />
+          <Stack.Screen name="Chat" component={ChatScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+          <Stack.Screen name="Pwd" component={PwdScreen} />
+
+          <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
           <Stack.Screen name="PublishScreen" component={PublishScreen} />
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,13 +1,38 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-const CustomParagraph = ({ text, textStyle, titleStyle, title }) => {
+const CustomBulletPoints = ({ items }) => {
+  return (
+    <>
+      {items.map((item, index) => (
+        <>
+          <View key={index} style={styles.bulletContainer}>
+            <View style={styles.bulletInnerContainer}>
+              <FontAwesome name="circle" size={10} color="#49B48C" />
+              <Text style={styles.bulletText}>{item.bulletText}</Text>
+            </View>
+            {items.detailsText && (
+              <Text style={styles.detailsText}>{item.detailsText}</Text>
+            )}
+          </View>
+        </>
+      ))}
+    </>
+  );
+};
+
+export const CustomParagraph = ({ paragraphText, title, bulletPoints }) => {
   return (
     <View style={styles.paragraphContainer}>
-      <Text style={[styles.title, titleStyle]}>{title}</Text>
+      <Text style={styles.title}>{title}</Text>
       <View style={styles.line}></View>
 
-      <Text style={[styles.text, textStyle]}>{text}</Text>
+      {bulletPoints && bulletPoints.length > 0 ? (
+        <CustomBulletPoints items={bulletPoints} />
+      ) : (
+        <Text style={styles.paragraphText}>{paragraphText}</Text>
+      )}
     </View>
   );
 };
@@ -23,7 +48,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontFamily: "poppins",
-    fontWeight: "600",
+    fontWeight: "bold",
     fontSize: 15,
     lineHeight: 22.5,
     borderColor: "pink",
@@ -34,17 +59,47 @@ const styles = StyleSheet.create({
     borderColor: "#000000",
     borderWidth: 1,
     width: 280,
-    marginTop: 15,
-    marginBottom: 20,
+    marginTop: 5,
+    marginBottom: 15,
   },
 
-  text: {
+  paragraphText: {
     fontFamily: "poppins",
     fontWeight: "400",
     fontSize: 13,
     lineHeight: 19.5,
     borderColor: "grey",
     borderWidth: 1,
+  },
+
+  //BULLETPOINT STYLE
+  bulletContainer: {
+    flexDirection: "column",
+
+    marginBottom: 5,
+    borderColor: "green",
+    borderWidth: 1,
+  },
+
+  bulletInnerContainer: {
+    flexDirection: "row", // Pour aligner l'icône et le texte horizontalement
+    alignItems: "center",
+  },
+
+  bulletText: {
+    fontFamily: "Poppins",
+    fontSize: 13,
+    lineHeight: 20,
+    marginLeft: 10,
+  },
+
+  detailsText: {
+    fontFamily: "Poppins",
+    fontSize: 13,
+    lineHeight: 20,
+    borderColor: "yellow",
+    borderWidth: 1,
+    marginLeft: 20,
   },
 });
 

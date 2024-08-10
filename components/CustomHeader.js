@@ -28,12 +28,12 @@ const CustomHeader = ({
             >
               <FontAwesome name={iconName} size={25} />
             </TouchableOpacity>
-          ) : (
+          ) : imageStyle ? (
             <Image
               style={[styles.headerLogo, imageStyle]}
               source={require("../assets/Logo-RemoteFrenchies.png")}
             />
-          )}
+          ) : null}
 
           <Text style={[styles.headerTitleText, textStyle]}>{title}</Text>
         </View>
@@ -41,6 +41,7 @@ const CustomHeader = ({
       headerStyle: {
         backgroundColor: "white",
       },
+      headerLeft: useIcon || imageStyle ? () => null : null,
     });
   }, [
     navigation,
