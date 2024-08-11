@@ -3,7 +3,7 @@ import { View, Image, Text, StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CustomButton from "./CustomButton";
 
-const CustomProfile = ({
+export const CustomProfile = ({
   photoStyle,
   remoterNameContainerStyle,
   remoterFirstnameStyle,
@@ -45,7 +45,7 @@ const CustomProfile = ({
   );
 };
 
-const CustomCity = ({ city }) => {
+export const CustomCity = ({ city }) => {
   return (
     <View style={styles.remoterCityContainer}>
       <FontAwesome name="map-marker" style={styles.icon} size={18} />
