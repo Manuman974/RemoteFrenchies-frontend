@@ -172,13 +172,9 @@ export default function App() {
             <Stack.Screen name="Recherche" component={RechercheScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
-
-            <Stack.Screen
-              name="RemoterSelected"
-              component={RemoterSelectedScreen}
-            />
+            <Stack.Screen name="RemoterSelected" component={RemoterSelectedScreen} />
             <Stack.Screen name="PublishScreen" component={PublishScreen} />
-
+            <Stack.Screen name="AnnouncementScreen" component={AnnouncementScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
