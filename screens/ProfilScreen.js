@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 
 
 export default function ProfilScreen({ navigation }) {
-    const user = useSelector((state) => state.user.value); 
+    const user = useSelector((state) => state.user.value);
 
     return (
         <KeyboardAvoidingView>
@@ -27,12 +27,14 @@ export default function ProfilScreen({ navigation }) {
                         <Icon name='user' style={styles.profilIcon} size={80} color='#49B48C' />
                         <Text style={styles.h2}> {user.firstname} {user.lastname}</Text>
                         <Text style={styles.h3}> {user.job} </Text>
-                            <TouchableOpacity style={styles.modifyProfil}>
-                                <Text style={styles.body2}> Modifier mon profil</Text><Icon name='pencil' style={styles.reply} size={20} color='#49B48C' />
-                            </TouchableOpacity>
+                        <TouchableOpacity style={styles.modifyProfil}>
+                            <Text style={styles.body2}> Modifier mon profil</Text><Icon name='pencil' style={styles.reply} size={20} color='#49B48C' />
+                        </TouchableOpacity>
 
                         <View>
-                            <CustomProfilButton title="Mes annonces">
+                            <CustomProfilButton
+                                onPress={() => navigation.navigate("AnnouncementScreen")}
+                                title="Mes annonces">
                             </CustomProfilButton>
                             <CustomProfilButton title="Mon historique de rencontre">
                             </CustomProfilButton>
