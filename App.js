@@ -94,11 +94,10 @@ const TabNavigator = () => {
             <View>
               <Text
                 style={{
-                  borderColor: "blue",
-                  borderWidth: 2,
                   color: "#FFFFFF",
                   fontSize: 10,
                   lineHeight: 15,
+                  marginBottom: 5,
                 }}
               >
                 {label}
