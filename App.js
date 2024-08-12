@@ -15,6 +15,7 @@ import SignUpScreen from "./screens/SignUpScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import PublishScreen from "./screens/PublishScreen";
 import AnnouncementScreen from "./screens/AnnouncementScreen";
+import PwdScreen from "./screens/PwdScreen";
 import React, { useEffect, useState } from "react";
 
 // redux imports
@@ -156,11 +157,6 @@ export default function App() {
       <PersistGate persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-            <Stack.Screen name="Pwd" component={PwdScreen} />
             <Stack.Screen
               name="Recherche"
               component={RechercheScreen}
@@ -175,9 +171,15 @@ export default function App() {
                 headerShown: true,
               }}
             />
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            <Stack.Screen name="Pwd" component={PwdScreen} />
+
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
-
+            <Stack.Screen name="ProposerScreen" component={ProposerScreen} />
             <Stack.Screen name="PublishScreen" component={PublishScreen} />
             <Stack.Screen
               name="AnnouncementScreen"

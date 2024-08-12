@@ -10,9 +10,32 @@ import {
 import CustomHeader from "../components/CustomHeader";
 import CustomParagraph from "../components/CustomParagraph";
 import CustomButton from "../components/CustomButton";
+import CustomProfile, { CustomCity } from "../components/CustomProfile";
 
-export default function RemoterSelectedScreen({ navigation }) {
-  //Ajout action click sur le bouton
+export default function RemoterSelectedScreen({
+  navigation,
+  route: {
+    params: { item },
+  },
+}) {
+  console.log("ITEM: ", item);
+
+  // Condition pour les bulletPoints des avantages
+  const remoterAdvantages = [];
+  if (item.proposition.fiber_connection) {
+    remoterAdvantages.push({ bulletText: "Fibre optique" });
+  }
+  if (item.proposition.coffee_tea) {
+    remoterAdvantages.push({ bulletText: "Café/Thé " });
+  }
+  if (item.proposition.dedicated_office) {
+    remoterAdvantages.push({ bulletText: "Bureau dédié" });
+  }
+  if (item.proposition.other) {
+    remoterAdvantages.push({ bulletText: item.proposition.other });
+  }
+
+  //Action click "se rencontrer"
   handleClick = () => {
     console.log("click activé sur bouton Se rencontrer");
   };
@@ -29,32 +52,47 @@ export default function RemoterSelectedScreen({ navigation }) {
         clickableIcon={() => navigation.goBack()}
       />
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.profileContainer}></View>
+        <View style={styles.profileContainer}>
+          <CustomProfile
+            firstname={item.user.firstname}
+            lastname={item.user.lastname}
+            showCity={false}
+            showButton={false}
+            job={item.user.job}
+            remoterProfileStyle={styles.remoterProfileStyle}
+            photoStyle={styles.photoStyle}
+            remoterNameAndJobContainerStyle={
+              styles.remoterNameAndJobContainerStyle
+            }
+            remoterFirstnameStyle={styles.remoterFirstnameStyle}
+            remoterLastnameStyle={styles.remoterLastnameStyle}
+            remoterJobStyle={styles.remoterJobStyle}
+          />
+        </View>
         <View style={styles.line}></View>
         <View style={styles.adCountainer}>
           <Image style></Image>
-          <Text></Text>
+          <CustomCity city={item.proposition.main_address.city} />
         </View>
         <View style={styles.descriptionsContainer}>
           <CustomParagraph
             title="Descriptif"
-            paragraphText="Corem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus."
+            paragraphText={item.proposition.description}
           />
           <CustomParagraph
             title="Disponibilités"
             bulletPoints={[
-              { bulletText: "Jour", detailsText: "Lundi - Mardi - Mercredi" },
-              { bulletText: "Horaires", detailsText: "9h-12h" },
+              {
+                bulletText: "Jour : ",
+                detailsText: item.proposition.welcome_day || "Non spécifié",
+              },
+              {
+                bulletText: "Horaires : ",
+                detailsText: item.proposition.reception_hours || "Non spécifié",
+              },
             ]}
           />
-          <CustomParagraph
-            title="Avantages"
-            bulletPoints={[
-              { bulletText: "iscing elit. Etiam eu turpis molestie." },
-              { bulletText: "iscing elit. Etiam eu turpis molestie." },
-              { bulletText: "iscing elit. Etiam eu turpis molestie." },
-            ]}
-          />
+          <CustomParagraph title="Avantages" bulletPoints={remoterAdvantages} />
         </View>
         <CustomButton
           title="Se rencontrer"
@@ -89,8 +127,40 @@ const styles = StyleSheet.create({
   profileContainer: {
     width: 280,
     height: 80,
-    borderColor: "yellow",
+    borderColor: "green",
     borderWidth: 2,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  remoterProfileStyle: {
+    flexDirection: "row",
+    height: 80,
+    width: 280,
+  },
+
+  photoStyle: {
+    marginLeft: 5,
+  },
+
+  remoterNameAndJobContainerStyle: {
+    marginLeft: 5,
+  },
+
+  remoterFirstnameStyle: {
+    fontSize: 18,
+    lineHeight: 27,
+  },
+
+  remoterLastnameStyle: {
+    fontSize: 18,
+    lineHeight: 27,
+  },
+
+  remoterJobStyle: {
+    fontSize: 18,
+    lineHeight: 27,
   },
 
   line: {

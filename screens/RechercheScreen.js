@@ -18,46 +18,16 @@ import MapView, { Marker } from "react-native-maps";
 
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
+  //J'ai crée un composant header que j'ai utilisé
+  //Je l'ai appelé dans le return
 
-<<<<<<< HEAD
-  // Ajouter customheader et voir si le composant fonctionne correctement(l22 à 43)
-
-  //useLayoutEffect : hook pour configurer les options de navigation juste avant que le composant soit rendu.
-  // Garantit que les options du <header> pour cette page s'appliquent correctement
-  // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
-  //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
-
-=======
-  //useLayoutEffect : hook pour configurer les options de navigation juste avant que le composant soit rendu.
-  // Garantit que les options du <header> pour cette page s'appliquent correctement
-  // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
-  //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
-
->>>>>>> main
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => (
-        <View style={styles.headerTitleContainer}>
-          <Image
-            style={styles.headerLogo}
-            source={require("../assets/Logo-RemoteFrenchies.png")}
-          />
-          <Text style={styles.headerTitleText}>Rechercher</Text>
-        </View>
-      ),
-      headerStyle: {
-        backgroundColor: "white",
-      },
-    });
-  }, [navigation]);
-
-  //SECTION MAP
+  //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
   // = > INITIALISATION DES ETATS
   const BACKEND_ADDRESS = "http://192.168.8.42:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
-  const [cityCoordinates, setCityCoordinates] = useState([]);
+  const [addressesCoordinates, setAddressesCoordinates] = useState([]);
   const [remoterProfiles, setRemoterProfiles] = useState([]);
   const [searchDone, setSearchDone] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -90,35 +60,49 @@ export default function RechercheScreen({ navigation }) {
     }
     console.log("Icône cliquée!");
     //1ère requête : Rechercher les données des utilisateurs d'une ville
-    fetch(`${BACKEND_ADDRESS}/users/search/${cityInput}`)
+    fetch(`${BACKEND_ADDRESS}/proposition/search/${cityInput}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("USERCITY :", data.userCity);
-        //Ajouter dans la parenthèse du if lorsque qu'une fiche sera créee avec "proposition" : "&& data.proposition"
+        console.log("PROPOSITIONS data :", data.propositionData);
         if (data.result === true) {
-          const coordinates = data.userCity.map((city) => {
+          const coordinates = data.propositionData.map((user) => {
             return {
-              latitude: city.main_address.latitude,
-              longitude: city.main_address.longitude,
+              latitude: user.main_address.addressLatitude,
+              longitude: user.main_address.adressLongitude,
             };
           });
-
-          const remoters = data.userCity.map((user, i) => {
+          console.log("ADDRESS COORDINATES :", coordinates);
+          const remoters = data.propositionData.map((user, i) => {
             return {
               id: i,
-              firstname: user.firstname,
-              lastname: user.lastname,
-              job: user.job,
-              city: user.main_address.city,
+              // firstname: user.user.firstname,
+              // lastname: user.user.lastname,
+              // job: user.user.job,
+              // city: user.main_address.city,
+              // latitude: user.main_address.addressLatitude,
+              // longitude: user.main_address.adressLongitude,
+              proposition: user,
+              user: user.user,
             };
           });
 
-          setCityCoordinates(coordinates);
+          // Déplacer la carte vers la première coordonnée trouvée
+          if (coordinates.length > 0) {
+            setCurrentPosition({
+              latitude: coordinates[0].latitude,
+              longitude: coordinates[0].longitude,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1,
+            });
+          }
+
+          setAddressesCoordinates(coordinates);
+          console.log("REMOTERS PROFILES", remoters);
           setRemoterProfiles(remoters);
           setErrorMessage("");
           setSearchDone(true);
         } else {
-          setCityCoordinates([]);
+          setAddressesCoordinates([]);
           setRemoterProfiles([]);
           setErrorMessage("");
           setSearchDone(true);
@@ -126,24 +110,18 @@ export default function RechercheScreen({ navigation }) {
       });
   };
 
-<<<<<<< HEAD
-  // console.log("Remoters Profile : ", remoterProfiles);
-=======
-  console.log("Remoters Profile : ", remoterProfiles);
->>>>>>> main
-
-  const markers = cityCoordinates.map((data, i) => {
+  const remoteMarkers = addressesCoordinates.map((data, i) => {
     return (
       <Marker
         key={i}
         coordinate={{ latitude: data.latitude, longitude: data.longitude }}
-        title="cityMarker"
-        pinColor="green"
+        title="remoteMarker"
+        pinColor="#49B48C"
       />
     );
   });
 
-  //SECTION REMOTERS
+  //SECTION REMOTERS PROFILES
 
   //Cette fonction va de pair avec le composant <Flatlist> (qui permet de swiper vers la gauche)
   // Elle permet de récupérer les propriétés et les utiliser dans le composant.
@@ -154,18 +132,20 @@ export default function RechercheScreen({ navigation }) {
         style={styles.photoRemoter}
       />
       <View style={styles.remoterNameContainer}>
-        <Text style={styles.remoterFirstname}>{item.firstname}</Text>
-        <Text style={styles.remoterLastname}>{item.lastname}</Text>
+        <Text style={styles.remoterFirstname}>{item.user.firstname}</Text>
+        <Text style={styles.remoterLastname}>{item.user.lastname}</Text>
       </View>
 
-      <Text style={styles.remoterJob}>{item.job}</Text>
+      <Text style={styles.remoterJob}>{item.user.job}</Text>
       <View style={styles.remoterCityContainer}>
         <FontAwesome name="map-marker" style={styles.icon} size={18} />
 
-        <Text style={styles.remoterCity}>{item.city}</Text>
+        <Text style={styles.remoterCity}>
+          {item.proposition.main_address.city}
+        </Text>
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate("RemoterSelected")}
+        onPress={() => navigation.navigate("RemoterSelected", { item })}
         style={styles.button}
         activeOpacity={0.8}
       >
@@ -179,10 +159,11 @@ export default function RechercheScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-<<<<<<< HEAD
-      {/* <CustomHeader navigation={navigation} title="Colorier" /> */}
-=======
->>>>>>> main
+      <CustomHeader
+        title="Rechercher"
+        navigation={navigation}
+        useImage={true}
+      />
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -214,7 +195,7 @@ export default function RechercheScreen({ navigation }) {
                 pinColor="#F08372"
               />
             )}
-            {markers}
+            {remoteMarkers}
           </MapView>
         </View>
         <View style={styles.profilesContainer}>

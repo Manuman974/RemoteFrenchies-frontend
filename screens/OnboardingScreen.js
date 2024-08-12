@@ -46,11 +46,7 @@ export default function OnboardingScreen({ navigation, route }) {
 
   const handleSubmit = () => {
     try {
-<<<<<<< HEAD
-      fetch("192.168.8.42:3000/onboarding", {
-=======
       fetch(`${BACKEND_ADDRESS}/onboarding`, {
->>>>>>> main
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: user.token, checkboxes: checkboxes }),

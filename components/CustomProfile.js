@@ -5,6 +5,8 @@ import CustomButton from "./CustomButton";
 
 export const CustomProfile = ({
   photoStyle,
+  remoterProfileStyle,
+  remoterNameAndJobContainerStyle,
   remoterNameContainerStyle,
   remoterFirstnameStyle,
   firstname,
@@ -17,22 +19,30 @@ export const CustomProfile = ({
   showButton = true,
 }) => {
   return (
-    <View style={styles.remoterProfile}>
+    <View style={[styles.remoterProfile, remoterProfileStyle]}>
       <Image
         source={require("../assets/photoJerome.png")}
         style={[styles.photoRemoter, photoStyle]}
       />
-      <View style={[styles.remoterNameContainer, remoterNameContainerStyle]}>
-        <Text style={[styles.remoterFirstname, remoterFirstnameStyle]}>
-          {firstname}
-        </Text>
-        <Text style={[styles.remoterLastname, remoterLastnameStyle]}>
-          {lastname}
-        </Text>
+      <View
+        style={[
+          styles.remoterNameAndJobContainer,
+          remoterNameAndJobContainerStyle,
+        ]}
+      >
+        <View style={[styles.remoterNameContainer, remoterNameContainerStyle]}>
+          <Text style={[styles.remoterFirstname, remoterFirstnameStyle]}>
+            {firstname}
+          </Text>
+          <Text style={[styles.remoterLastname, remoterLastnameStyle]}>
+            {lastname}
+          </Text>
+        </View>
+        <Text style={[styles.remoterJob, remoterJobStyle]}>{job}</Text>
       </View>
-      <Text style={[styles.remoterJob, remoterJobStyle]}>{job}</Text>
+
       {/* Afficher CustomCity si showCity est true */}
-      {showCity && cityName && <CustomCity city={cityName} />}
+      {showCity && <CustomCity city={cityName} />}
       {showButton && (
         <CustomButton
           style={styles.button}
@@ -70,6 +80,11 @@ const styles = StyleSheet.create({
     borderRadius: 150,
   },
 
+  remoterNameAndJobContainer: {
+    borderColor: "grey",
+    borderWidth: 2,
+  },
+
   remoterNameContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -98,6 +113,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     marginBottom: 5,
+    borderColor: "pink",
+    borderWidth: 2,
   },
 
   remoterCityContainer: {

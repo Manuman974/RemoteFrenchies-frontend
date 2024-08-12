@@ -2,26 +2,25 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+//// Composant pour afficher les bullet points
 const CustomBulletPoints = ({ items }) => {
   return (
     <>
       {items.map((item, index) => (
-        <>
-          <View key={index} style={styles.bulletContainer}>
-            <View style={styles.bulletInnerContainer}>
-              <FontAwesome name="circle" size={10} color="#49B48C" />
-              <Text style={styles.bulletText}>{item.bulletText}</Text>
-            </View>
-            {items.detailsText && (
-              <Text style={styles.detailsText}>{item.detailsText}</Text>
-            )}
+        <View key={index} style={styles.bulletContainer}>
+          <View style={styles.bulletInnerContainer}>
+            <FontAwesome name="circle" size={10} color="#49B48C" />
+            <Text style={styles.bulletText}>
+              {item.bulletText} {item.detailsText}
+            </Text>
           </View>
-        </>
+        </View>
       ))}
     </>
   );
 };
 
+// Composant pour afficher un paragraphe avec ou sans bullet points
 export const CustomParagraph = ({ paragraphText, title, bulletPoints }) => {
   return (
     <View style={styles.paragraphContainer}>
