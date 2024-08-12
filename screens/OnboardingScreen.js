@@ -42,9 +42,11 @@ export default function OnboardingScreen({ navigation, route }) {
     }));
   };
 
+  const BACKEND_ADDRESS = "http://192.168.1.39:3000";
+
   const handleSubmit = () => {
     try {
-      fetch("http://192.168.1.39:3000/onboarding", {
+      fetch(`${BACKEND_ADDRESS}/onboarding`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: user.token, checkboxes: checkboxes }),
