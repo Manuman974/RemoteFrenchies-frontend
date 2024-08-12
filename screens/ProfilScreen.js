@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
     StyleSheet,
     View,
@@ -5,15 +6,61 @@ import {
     KeyboardAvoidingView,
     SafeAreaView,
     TouchableOpacity,
+    Image,
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as ImagePicker from 'expo-image-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPhotoProfile } from '../reducers/user';
 import CustomProfilButton from "../components/CustomProfilButton";
-import { useSelector } from 'react-redux';
 
 
 export default function ProfilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
+    const dispatch = useDispatch();
 
+    const openCameraAsync = async () => {
+        let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            Alert.alert("Autorisez-vous Remote frenchies à accéder à votre appareil photo");
+            return;
+        }
+
+        let result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        // Si l'utilisateur n'a pas annulé la prise de photo
+        if (!result.canceled) {
+
+            // Préparer les données pour l'envoi
+            const formData = new FormData();
+            formData.append("photoFromFront", {
+                uri: result.assets[0].uri,
+                name: "photo.jpg",
+                type: "image/jpeg",
+            });
+
+
+            // Envoi de la photo au serveur
+            fetch('http://192.168.1.39:3000/profile', {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data && data.result) {
+                        // Ajouter au magasin Redux si le téléchargement a réussi
+                        dispatch(addPhotoProfile(data.url));
+                    } else {
+                        Alert.alert("Échec du téléchargement de la photo");
+                    }
+                });
+        }
+    };
+    
     return (
         <KeyboardAvoidingView>
             <SafeAreaView style={styles.safeArea}>
@@ -24,11 +71,18 @@ export default function ProfilScreen({ navigation }) {
                     </View>
                     <View style={styles.separator}></View>
                     <View style={styles.profilContainer} >
-                        <Icon name='user' style={styles.profilIcon} size={80} color='#49B48C' />
+                        {user.photoProfile ? (
+                            <Image source={{ uri: user.photoProfile }} style={styles.profilImage} />
+                        ) : (
+                            <Icon name='user' style={styles.profilIcon} size={80} color='#49B48C' />
+                        )}
                         <Text style={styles.h2}> {user.firstname} {user.lastname}</Text>
                         <Text style={styles.h3}> {user.job} </Text>
                         <TouchableOpacity style={styles.modifyProfil}>
                             <Text style={styles.body2}> Modifier mon profil</Text><Icon name='pencil' style={styles.reply} size={20} color='#49B48C' />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={openCameraAsync} style={styles.modifyProfil}>
+                            <Text style={styles.body2}> Modifier ma photo</Text><Icon name='pencil' style={styles.reply} size={20} color='#49B48C' />
                         </TouchableOpacity>
 
                         <View>
@@ -84,6 +138,17 @@ const styles = StyleSheet.create({
 
         marginTop: 50,
         backgroundColor: '#DDDDDD',
+        width: 150,
+        height: 150,
+        padding: 30,
+        paddingHorizontal: 45,
+        alignSelf: 'center',
+        borderRadius: 100,
+    },
+
+    profilImage: {
+        marginTop: 50,
+        //backgroundColor: '#DDDDDD',
         width: 150,
         height: 150,
         padding: 30,
