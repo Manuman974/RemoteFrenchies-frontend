@@ -42,7 +42,7 @@ export default function OnboardingScreen({ navigation, route }) {
     }));
   };
 
-  const BACKEND_ADDRESS = "http://192.168.1.39:3000";
+  const BACKEND_ADDRESS = "http://192.168.8.42:3000";
 
   const handleSubmit = () => {
     try {
