@@ -44,7 +44,7 @@ export default function OnboardingScreen({ navigation, route }) {
 
   const handleSubmit = () => {
     try {
-      fetch("192.168.94.186:3000/onboarding", {
+      fetch("http://192.168.1.39:3000/onboarding", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: user.token, checkboxes: checkboxes }),

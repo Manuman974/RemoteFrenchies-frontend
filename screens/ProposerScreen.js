@@ -8,6 +8,7 @@ import {
     Platform,
     SafeAreaView,
     ScrollView,
+    Alert
 } from "react-native";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -27,7 +28,7 @@ const initialCheckboxes = {
 
 export default function ProposerScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
 
     const [adresse, setAdresse] = useState('');
     const [jourAccueil, setJourAccueil] = useState('');
@@ -35,28 +36,29 @@ export default function ProposerScreen({ navigation }) {
     const [autresAvantages, setAutresAvantages] = useState('');
     const [messageAnnonce, setMessageAnnonce] = useState('');
     const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
-    const [image, setImage] = useState(null);
 
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
-        fetch('http://192.168.94.186:3000/proposition', {
+        console.log('token :', user.token)
+        fetch('http://192.168.1.39:3000/proposition', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                main_address: adresse, 
-                welcome_day: jourAccueil, 
-                reception_hours: heureAccueil, 
-                fiber_connection: checkboxes.fiber_connection, 
-                coffee_tea: checkboxes.coffee_tea, 
-                dedicated_office: checkboxes.dedicated_office, 
-                other: autresAvantages, 
+            body: JSON.stringify({
+                main_address: adresse,
+                welcome_day: jourAccueil,
+                reception_hours: heureAccueil,
+                fiber_connection: checkboxes.fiber_connection,
+                coffee_tea: checkboxes.coffee_tea,
+                dedicated_office: checkboxes.dedicated_office,
+                other: autresAvantages,
                 description: messageAnnonce,
-                token: user.token, 
-                }),
+                token: user.token,
+            }),
 
         }).then(response => response.json())
             .then(data => {
+                console.log(data)
                 if (data.result) {
                     setAdresse('');
                     setJourAccueil('');
@@ -64,7 +66,6 @@ export default function ProposerScreen({ navigation }) {
                     setCheckboxes(initialCheckboxes);
                     setAutresAvantages('');
                     setMessageAnnonce('');
-                    setImage(null);
                     navigation.navigate('PublishScreen')
                 }
             });
@@ -96,7 +97,32 @@ export default function ProposerScreen({ navigation }) {
         });
         // Vérifie si l'utilisateur n'a pas annulé la sélection
         if (!result.canceled) {
-            setImage(result.uri); // Met à jour l'état avec l'URI de l'image sélectionnée
+            console.log(result)
+
+            // Préparer les données pour l'envoi
+            const formData = new FormData();
+            formData.append("photoFromFront", {
+                uri: result.assets[0].uri,
+                name: "photo.jpg",
+                type: "image/jpeg",
+            });
+
+
+            // Envoi de la photo au serveur
+            fetch('http://192.168.1.39:3000/proposition/upload', {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data && data.result) {
+                        console.log(data);
+                        // Ajouter au magasin Redux si le téléchargement a réussi
+                        dispatch(addPhoto(data.url));
+                    } else {
+                        Alert.alert("Échec du téléchargement de la photo");
+                    }
+                });
         }
     };
 
@@ -104,7 +130,7 @@ export default function ProposerScreen({ navigation }) {
         let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
         if (permissionResult.granted === false) {
-            alert("Autorisez-vous Remote frenchies á acceder a votre appareil photo");
+            Alert.alert("Autorisez-vous Remote frenchies à accéder à votre appareil photo");
             return;
         }
 
@@ -113,35 +139,35 @@ export default function ProposerScreen({ navigation }) {
             aspect: [4, 3],
             quality: 1,
         });
+            console.log(result.assets[0].uri)
+        // Si l'utilisateur n'a pas annulé la prise de photo
         if (!result.canceled) {
-            setImage(result.uri);
-        
-            const formData = new FormData();
-            const uri = result.uri;
-
             
-        
-            formData.append("photoFromFront", { 
-                uri: `${uri}`,
+            // Préparer les données pour l'envoi
+            const formData = new FormData();
+            formData.append("photoFromFront", {
+                uri: result.assets[0].uri,
                 name: "photo.jpg",
                 type: "image/jpeg",
-            });
-        
-            fetch('192.168.94.186:3000/upload', {
+                });
+
+
+            // Envoi de la photo au serveur
+            fetch('http://192.168.1.39:3000/proposition/upload', {
                 method: "POST",
                 body: formData,
-                
             })
-            .then((response) => response.json())
-            .then((data) => { 
-                if (data) {
-                    console.log(data)
-                    data.result && dispatch(addPhoto(data.url));
-                } else {
-                    alert("Échec du téléchargement de la photo");
-                }
-            })
-            };
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data && data.result) {
+                        console.log(data);
+                        // Ajouter au magasin Redux si le téléchargement a réussi
+                        dispatch(addPhoto(data.url));
+                    } else {
+                        Alert.alert("Échec du téléchargement de la photo");
+                    }
+                });
+        }
     };
 
     return (
@@ -209,7 +235,7 @@ export default function ProposerScreen({ navigation }) {
                         style={styles.button}
                         textStyle={styles.textButton}
                     />
-                    
+
                     <CustomButton
                         title="Prendre une photo"
                         onPress={openCameraAsync}
@@ -217,7 +243,7 @@ export default function ProposerScreen({ navigation }) {
                         textStyle={styles.textButton}
                     />
 
-                    {image && <Image source={{ uri: image }} style={styles.image} />}
+                    {/* {image && <Image source={{ uri: image }} style={styles.image} />} */}
 
                     <TextInput
                         placeholder="Message de l’annonce"
