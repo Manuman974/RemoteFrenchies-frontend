@@ -19,6 +19,7 @@ import MapView, { Marker } from "react-native-maps";
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
 
+<<<<<<< HEAD
   // Ajouter customheader et voir si le composant fonctionne correctement(l22 à 43)
 
   //useLayoutEffect : hook pour configurer les options de navigation juste avant que le composant soit rendu.
@@ -26,6 +27,13 @@ export default function RechercheScreen({ navigation }) {
   // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
   //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
 
+=======
+  //useLayoutEffect : hook pour configurer les options de navigation juste avant que le composant soit rendu.
+  // Garantit que les options du <header> pour cette page s'appliquent correctement
+  // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
+  //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
+
+>>>>>>> main
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
@@ -118,7 +126,11 @@ export default function RechercheScreen({ navigation }) {
       });
   };
 
+<<<<<<< HEAD
   // console.log("Remoters Profile : ", remoterProfiles);
+=======
+  console.log("Remoters Profile : ", remoterProfiles);
+>>>>>>> main
 
   const markers = cityCoordinates.map((data, i) => {
     return (
@@ -167,7 +179,10 @@ export default function RechercheScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+<<<<<<< HEAD
       {/* <CustomHeader navigation={navigation} title="Colorier" /> */}
+=======
+>>>>>>> main
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.inputContainer}>
           <TextInput

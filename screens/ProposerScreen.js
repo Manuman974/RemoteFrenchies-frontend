@@ -8,6 +8,7 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -34,10 +35,10 @@ export default function ProposerScreen({ navigation }) {
   const [autresAvantages, setAutresAvantages] = useState("");
   const [messageAnnonce, setMessageAnnonce] = useState("");
   const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
-  const [image, setImage] = useState(null);
 
   const handleSubmit = () => {
     // Gérer l'envoi des données
+    console.log("token :", user.token);
     fetch("http://192.168.8.42:3000/proposition", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -55,6 +56,7 @@ export default function ProposerScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data.result) {
           setAdresse("");
           setJourAccueil("");
@@ -62,7 +64,6 @@ export default function ProposerScreen({ navigation }) {
           setCheckboxes(initialCheckboxes);
           setAutresAvantages("");
           setMessageAnnonce("");
-          setImage(null);
           navigation.navigate("PublishScreen");
         }
       });
@@ -93,46 +94,29 @@ export default function ProposerScreen({ navigation }) {
     });
     // Vérifie si l'utilisateur n'a pas annulé la sélection
     if (!result.canceled) {
-      setImage(result.uri); // Met à jour l'état avec l'URI de l'image sélectionnée
-    }
-  };
+      console.log(result);
 
-  const openCameraAsync = async () => {
-    let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("Autorisez-vous Remote frenchies á acceder a votre appareil photo");
-      return;
-    }
-
-    let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      setImage(result.uri);
-
+      // Préparer les données pour l'envoi
       const formData = new FormData();
-      const uri = result.uri;
-
       formData.append("photoFromFront", {
-        uri: `${uri}`,
+        uri: result.assets[0].uri,
         name: "photo.jpg",
         type: "image/jpeg",
       });
 
-      fetch("192.168.8.42:3000/upload", {
+      // Envoi de la photo au serveur
+      fetch("http://192.168.8.42:3000/proposition/upload", {
         method: "POST",
         body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data) {
+          if (data && data.result) {
             console.log(data);
-            data.result && dispatch(addPhoto(data.url));
+            // Ajouter au magasin Redux si le téléchargement a réussi
+            dispatch(addPhoto(data.url));
           } else {
-            alert("Échec du téléchargement de la photo");
+            Alert.alert("Échec du téléchargement de la photo");
           }
         });
     }
@@ -224,7 +208,7 @@ export default function ProposerScreen({ navigation }) {
             textStyle={styles.textButton}
           />
 
-          {image && <Image source={{ uri: image }} style={styles.image} />}
+          {/* {image && <Image source={{ uri: image }} style={styles.image} />} */}
 
           <TextInput
             placeholder="Message de l’annonce"
