@@ -20,11 +20,8 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import PublishScreen from './screens/PublishScreen';
-<<<<<<< HEAD
 import ModifyProfilScreen from './screens/ModifyProfilScreen';
-=======
 import AnnouncementScreen from './screens/AnnouncementScreen';
->>>>>>> 481d6f1ec896a1141ffedaff57fb1a4409eb9a81
 import React, { useEffect, useState } from 'react';
 
 // redux imports
