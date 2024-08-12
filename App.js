@@ -21,6 +21,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import PublishScreen from './screens/PublishScreen';
 import AnnouncementScreen from './screens/AnnouncementScreen';
+import TchatScreen from './screens/TchatScreen';
 import React, { useEffect, useState } from 'react';
 
 // redux imports
@@ -175,6 +176,7 @@ export default function App() {
             <Stack.Screen name="RemoterSelected" component={RemoterSelectedScreen} />
             <Stack.Screen name="PublishScreen" component={PublishScreen} />
             <Stack.Screen name="AnnouncementScreen" component={AnnouncementScreen} />
+            <Stack.Screen name="TchatScreen" component={TchatScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
