@@ -108,7 +108,7 @@ export default function ProposerScreen({ navigation }) {
 
 
             // Envoi de la photo au serveur
-            fetch('http://192.168.1.39:3000/proposition/upload', {
+            fetch('http://192.168.1.79:3000/proposition/upload', {
                 method: "POST",
                 body: formData,
             })
