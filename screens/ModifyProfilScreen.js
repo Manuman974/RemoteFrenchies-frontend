@@ -1,28 +1,22 @@
-import { useState } from "react";
 import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity,
-    Image,
-    TextInput,
     KeyboardAvoidingView,
-    Platform,
     SafeAreaView,
+    Platform,
+    TouchableOpacity,
     ScrollView,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import { useDispatch } from "react-redux";
-import { login } from "../reducers/user";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
+import { useSelector, useDispatch } from 'react-redux';
+import { useState } from "react";
 
-const EMAIL_REGEX =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX =
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[%#@$!^&*])[A-Za-z\d%#@$!^&*]{8,}$/;
 
-export default function SignUpScreen({ navigation }) {
+export default function ModifyProfilScreen({ navigation }) {
+    const user = useSelector((state) => state.user.value)
     const dispatch = useDispatch();
 
     const [signUpFirstname, setSignUpFirstname] = useState("");
@@ -33,6 +27,7 @@ export default function SignUpScreen({ navigation }) {
     const [signUpE_mail, setSignUpE_mail] = useState("");
     const [signUpPassword, setSignUpPassword] = useState("");
     const [error, setError] = useState("");
+
 
     const validateEmail = (email) => {
         return EMAIL_REGEX.test(email);
@@ -56,8 +51,8 @@ export default function SignUpScreen({ navigation }) {
             return;
         }
 
-        fetch("http://192.168.94.186:3000/users/signup", {
-            method: "POST",
+        fetch("http://192.168.94.186:3000/users/", {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 firstname: signUpFirstname,
@@ -90,7 +85,7 @@ export default function SignUpScreen({ navigation }) {
                     setSignUpCity("");
                     setSignUpE_mail("");
                     setSignUpPassword("");
-                    navigation.navigate("Onboarding");
+                    navigation.navigate("ProfilScreen");
                 } else {
                     setError("Tous les champs doivent être remplis");
                 }
@@ -98,30 +93,26 @@ export default function SignUpScreen({ navigation }) {
     };
 
     return (
+
         <SafeAreaView style={styles.safeArea}>
-            <KeyboardAvoidingView
-                style={styles.container}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-                <View style={styles.icon}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Home")}
-                        activeOpacity={0.8}
-                    >
-                        <Icon
-                            name="arrow-left"
-                            style={styles.reply}
-                            size={30}
-                            color="#000000"
-                        />
-                    </TouchableOpacity>
+            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.icon}
+                        onPress={() => navigation.navigate("ProfilScreen")} activeOpacity={0.8}>
+                        <Icon name="arrow-left" size={30} color="#000000" />
+                        </TouchableOpacity>
+                        <Text style={styles.h1}>Modifier mon profil</Text>
                 </View>
-                <Image style={styles.image} source={require("../assets/Logo 1.png")} />
-                <Text style={styles.h1}>Créer ton profil Remote Frenchies</Text>
-                <ScrollView
-                    contentContainerStyle={styles.scrollViewContent}
-                    style={styles.scrollView}
-                >
+                <View style={styles.profilContainer} >
+                    <Icon name='user' style={styles.profilIcon} size={50} color='#49B48C' />
+                    <View style={styles.infoProfil}>
+                        <Text style={styles.h2}> {user.firstname} {user.lastname}</Text>
+                        <TouchableOpacity style={styles.modifyProfil}>
+                            <Text style={styles.body2}> Modifier ma photo</Text><Icon name='pencil' style={styles.reply} size={20} color='#49B48C' />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <ScrollView style={styles.scrollView} >
                     <View style={styles.input}>
                         <CustomTextInput
                             placeholder="Nom"
@@ -170,17 +161,20 @@ export default function SignUpScreen({ navigation }) {
                         />
                     </View>
                     <CustomButton
-                        title="Continuer"
+                        title="Enregistrer"
                         onPress={handleRegister}
                         style={styles.button}
                         textStyle={styles.textButton}
                     />
+
                 </ScrollView>
+
                 <Text style={styles.errorText}>{error}</Text>
             </KeyboardAvoidingView>
         </SafeAreaView>
+
     );
-}
+};
 
 const styles = StyleSheet.create({
     safeArea: {
@@ -195,83 +189,87 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    header: {
+        backgroundColor: 'red',
+        marginTop: 50,
+        marginLeft: 30,
+        width: '70%',
+        flexDirection: 'row',
+        alignSelf:'center',
+    },
+
+    infoProfil: {
+        backgroundColor: 'blue',
+        marginLeft: 20,
+        width: '80%',
+
+    },
+
+    h1: {
+        marginLeft: 10,
+        fontSize: 24,
+        fontFamily: 'Poppins-SemiBold',
+    },
+
     icon: {
         marginTop: 30,
         width: "100%",
         paddingLeft: 20,
     },
-    image: {
-        resizeMode: "contain",
-        width: 250,
-        alignSelf: "center",
-    },
-    text: {
-        width: 300,
-        height: 92,
-        // fontFamily: 'Poppins',
-        // fontWeight: '600',
-        // fontSize: 24,
-        lineHeight: 36,
-        textAlign: "center",
-        marginTop: 20,
+
+    separator: {
+        width: '80%',
+        height: 2,
+        backgroundColor: '#8f8f8f',
+        marginVertical: 20,
+        alignSelf: 'center',
     },
 
-    h1: {
+    profilIcon: {
+
+        marginTop: 50,
+        backgroundColor: '#DDDDDD',
+        width: 90,
+        height: 90,
+        padding: 20,
+        paddingHorizontal: 25,
+        alignSelf: 'center',
+        borderRadius: 100,
+    },
+
+    profilContainer: {
+        backgroundColor: 'green',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        width: '90%',
+        flexDirection: 'row',
+    },
+
+    h2: {
         marginTop: 10,
-        fontSize: 24,
-        textAlign: "center",
-        fontFamily: "Poppins-SemiBold",
-        alignSelf: "center",
+        alignSelf: 'center',
+        fontSize: 18,
+        fontFamily: 'Poppins-SemiBold'
     },
 
-    scrollView: {
-        marginTop: 0,
+    h3: {
+        alignSelf: 'center',
+        fontSize: 18,
+        fontFamily: 'Poppins-Regular'
     },
-    scrollViewContent: {
-        alignSelf: "center",
-        paddingVertical: 200,
-        paddingTop: 0,
+
+    body2: {
+        alignSelf: 'center',
+        fontSize: 12,
+        fontFamily: 'Poppins-Regular'
     },
-    input: {
-        width: 290,
-        height: 400,
-        marginTop: 20,
-    },
-    nom: {
-        margin: 10,
-        backgroundColor: "#DDD",
-        borderWidth: 1,
-        borderColor: "#8f8f8f",
-        width: 290,
-        height: 50,
-        borderRadius: 10,
-        padding: 10,
-        fontFamily: "Poppins-Regular",
-        fontSize: 13,
-        alignSelf: "center",
-    },
-    button: {
-        // borderColor: 'red',
-        // borderWidth: '1',
-        alignSelf: "center",
-        paddingTop: 8,
-        height: 50,
-        width: "70%",
-        marginTop: 100,
-        backgroundColor: "#49B48C",
-        borderRadius: 40,
-    },
-    textButton: {
-        color: "#ffffff",
-        height: 30,
-        fontSize: 16,
-        paddingTop: 5,
-        fontSize: 14,
-        textAlign: "center",
-        fontFamily: "Poppins-SemiBold",
-    },
-    errorText: {
-        color: "red",
+
+    modifyProfil: {
+        width: '60%',
+        alignSelf: 'center',
+        justifyContent: 'space-evenly',
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 20,
     },
 });

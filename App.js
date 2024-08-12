@@ -20,6 +20,7 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import PublishScreen from './screens/PublishScreen';
+import ModifyProfilScreen from './screens/ModifyProfilScreen';
 import React, { useEffect, useState } from 'react';
 
 import {Provider} from 'react-redux';
@@ -161,6 +162,7 @@ export default function App() {
         <Stack.Screen name="Recherche" component={RechercheScreen} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
         <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
+        <Stack.Screen name="ModifyProfilScreen" component={ModifyProfilScreen} />
         
         <Stack.Screen
             name="RemoterSelected"
