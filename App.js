@@ -164,6 +164,7 @@ export default function App() {
 
 
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="BlogScreen" component={BlogScreen} />   
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -175,7 +176,9 @@ export default function App() {
             <Stack.Screen name="RemoterSelected" component={RemoterSelectedScreen} />
             <Stack.Screen name="PublishScreen" component={PublishScreen} />
             <Stack.Screen name="AnnouncementScreen" component={AnnouncementScreen} />
+            
           </Stack.Navigator>
+          
         </NavigationContainer>
       </PersistGate>
     </Provider >
