@@ -42,7 +42,7 @@ export default function AnnouncementScreen({ navigation }) {
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("PublishScreen")}
+                    onPress={() => navigation.navigate("ProfilScreen")}
                     activeOpacity={0.8}
                 >
                     <Icon
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         fontSize: 24,
-        fontWeight: 400,
+        // fontWeight: 400,
         marginLeft: 16,
     },
     separator: {

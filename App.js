@@ -156,24 +156,12 @@ export default function App() {
       <PersistGate persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-              name="Recherche"
-              component={RechercheScreen}
-              options={{
-                headerShown: true,
-              }}
-            />
-            <Stack.Screen
-              name="RemoterSelected"
-              component={RemoterSelectedScreen}
-              options={{
-                headerShown: true,
-              }}
-            />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            <Stack.Screen name="Recherche" component={RechercheScreen} options={{ headerShown: true,}}/>
+            <Stack.Screen name="RemoterSelected" component={RemoterSelectedScreen} options={{headerShown: true,}}/>
             <Stack.Screen name="Pwd" component={PwdScreen} />
 
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
