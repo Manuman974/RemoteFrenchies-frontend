@@ -24,15 +24,18 @@ export default function MessagingScreen({ navigation }) {
     ];
 
     const MessageItem = ({ name, job, messagesCount }) => (
-        <TouchableOpacity onPress={navigation.navigate("TchatScreen")}>
+        <TouchableOpacity onPress={ () => navigation.navigate("TchatScreen")}>
             <View style={styles.messageContainer}>
                 <Image
                     source={{ uri: user.photoProfile }} // Remplacez par le chemin réel de l'image
                     style={styles.profileImage}
                 />
                 <View style={styles.textContainer}>
-                    <Text style={styles.name}>{name}</Text>
-                    <Text style={styles.job}>{job}</Text>
+                    <Text style={styles.firstname}>{user.firstname}</Text>
+                    <Text style={styles.lastname}>{user.lastname}</Text>
+                </View>
+                <View>
+                    <Text style={styles.job}>{user.job}</Text>
                 </View>
                 <View style={styles.messageCountContainer}>
                     <Text style={styles.messageCount}>{messagesCount.toString().padStart(2, '0')}</Text>
@@ -106,13 +109,20 @@ const styles = StyleSheet.create({
     textContainer: {
         flex: 1,
         marginLeft: 10,
+        flexDirection: 'row',
     },
-    name: {
+    firstname: {
         fontSize: 16,
+        fontFamily: 'Poppins-SemiBold',
+    },
+    lastname: {
+        fontSize: 16,
+        marginLeft: 10,
         fontFamily: 'Poppins-SemiBold',
     },
     job: {
         fontSize: 14,
+        marginLeft: 10,
         color: '#888',
         fontFamily: 'Poppins-Regular',
     },

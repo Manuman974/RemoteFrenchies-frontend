@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     View,
@@ -14,25 +14,65 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 
-export default function TchatScreen({ navigation }) {
+export default function TchatScreen({ route, navigation }) {
     const user = useSelector((state) => state.user.value);
-    const [messages, setMessages] = useState([
-        { id: '1', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan', isSentByUser: false },
-        { id: '2', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan', isSentByUser: true },
-        { id: '3', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan', isSentByUser: false },
-    ]);
-
+    const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+
+    useEffect(() => { fetchMessages() }, []);
+
+    const fetchMessages = () => {
+        fetch(`http://192.168.1.39:3000/users/messages/${user.token}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        })
+            .then((response) => response.json())
+            .then(data => {
+                if (data.data.discussion && data.data.discussion.length > 0) {
+                    setMessages(data.data.discussion[0].message.map((e) => ({
+                        id: e._id,
+                        author: e.author,
+                        message: e.message,
+                        date: e.date,
+                        isSentByUser: e.author === user._id // Determine if the message was sent by the user
+                    })));
+                }
+            })
+            .catch(error => console.error("Error fetching messages:", error));
+    };
+
+    const sendMessageToServer = (message) => {
+        return fetch("http://192.168.1.39:3000/discussions/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                token: user.token,
+                userId: user._id,
+                text: message,
+                timestamp: new Date().toISOString(),
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((error) => {
+                        throw new Error(error.message || 'Failed to send message');
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Message sent:', data);
+                fetchMessages(); // Refetch messages after sending
+            })
+            .catch(error => console.error("Error sending message:", error));
+    };
 
     const sendMessage = () => {
         if (newMessage.trim().length > 0) {
-            const newMessageObject = {
-                id: (messages.length + 1).toString(),
-                text: newMessage,
-                isSentByUser: true,
-            };
-            setMessages([...messages, newMessageObject]);
             setNewMessage('');
+
+            // Envoie un message au serveur
+            sendMessageToServer(newMessage);
         }
     };
 
@@ -42,6 +82,21 @@ export default function TchatScreen({ navigation }) {
             isSentByUser ? styles.sentMessage : styles.receivedMessage
         ]}>
             <Text style={styles.messageText}>{text}</Text>
+        </View>
+    );
+
+    const renderItem = ({ item }) => (
+        <View style={[
+            styles.messageContainer,
+            item.isSentByUser ? styles.sentContainer : styles.receivedContainer
+        ]}>
+            {!item.isSentByUser && (
+                <Image
+                    source={{ uri: user.photoProfile }}
+                    style={styles.smallProfileImage}
+                />
+            )}
+            <MessageBubble text={item.message} isSentByUser={item.isSentByUser} />
         </View>
     );
 
@@ -57,31 +112,21 @@ export default function TchatScreen({ navigation }) {
                         <Icon name='arrow-left' size={20} color='#000' />
                     </TouchableOpacity>
                     <Image
-                        source={{ uri: user.photoProfile }} // Remplacez par l'URL réelle de l'image
+                        source={{ uri: user.photoProfile }}
                         style={styles.profileImage}
                     />
-                    <Text style={styles.name}>Remy Gaillard</Text>
+                    <Text style={styles.name}>{user.firstname} {user.lastname}</Text>
                 </View>
                 <View style={styles.separator}></View>
                 <FlatList
                     data={messages}
-                    renderItem={({ item }) => (
-                        <View style={[
-                            styles.messageContainer,
-                            item.isSentByUser ? styles.sentContainer : styles.receivedContainer
-                        ]}>
-                            {!item.isSentByUser && (
-                                <Image
-                                    source={{ uri: user.photoProfile }} // Remplacez par l'URL réelle de l'image
-                                    style={styles.smallProfileImage}
-                                />
-                            )}
-                            <MessageBubble text={item.text} isSentByUser={item.isSentByUser} />
-                        </View>
-                    )}
+                    renderItem={renderItem}
                     keyExtractor={item => item.id}
                     ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
                 />
+                {/* <View style={styles.messageText}>
+                    <Text> bonjour</Text>
+                </View> */}
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.textInput}
@@ -94,7 +139,7 @@ export default function TchatScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
-        </SafeAreaView >
+        </SafeAreaView>
     );
 }
 
