@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
         height: 80,
         width: "100%",
         marginTop: 5,
+        marginLeft: 15,
         //  borderWidth: 1,
         // borderColor: 'red',
     },
