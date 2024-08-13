@@ -12,7 +12,7 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
@@ -55,7 +55,7 @@ export default function SignUpScreen({ navigation }) {
       return;
     }
 
-    fetch("http://192.168.8.42:3000/users/signup", {
+    fetch("http://192.168.33.186:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

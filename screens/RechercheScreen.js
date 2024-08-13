@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -15,6 +15,7 @@ import CustomHeader from "../components/CustomHeader";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
+import { useSelector } from "react-redux";
 
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
@@ -44,7 +45,7 @@ export default function RechercheScreen({ navigation }) {
   //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
   // = > INITIALISATION DES ETATS
-  const BACKEND_ADDRESS = "http://192.168.8.42:3000";
+  const BACKEND_ADDRESS = "http://192.168.33.186:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
   const [addressesCoordinates, setAddressesCoordinates] = useState([]);
@@ -90,6 +91,8 @@ export default function RechercheScreen({ navigation }) {
             return {
               latitude: user.main_address.addressLatitude,
               longitude: user.main_address.adressLongitude,
+              firstname: user.user.firstname,
+              lastname: user.user.lastname,
             };
           });
           console.log("ADDRESS COORDINATES :", coordinates);
@@ -140,21 +143,18 @@ export default function RechercheScreen({ navigation }) {
           longitude: remoter.longitude,
         }}
         title={`${remoter.firstname} ${remoter.lastname}`}
-        pinColor="#49B48C"
+        pinColor="#F08372"
       />
     );
   });
 
-  //SECTION REMOTERS PROFILES
+  // SECTION REMOTERS PROFILES
 
   //Cette fonction va de pair avec le composant <Flatlist> (qui permet de swiper vers la gauche)
   // Elle permet de récupérer les propriétés et les utiliser dans le composant.
   const renderItem = ({ item }) => (
     <View style={styles.remoterProfile}>
-      <Image
-        source={require("../assets/photoJerome.png")}
-        style={styles.photoRemoter}
-      />
+      <Image source={{ uri: user.photoProfile }} style={styles.photoRemoter} />
       <View style={styles.remoterNameContainer}>
         <Text style={styles.remoterFirstname}>{item.user.firstname}</Text>
         <Text style={styles.remoterLastname}>{item.user.lastname}</Text>
@@ -183,11 +183,6 @@ export default function RechercheScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      {/* <CustomHeader
-        title="Recherche"
-        navigation={navigation}
-        iconName={"arrow-left"}
-      /> */}
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -208,7 +203,7 @@ export default function RechercheScreen({ navigation }) {
         ) : null}
         <View style={styles.mapContainer}>
           <MapView
-            mapType="terrain"
+            mapType="standard"
             region={currentPosition}
             style={styles.map}
           >
@@ -254,48 +249,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    // alignItems: "center",
-    // justifyContent: "center",
-    // borderColor: "red",
-    // borderWidth: 3,
   },
 
+  customHeader: {
+    marginTop: 300,
+    backgroundColor: "red",
+  },
   scrollView: {
     padding: 24,
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "green",
-    borderWidth: 3,
   },
 
-  headerTitleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    height: 60,
-  },
-
-  headerLogo: {
-    width: 51,
-    height: 46,
-    marginRight: 10,
-  },
-
-  headerTitleText: {
-    color: "black",
-    fontSize: 20,
-    fontFamily: "poppins",
-    fontWeight: "bold",
-    fontSize: 24,
-    lineHeight: 36,
+  separator: {
+    width: "80%",
+    height: 2,
+    backgroundColor: "#8f8f8f",
+    marginVertical: 20,
+    alignSelf: "center",
   },
 
   inputContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "orange",
-    borderWidth: 3,
   },
 
   input: {
@@ -314,10 +292,8 @@ const styles = StyleSheet.create({
   },
 
   mapContainer: {
-    width: 290,
-    height: 290,
-    borderColor: "pink",
-    borderWidth: 3,
+    width: "100%",
+    height: 270,
     borderRadius: 20,
     overflow: "hidden",
     marginTop: 20,
@@ -328,81 +304,73 @@ const styles = StyleSheet.create({
   },
 
   profilesContainer: {
-    borderColor: "green",
-    borderWidth: 3,
-    width: 291,
-
+    width: "100%",
     marginTop: 20,
+    alignItems: "center",
   },
 
   remoterProfile: {
-    borderColor: "yellow",
-    borderWidth: 3,
-    height: 190,
+    width: 180,
+    height: 210,
+    justifyContent: "center",
     alignItems: "center",
-    marginRight: 10,
+    padding: 10,
   },
 
   photoRemoter: {
     width: 80,
     height: 80,
     borderRadius: 150,
+    marginBottom: 10,
+    alignSelf: "center",
   },
 
   remoterNameContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "pink",
-    borderWidth: 2,
   },
 
   remoterFirstname: {
-    fontFamily: "poppins",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 14,
     lineHeight: 21,
-    fontWeight: "bold",
     marginRight: 5,
+    alignSelf: "center",
   },
 
   remoterLastname: {
-    fontFamily: "poppins",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 14,
     lineHeight: 21,
-    fontWeight: "bold",
   },
 
   remoterJob: {
-    fontFamily: "poppins",
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
     lineHeight: 21,
-    marginBottom: 5,
+    marginBottom: 0,
+    alignSelf: "center",
   },
 
   remoterCityContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    alignSelf: "center",
     alignItems: "center",
-    borderColor: "blue",
-    borderWidth: 2,
-
     height: 21,
+    marginBottom: 10,
   },
 
   remoterCity: {
-    fontFamily: "poppins",
-    fontWeight: "bold",
-    fontSize: 14,
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 12,
     lineHeight: 21,
-    borderColor: "purple",
-    borderWidth: 3,
   },
 
   icon: {
     width: 15,
     height: 17,
-    borderColor: "grey",
-    borderWidth: 2,
   },
 
   button: {
@@ -410,22 +378,33 @@ const styles = StyleSheet.create({
     height: 31,
     backgroundColor: "#49B48C",
     justifyContent: "center",
-    alignItems: "center",
+    alignSelf: "center",
     marginTop: 5,
     borderRadius: 5,
   },
 
   textButton: {
-    fontFamily: "poppins",
+    fontFamily: "Poppins-SemiBold",
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 21,
     color: "#FFFFFF",
+    alignSelf: "center",
   },
   noRemoterMessage: {
-    fontFamily: "poppins",
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
     lineHeight: 21,
+    textAlign: "center",
     marginBottom: 8,
+  },
+
+  h2: {
+    width: 250,
+    alignSelf: "center",
+    fontSize: 18,
+    fontFamily: "Poppins-SemiBold",
+    textAlign: "center",
+    marginBottom: 20,
   },
 });

@@ -88,11 +88,10 @@ const TabNavigator = () => {
             <View>
               <Text
                 style={{
-                  borderColor: "blue",
-                  borderWidth: 2,
                   color: "#FFFFFF",
                   fontSize: 10,
                   lineHeight: 15,
+                  marginBottom: 5,
                 }}
               >
                 {label}
@@ -157,37 +156,25 @@ export default function App() {
       <PersistGate persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-              name="Recherche"
-              component={RechercheScreen}
-              options={{
-                headerShown: true,
-              }}
-            />
-            <Stack.Screen
-              name="RemoterSelected"
-              component={RemoterSelectedScreen}
-              options={{
-                headerShown: true,
-              }}
-            />
+            
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            <Stack.Screen name="Recherche" component={RechercheScreen} options={{headerShown: true,}}/>
+            <Stack.Screen name="RemoterSelected" component={RemoterSelectedScreen} options={{ headerShown: true, }}/>
             <Stack.Screen name="Pwd" component={PwdScreen} />
-
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
             <Stack.Screen name="ProposerScreen" component={ProposerScreen} />
             <Stack.Screen name="PublishScreen" component={PublishScreen} />
-            <Stack.Screen
-              name="AnnouncementScreen"
-              component={AnnouncementScreen}
-            />
+            <Stack.Screen name="AnnouncementScreen" component={AnnouncementScreen} />
+            <Stack.Screen name="BlogScreen" component={BlogScreen} />
           </Stack.Navigator>
+          
         </NavigationContainer>
       </PersistGate>
     </Provider>
   );
 }
+
