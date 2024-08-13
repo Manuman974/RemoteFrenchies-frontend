@@ -15,7 +15,6 @@ import CustomHeader from "../components/CustomHeader";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
-import { useSelector } from "react-redux";
 
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
@@ -52,7 +51,6 @@ export default function RechercheScreen({ navigation }) {
   const [remoterProfiles, setRemoterProfiles] = useState([]);
   const [searchDone, setSearchDone] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const user = useSelector((state) => state.user.value);
 
   // = > ACTIONS
 
@@ -92,12 +90,12 @@ export default function RechercheScreen({ navigation }) {
             return {
               latitude: user.main_address.addressLatitude,
               longitude: user.main_address.adressLongitude,
-              firstname: user.user.firstname,
-              lastname: user.user.lastname,
+              // firstname: user.user.firstname,
+              // lastname: user.user.lastname,
             };
           });
           console.log("ADDRESS COORDINATES :", coordinates);
-          const remoters = data.propositionData.map((user, i) => {
+          const remoters = data.propositionData.map((data, i) => {
             return {
               id: i,
               // firstname: user.user.firstname,
@@ -106,8 +104,8 @@ export default function RechercheScreen({ navigation }) {
               // city: user.main_address.city,
               // latitude: user.main_address.addressLatitude,
               // longitude: user.main_address.adressLongitude,
-              proposition: user,
-              user: user.user,
+              propositionData: data,
+              userData: data.user,
             };
           });
 
@@ -155,18 +153,18 @@ export default function RechercheScreen({ navigation }) {
   // Elle permet de récupérer les propriétés et les utiliser dans le composant.
   const renderItem = ({ item }) => (
     <View style={styles.remoterProfile}>
-      <Image source={{ uri: user.photoProfile }} style={styles.photoRemoter} />
+      {/* <Image source={{ uri: user.photoProfile }} style={styles.photoRemoter} /> */}
       <View style={styles.remoterNameContainer}>
-        <Text style={styles.remoterFirstname}>{item.user.firstname}</Text>
-        <Text style={styles.remoterLastname}>{item.user.lastname}</Text>
+        <Text style={styles.remoterFirstname}>{item.userData.firstname}</Text>
+        <Text style={styles.remoterLastname}>{item.userData.lastname}</Text>
       </View>
 
-      <Text style={styles.remoterJob}>{item.user.job}</Text>
+      <Text style={styles.remoterJob}>{item.userData.job}</Text>
       <View style={styles.remoterCityContainer}>
         <FontAwesome name="map-marker" style={styles.icon} size={18} />
 
         <Text style={styles.remoterCity}>
-          {item.proposition.main_address.city}
+          {item.propositionData.main_address.city}
         </Text>
       </View>
       <TouchableOpacity
