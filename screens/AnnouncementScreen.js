@@ -16,7 +16,6 @@ export default function AnnouncementScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
 
     const photos = user.photos.map((photoUrl, index) => {
-        console.log(photoUrl)
         return (
             <View key={index} style={styles.annonceContainer}>
                 {/* <Image source={{ uri: photoUrl }} style={styles.photo} /> */}
