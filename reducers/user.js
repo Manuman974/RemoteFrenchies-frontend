@@ -10,6 +10,7 @@ const initialState = {
     city: null,
     e_mail: null,
     photos: [],
+    photoProfile: "",
   },
 };
 
@@ -34,8 +35,12 @@ export const userSlice = createSlice({
         (data) => data !== action.payload
       );
     },
+    addPhotoProfile: (state, action) => {
+      state.value.photoProfile = action.payload;
+    },
   },
 });
 
-export const { login, addPhoto, removePhoto, updatePhoto } = userSlice.actions;
+export const { login, addPhoto, removePhoto, addPhotoProfile } =
+  userSlice.actions;
 export default userSlice.reducer;
