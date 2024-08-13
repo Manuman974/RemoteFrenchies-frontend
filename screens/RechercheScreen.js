@@ -1,139 +1,118 @@
-import { useLayoutEffect, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-    StyleSheet,
-    View,
-    Text,
-    Image,
-    KeyboardAvoidingView,
-    ScrollView,
-    TextInput,
-    Platform,
-    TouchableOpacity,
-    FlatList,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  TextInput,
+  Platform,
+  TouchableOpacity,
+  FlatList,
 } from "react-native";
+import CustomHeader from "../components/CustomHeader";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function RechercheScreen({ navigation }) {
-    //SECTION HEADER
+  //SECTION HEADER
+  //J'ai crée un composant header que j'ai utilisé
+  //Je l'ai appelé dans le return
 
-    //useLayoutEffect : hook pour configurer les options de navigation juste avant que le composant soit rendu.
-    // Garantit que les options du <header> pour cette page s'appliquent correctement
-    // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
-    //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
+  //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerTitle: () => (
-                <View style={styles.headerTitleContainer}>
-                    <Icon name='search' style={styles.reply} size={30} color='#49B48C' />
-                    <Text style={styles.headerTitleText}>Recherche</Text>
-                </View>
-            ),
-            headerStyle: {
-                backgroundColor: "white",
-            },
+  // = > INITIALISATION DES ETATS
+  const BACKEND_ADDRESS = "http://192.168.8.42:3000";
+  const [currentPosition, setCurrentPosition] = useState(null);
+  const [cityInput, setCityInput] = useState("");
+  const [addressesCoordinates, setAddressesCoordinates] = useState([]);
+  const [remoterProfiles, setRemoterProfiles] = useState([]);
+  const [searchDone, setSearchDone] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // = > ACTIONS
+
+  useEffect(() => {
+    (async () => {
+      const result = await Location.requestForegroundPermissionsAsync();
+      const status = result?.status;
+
+      if (status === "granted") {
+        Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+          setCurrentPosition({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            // Pour zoomer automatiquement sur la carte
+            latitudeDelta: 0.15,
+            longitudeDelta: 0.15,
+          });
         });
-    }, [navigation]);
+      }
+    })();
+  }, []);
 
-    //SECTION MAP
+// Recherche par ville des utilisateurs proposant leur annonce //
+  const handleSearch = () => {
+    if (cityInput.length === 0) {
+      setErrorMessage("Veuillez entrer un nom de ville.");
+      return;
+    }
+    console.log("Icône cliquée!");
+    //1ère requête : Rechercher les données des utilisateurs d'une ville
+    fetch(`${BACKEND_ADDRESS}/proposition/search/${cityInput}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("PROPOSITIONS data :", data.propositionData);
+        if (data.result === true) {
+          const coordinates = data.propositionData.map((user) => {
+            return {
+              latitude: user.main_address.addressLatitude,
+              longitude: user.main_address.adressLongitude,
+            };
+          });
+          console.log("ADDRESS COORDINATES :", coordinates);
+          const remoters = data.propositionData.map((user, i) => {
+            return {
+              id: i,
+              // firstname: user.user.firstname,
+              // lastname: user.user.lastname,
+              // job: user.user.job,
+              // city: user.main_address.city,
+              // latitude: user.main_address.addressLatitude,
+              // longitude: user.main_address.adressLongitude,
+              proposition: user,
+              user: user.user,
+            };
+          });
 
-    // = > INITIALISATION DES ETATS
-    const BACKEND_ADDRESS = "http://192.168.33.186:3000";
-    const [currentPosition, setCurrentPosition] = useState(null);
-    const [cityInput, setCityInput] = useState("");
-    const [cityCoordinates, setCityCoordinates] = useState([]);
-    const [remoterProfiles, setRemoterProfiles] = useState([]);
-    const [searchDone, setSearchDone] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [mapRegion, setMapRegion] = useState(null)
-
-    // = > ACTIONS
-
-    useEffect(() => {
-        (async () => {
-            const result = await Location.requestForegroundPermissionsAsync();
-            const status = result?.status;
-
-            if (status === "granted") {
-                Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-                    setCurrentPosition({
-                        latitude: location.coords.latitude,
-                        longitude: location.coords.longitude,
-                        // Pour zoomer automatiquement sur la carte
-                        latitudeDelta: 0.15,
-                        longitudeDelta: 0.15,
-                    });
-                });
-            }
-        })();
-    }, []);
-
-    // Recherche par ville des utilisateurs proposant leur annonce //
-    const handleSearch = () => {
-        if (cityInput.length === 0) {
-            setErrorMessage("Veuillez entrer un nom de ville.");
-            return;
-        }
-        console.log("Icône cliquée!");
-        //1ère requête : Rechercher les données des utilisateurs d'une ville
-        fetch(`${BACKEND_ADDRESS}/proposition/search/${cityInput}`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("USERCITY :", data.propositionData);
-                //Ajouter dans la parenthèse du if lorsque qu'une fiche sera créee avec "proposition" : "&& data.proposition"
-                if (data.result === true) {
-                    const coordinates = data.propositionData.map((user) => {
-                        return {
-                            latitude: user.main_address.addressLatitude,
-                            longitude: user.main_address.adressLongitude,
-                        };
-                    });
-                    console.log("COucou", coordinates)
-
-                    // Afficher les markeurs sur la map
-                    const remoters = data.propositionData.map((user, i) => {
-                        console.log('Test', user)
-                        return {
-                            id: i,
-                            firstname: user.user.firstname,
-                            lastname: user.user.lastname,
-                            job: user.user.job,
-                            city: user.main_address.city,
-                            latitude: user.main_address.addressLatitude,
-                            longitude: user.main_address.adressLongitude,
-                        };
-                    });
-                    // Définir la région pour centrer la carte quand recherche par ville
-                    if (coordinates.length > 0) {
-                        const firstCoordinate = coordinates[0];
-                        setMapRegion({
-                            latitude: firstCoordinate.latitude,
-                            longitude: firstCoordinate.longitude,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
-                        })
-                    }
-                    setCityCoordinates(coordinates);
+          // Déplacer la carte vers la première coordonnée trouvée
+          if (coordinates.length > 0) {
+            setCurrentPosition({
+              latitude: coordinates[0].latitude,
+              longitude: coordinates[0].longitude,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1,
+            });
+          }
+                    setAddressesCoordinates(coordinates);
+                    console.log("Remoters Profile : ", remoterProfiles);
                     setRemoterProfiles(remoters);
                     setErrorMessage("");
                     setSearchDone(true);
                 } else {
-                    setCityCoordinates([]);
+                    setAddressesCoordinates([]);
                     setRemoterProfiles([]);
                     setErrorMessage("");
                     setSearchDone(true);
                 }
             });
-    };
-
-    console.log("Remoters Profile : ", remoterProfiles);
+        };
 
 
     // Marker des utilisateurs
-    const remotemarkers = remoterProfiles.map((remoter, i) => {
+    const remoteMarkers = addressesCoordinates.map((remoter, i) => {
         return (
             <Marker
                 key={i}
@@ -144,109 +123,110 @@ export default function RechercheScreen({ navigation }) {
         );
     });
 
-    //SECTION REMOTERS
 
+  //SECTION REMOTERS PROFILES
 
+  //Cette fonction va de pair avec le composant <Flatlist> (qui permet de swiper vers la gauche)
+  // Elle permet de récupérer les propriétés et les utiliser dans le composant.
+  const renderItem = ({ item }) => (
+    <View style={styles.remoterProfile}>
+      <Image
+        source={require("../assets/photoJerome.png")}
+        style={styles.photoRemoter}
+      />
+      <View style={styles.remoterNameContainer}>
+        <Text style={styles.remoterFirstname}>{item.user.firstname}</Text>
+        <Text style={styles.remoterLastname}>{item.user.lastname}</Text>
+      </View>
 
+      <Text style={styles.remoterJob}>{item.user.job}</Text>
+      <View style={styles.remoterCityContainer}>
+        <FontAwesome name="map-marker" style={styles.icon} size={18} />
 
-    //Cette fonction va de pair avec le composant <Flatlist> (qui permet de swiper vers la gauche)
-    // Elle permet de récupérer les propriétés et les utiliser dans le composant.
-    const renderItem = ({ item }) => (
-        <View style={styles.remoterProfile}>
-            <Image
-                source={require("../assets/photoJerome.png")} // A définir pour rendre dynamique {uri}
-                style={styles.photoRemoter}
-            />
-            <View style={styles.remoterNameContainer}>
-                <Text style={styles.remoterFirstname}>{item.firstname}</Text>
-                <Text style={styles.remoterLastname}>{item.lastname}</Text>
-            </View>
+        <Text style={styles.remoterCity}>
+          {item.proposition.main_address.city}
+        </Text>
+      </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("RemoterSelected", { item })}
+        style={styles.button}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.textButton}>Voir</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
-            <Text style={styles.remoterJob}>{item.job}</Text>
-            <View style={styles.remoterCityContainer}>
-                <FontAwesome name="map-marker" style={styles.icon} size={18} />
-
-                <Text style={styles.remoterCity}>{item.city}</Text>
-            </View>
-            <TouchableOpacity
-                onPress={() => navigation.navigate("RemoterSelected")}
-                style={styles.button}
-                activeOpacity={0.8}
-            >
-                <Text style={styles.textButton}>Voir</Text>
-            </TouchableOpacity>
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <CustomHeader
+        title="Rechercher"
+        navigation={navigation}
+        useImage={true}
+      />
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Autour de moi"
+            onChangeText={(value) => setCityInput(value)}
+            value={cityInput}
+          />
+          <TouchableOpacity
+            style={styles.iconInput}
+            onPress={() => handleSearch()}
+          >
+            <FontAwesome name="search" size={23} color="#c0c1c1" />
+          </TouchableOpacity>
         </View>
-    );
-
-    return (
-        <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-            <ScrollView contentContainerStyle={styles.scrollView}>
-                <View>
-                    <Text style={styles.h2}>Je trouve un Remote à côté de chez moi</Text>
-                </View>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Autour de moi"
-                        onChangeText={(value) => setCityInput(value)}
-                        value={cityInput}
-                    />
-                    <TouchableOpacity
-                        style={styles.iconInput}
-                        onPress={() => handleSearch()}
-                    >
-                        <FontAwesome name="search" size={23} color="#c0c1c1" />
-                    </TouchableOpacity>
-                </View>
-                {errorMessage ? (
-                    <Text style={{ color: "red", margin: 10 }}>{errorMessage}</Text>
-                ) : null}
-                <View style={styles.mapContainer}>
-                    <MapView
-                        mapType="standard"
-                        region={mapRegion || currentPosition} // Current position utilisé en premier sinon renvoie vers la ville recherché
-                        style={styles.map}
-                    >
-                        {currentPosition && (
-                            <Marker
-                                coordinate={currentPosition}
-                                title="My position"
-                                pinColor="#49B48C"
-                            />
-                        )}
-
-                        {remotemarkers}
-                    </MapView>
-                </View>
-                <View style={styles.profilesContainer}>
-                    {searchDone && remoterProfiles.length > 0 ? (
-                        <FlatList
-                            data={remoterProfiles}
-                            renderItem={renderItem}
-                            keyExtractor={(item) => item.id}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                        />
-                    ) : (
-                        searchDone && (
-                            <>
-                                <Text style={styles.noRemoterMessage}>
-                                    😅 Oups ! Nous n'avons pas encore de Remoters dans cette
-                                    ville.
-                                </Text>
-                                <Text style={styles.noRemoterMessage}>
-                                    Essayez une autre ville !
-                                </Text>
-                            </>
-                        )
-                    )}
-                </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
-    );
+        {errorMessage ? (
+          <Text style={{ color: "red", margin: 10 }}>{errorMessage}</Text>
+        ) : null}
+        <View style={styles.mapContainer}>
+          <MapView
+            mapType="standard"
+            region={currentPosition}
+            style={styles.map}
+          >
+            {currentPosition && (
+              <Marker
+                coordinate={currentPosition}
+                title="My position"
+                pinColor="#F08372"
+              />
+            )}
+            {remoteMarkers}
+          </MapView>
+        </View>
+        <View style={styles.profilesContainer}>
+          {searchDone && remoterProfiles.length > 0 ? (
+            <FlatList
+              data={remoterProfiles}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          ) : (
+            searchDone && (
+              <>
+                <Text style={styles.noRemoterMessage}>
+                  😅 Oups ! Nous n'avons pas encore de Remoters dans cette
+                  ville.
+                </Text>
+                <Text style={styles.noRemoterMessage}>
+                  Essayez une autre ville !
+                </Text>
+              </>
+            )
+          )}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -274,11 +254,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
 
-    headerLogo: {
-        width: 51,
-        height: 46,
-        marginRight: 10,
-    },
+  headerLogo: {
+    width: 51,
+    height: 46,
+    marginRight: 10,
+  },
 
     headerTitleText: {
         color: "black",
@@ -302,20 +282,20 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 
-    input: {
-        width: 280,
-        height: 50,
-        borderRadius: 10,
-        borderColor: "#8F8F8F",
-        borderWidth: 1,
-        backgroundColor: "#DDDDDD",
-        paddingLeft: 20,
-        marginLeft: 22,
-    },
+  input: {
+    width: 280,
+    height: 50,
+    borderRadius: 10,
+    borderColor: "#8F8F8F",
+    borderWidth: 1,
+    backgroundColor: "#DDDDDD",
+    paddingLeft: 20,
+    marginLeft: 22,
+  },
 
-    iconInput: {
-        marginLeft: 5,
-    },
+  iconInput: {
+    marginLeft: 5,
+  },
 
     mapContainer: {
         width: '100%',
@@ -325,9 +305,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
 
-    map: {
-        flex: 1,
-    },
+  map: {
+    flex: 1,
+  },
 
     profilesContainer: {
         width: '100%',
