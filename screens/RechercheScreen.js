@@ -11,7 +11,6 @@ import {
     TouchableOpacity,
     FlatList,
 } from "react-native";
-import { useDispatch } from 'react-redux';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
