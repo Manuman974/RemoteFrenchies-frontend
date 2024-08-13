@@ -18,8 +18,28 @@ import MapView, { Marker } from "react-native-maps";
 
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
-  //J'ai crée un composant header que j'ai utilisé
-  //Je l'ai appelé dans le return
+
+  //useLayoutEffect : hook pour configurer les options de navigation juste avant que le composant soit rendu.
+  // Garantit que les options du <header> pour cette page s'appliquent correctement
+  // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
+  //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <View style={styles.headerTitleContainer}>
+          <Image
+            style={styles.headerLogo}
+            source={require("../assets/Logo-RemoteFrenchies.png")}
+          />
+          <Text style={styles.headerTitleText}>Recherche</Text>
+        </View>
+      ),
+      headerStyle: {
+        backgroundColor: "white",
+      },
+    });
+  }, [navigation]);
 
   //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
@@ -53,6 +73,7 @@ export default function RechercheScreen({ navigation }) {
     })();
   }, []);
 
+  //Recherche par ville des utilisateurs proposant leur annonce
   const handleSearch = () => {
     if (cityInput.length === 0) {
       setErrorMessage("Veuillez entrer un nom de ville.");
@@ -110,12 +131,15 @@ export default function RechercheScreen({ navigation }) {
       });
   };
 
-  const remoteMarkers = addressesCoordinates.map((data, i) => {
+  const remoteMarkers = addressesCoordinates.map((remoter, i) => {
     return (
       <Marker
         key={i}
-        coordinate={{ latitude: data.latitude, longitude: data.longitude }}
-        title="remoteMarker"
+        coordinate={{
+          latitude: remoter.latitude,
+          longitude: remoter.longitude,
+        }}
+        title={`${remoter.firstname} ${remoter.lastname}`}
         pinColor="#49B48C"
       />
     );
@@ -159,11 +183,11 @@ export default function RechercheScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <CustomHeader
-        title="Rechercher"
+      {/* <CustomHeader
+        title="Recherche"
         navigation={navigation}
-        useImage={true}
-      />
+        iconName={"arrow-left"}
+      /> */}
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -230,10 +254,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: "red",
-    borderWidth: 3,
+    // alignItems: "center",
+    // justifyContent: "center",
+    // borderColor: "red",
+    // borderWidth: 3,
   },
 
   scrollView: {
