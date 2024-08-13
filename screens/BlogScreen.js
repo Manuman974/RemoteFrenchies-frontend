@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 import { useState } from "react";
 
 // Texte de l'article avec un affichage limité à 250 caractéres
-export default function BlogScreen() {
+export default function BlogScreen({navigation}) {
     const [textCut1, setTextCut1] = useState(false);
     const [textCut2, setTextCut2] = useState(false);
     const [textCut3, setTextCut3] = useState(false);
@@ -28,15 +28,16 @@ export default function BlogScreen() {
 
     return (
         // jsx des articles
+        <SafeAreaView style={styles.safeArea}>
         <KeyboardAvoidingView >
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <Icon name='file-lines' size={30} color='#49B48C' />
+                        <Icon style={styles.icon1} name='file-lines' size={30} color='#49B48C' />
                         <Text style={styles.h1}>Fil d'actualités</Text>
                     </View>
                     <View style={styles.inputContainer}>
-                        < Icon style={styles.icon} name='magnifying-glass' size={20} color='#49B48C' />
+                        < Icon style={styles.icon2} name='magnifying-glass' size={20} color='#49B48C' />
                         <TextInput
                             style={styles.input}
                             placeholder="Rechercher"
@@ -65,7 +66,7 @@ export default function BlogScreen() {
 
                     <View style={styles.titleContainer2}>
                         <Text style={styles.title}>Comment Maintenir la Collaboration en Télétravail</Text>
-                        <View style={styles.dateContainer}>
+                        <View style={styles.dateContainer2}>
                             <Text style={styles.h3}>18 Mai 2024</Text>
                         </View>
                     </View>
@@ -85,7 +86,7 @@ export default function BlogScreen() {
                     </View>
                     <View style={styles.titleContainer3}>
                         <Text style={styles.title}>Les Défis du Télétravail et Comment les Surmonter</Text>
-                        <View style={styles.dateContainer2}>
+                        <View style={styles.dateContainer3}>
                             <Text style={styles.h3}>23 Septembre 2024</Text>
                         </View>
                     </View>
@@ -107,6 +108,7 @@ export default function BlogScreen() {
             </ScrollView>
 
         </KeyboardAvoidingView>
+        </SafeAreaView>
 
 
     );
@@ -114,7 +116,7 @@ export default function BlogScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
+        // width: '100%',
         flex: 1,
         backgroundColor: '#ffffff',
         alignItems: 'center',
@@ -122,24 +124,27 @@ const styles = StyleSheet.create({
     },
     header: {
         borderBottomWidth: 2,
-        marginTop: 50,
+        marginTop: 40,
         width: '100%',
         flexDirection: 'row',
         marginBottom: 10,
-        borderTop: 5,
-        padding: 10,
+        // borderTop: 5,
+        // padding: 10,
     },
     h1: {
-        marginLeft: 15,
+        marginRight: 120,
         fontSize: 24,
         textAlign: 'center',
         fontFamily: 'Poppins-SemiBold',
         alignSelf: 'center',
+        width: "80%",
+        // borderWidth: 1,
+        // borderColor: 'red',
     },
     input: {
         backgroundColor: '#DDD',
-        width: 290,
-        height: 50,
+        width: 280,
+        height: 50, 
         borderColor: '#8f8f8f',
         borderWidth: 1,
         borderRadius: 10,
@@ -149,22 +154,44 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        marginRight: 25,
+        marginTop: 10,
+        marginRight: 10,
+        
     },
     titleContainer: {
-        height: 100,
+        height: 80,
         width: "100%",
-        marginTop: 10,
+        marginTop: 5,
+        //  borderWidth: 1,
+        // borderColor: 'red',
     },
     titleContainer2: {
-        height: 100,
+        height: 80,
         width: "100%",
-        marginTop: 20,
+        marginTop: 10,
+        //  borderWidth: 1,
+        // borderColor: 'red'
     },
     titleContainer3: {
-        height: 100,
+        marginRight: 20,
+        height: 80,
         width: "100%",
-        marginTop: 20,
+        marginTop: 10,
+        //  borderWidth: 1,
+        // borderColor: 'red',
+    },
+    dateContainer: {
+        // paddingBottom: 30,
+        // borderWidth: 1,
+        // borderColor: 'red'
+    },
+    dateContainer2: {
+        // borderWidth: 1,
+        // borderColor: 'red',
+    },
+    dateContainer3: {
+        // borderWidth: 1,
+        // borderColor: 'red',
     },
     title: {
         fontSize: 20,
@@ -180,6 +207,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        marginTop: 30,
+        //  borderWidth: 1,
+        // borderColor: 'red',
     },
     h3: {
         fontSize: 20,
@@ -194,7 +224,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     scrollView: {
-        padding: 24,
+        // padding: 24,
         flexGrow: 1,
         justifyContent: "center",
         alignItems: "center",
@@ -204,8 +234,13 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontFamily: 'Poppins-Regular',
     },
-    icon: {
-        marginRight: 10,
+    icon1: {
+        // borderWidth: 1,
+        // borderColor: 'red',
+        marginLeft: 100,
+    },
+    icon2: {
+       marginRight: 10,
     },
     buttonText: {
         color: "green",
