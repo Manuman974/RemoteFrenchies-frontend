@@ -12,56 +12,56 @@ import Icon from "react-native-vector-icons/FontAwesome";
 //import Icon1 from "react-native-vector-icons/Evillcons";
 
 export default function AnnouncementScreen({ navigation }) {
-//     const dispatch = useDispatch();
-//     const user = useSelector((state) => state.user.value);
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.value);
 
-//     const photos = user.photos.map((photoUrl, index) => {
-//         console.log(photoUrl)
-//         return (
-//             <View key={index} style={styles.annonceContainer}>
-//                 {/* <Image source={{ uri: photoUrl }} style={styles.photo} /> */}
-//                 <View style={styles.annonceFooter}>
-//                     <Text style={styles.locationText}>
-//                         <Icon name="map-marker" size={16} color="black" /> {user.city}
-//                     </Text>
-//                     <View style={styles.buttonsContainer}>
-//                         <TouchableOpacity
-//                             onPress={() => navigation.navigate("Proposer")}
-//                             style={styles.modifyButton}
-//                         >
-//                             <Text style={styles.modifyButtonText}>Modifier</Text>
-//                         </TouchableOpacity>
-//                         <TouchableOpacity onPress={() => dispatch(removePhoto(photoUrl))}>
-//                             <Icon name="trash-o" size={24} color="#FF6F61" />
-//                         </TouchableOpacity>
-//                     </View>
-//                 </View>
-//             </View>
-//         );
-//     });
-//     return (
-//         <View style={styles.container}>
-//             <View style={styles.header}>
-//                 <TouchableOpacity
-//                     onPress={() => navigation.navigate("PublishScreen")}
-//                     activeOpacity={0.8}
-//                 >
-//                     <Icon
-//                         name="arrow-left"
-//                         style={styles.reply}
-//                         size={30}
-//                         color="black"
-//                     />
-//                 </TouchableOpacity>
-//                 <Text style={styles.headerTitle}>Mes annonces</Text>
-//             </View>
-//             <View style={styles.separator}></View>
-//             <Text style={styles.annonceCount}>{photos.length} annonces</Text>
-//             <ScrollView>
-//                 {photos}
-//             </ScrollView>
-//         </View>
-//     );
+    const photos = user.photos.map((photoUrl, index) => {
+        console.log(photoUrl)
+        return (
+            <View key={index} style={styles.annonceContainer}>
+                {/* <Image source={{ uri: photoUrl }} style={styles.photo} /> */}
+                <View style={styles.annonceFooter}>
+                    <Text style={styles.locationText}>
+                        <Icon name="map-marker" size={16} color="black" /> {user.city}
+                    </Text>
+                    <View style={styles.buttonsContainer}>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("Proposer")}
+                            style={styles.modifyButton}
+                        >
+                            <Text style={styles.modifyButtonText}>Modifier</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => dispatch(removePhoto(photoUrl))}>
+                            <Icon name="trash-o" size={24} color="#FF6F61" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        );
+    });
+    return (
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("PublishScreen")}
+                    activeOpacity={0.8}
+                >
+                    <Icon
+                        name="arrow-left"
+                        style={styles.reply}
+                        size={30}
+                        color="black"
+                    />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Mes annonces</Text>
+            </View>
+            <View style={styles.separator}></View>
+            <Text style={styles.annonceCount}>{photos.length} annonces</Text>
+            <ScrollView>
+                {photos}
+            </ScrollView>
+        </View>
+    );
 
 }
 
