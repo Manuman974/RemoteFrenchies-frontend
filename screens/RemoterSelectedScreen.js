@@ -112,7 +112,7 @@ export default function RemoterSelectedScreen({
         <CustomButton
           title="Se rencontrer"
           style={{ marginTop: 40 }}
-          onPress={() => navigation.navigate("TchatScreen")}
+          onPress={() => navigation.navigate("TchatScreen", { item })} //MODIF K
         />
       </ScrollView>
     </KeyboardAvoidingView>

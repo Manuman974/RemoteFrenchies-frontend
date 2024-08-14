@@ -107,24 +107,21 @@ export default function ProposerScreen({ navigation }) {
         type: "image/jpeg",
       });
 
-      
-
-
-        // Envoi de la photo au serveur
-        fetch('http://192.168.1.79:3000/proposition/upload', {
-            method: "POST",
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data && data.result) {
-                    console.log(data);
-                    // Ajouter au magasin Redux si le téléchargement a réussi
-                    dispatch(addPhoto(data.url));
-                } else {
-                    Alert.alert("Échec du téléchargement de la photo");
-                }
-            });
+      // Envoi de la photo au serveur
+      fetch("http://192.168.8.42:3000/proposition/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.result) {
+            console.log(data);
+            // Ajouter au magasin Redux si le téléchargement a réussi
+            dispatch(addPhoto(data.url));
+          } else {
+            Alert.alert("Échec du téléchargement de la photo");
+          }
+        });
     }
   };
 
@@ -154,22 +151,21 @@ export default function ProposerScreen({ navigation }) {
         type: "image/jpeg",
       });
 
-
-        // Envoi de la photo au serveur
-        fetch('http://192.168.1.79:3000/proposition/upload', {
-            method: "POST",
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data && data.result) {
-                    console.log(data);
-                    // Ajouter au magasin Redux si le téléchargement a réussi
-                    dispatch(addPhoto(data.url));
-                } else {
-                    Alert.alert("Échec du téléchargement de la photo");
-                }
-            });
+      // Envoi de la photo au serveur
+      fetch("http://192.168.8.42:3000/proposition/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.result) {
+            console.log(data);
+            // Ajouter au magasin Redux si le téléchargement a réussi
+            dispatch(addPhoto(data.url));
+          } else {
+            Alert.alert("Échec du téléchargement de la photo");
+          }
+        });
     }
   };
 
@@ -205,7 +201,7 @@ export default function ProposerScreen({ navigation }) {
           />
 
           <CustomTextInput
-            placeholder="City"
+            placeholder="Ville"
             value={city}
             onChangeText={setCity}
           />
