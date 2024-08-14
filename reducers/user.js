@@ -26,6 +26,7 @@ export const userSlice = createSlice({
       state.value.business = action.payload.business;
       state.value.city = action.payload.city;
       state.value.e_mail = action.payload.e_mail;
+      state.value.photoProfile = action.payload.photoProfile;
     },
     addPhoto: (state, action) => {
       state.value.photos.push(action.payload);
@@ -38,9 +39,12 @@ export const userSlice = createSlice({
     addPhotoProfile: (state, action) => {
       state.value.profile_picture = action.payload;
     },
+    logout: (state) => {
+      state.value = initialState.value;
+    },
   },
 });
 
-export const { login, addPhoto, removePhoto, addPhotoProfile } =
+export const { login, addPhoto, removePhoto, addPhotoProfile, logout } =
   userSlice.actions;
 export default userSlice.reducer;

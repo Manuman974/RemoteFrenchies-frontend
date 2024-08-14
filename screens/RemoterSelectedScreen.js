@@ -107,7 +107,7 @@ route: {
         <CustomButton
           title="Se rencontrer"
           style={{ marginTop: 40 }}
-          onPress={() => navigation.navigate("TchatScreen", {item})}
+          onPress={() => navigation.navigate("TchatScreen")}
         />
       </ScrollView>
     </KeyboardAvoidingView>
