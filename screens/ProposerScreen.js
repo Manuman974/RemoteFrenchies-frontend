@@ -40,7 +40,7 @@ export default function ProposerScreen({ navigation }) {
   const handleSubmit = () => {
     // Gérer l'envoi des données
     console.log("token :", user.token);
-    fetch("http://192.168.8.42:3000/proposition", {
+    fetch("http://192.168.33.186:3000/proposition", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -108,7 +108,7 @@ export default function ProposerScreen({ navigation }) {
       });
 
       // Envoi de la photo au serveur
-      fetch("http://192.168.8.42:3000/proposition/upload", {
+      fetch("http://192.168.33.186:3000/proposition/upload", {
         method: "POST",
         body: formData,
       })
@@ -152,7 +152,7 @@ export default function ProposerScreen({ navigation }) {
       });
 
       // Envoi de la photo au serveur
-      fetch("http://192.168.8.42:3000/proposition/upload", {
+      fetch("http://192.168.33.186:3000/proposition/upload", {
         method: "POST",
         body: formData,
       })

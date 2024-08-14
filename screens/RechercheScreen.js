@@ -15,6 +15,8 @@ import CustomHeader from "../components/CustomHeader";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
+import { useSelector } from "react-redux";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
@@ -24,27 +26,11 @@ export default function RechercheScreen({ navigation }) {
   // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
   //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => (
-        <View style={styles.headerTitleContainer}>
-          <Image
-            style={styles.headerLogo}
-            source={require("../assets/Logo-RemoteFrenchies.png")}
-          />
-          <Text style={styles.headerTitleText}>Recherche</Text>
-        </View>
-      ),
-      headerStyle: {
-        backgroundColor: "white",
-      },
-    });
-  }, [navigation]);
 
   //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
   // = > INITIALISATION DES ETATS
-  const BACKEND_ADDRESS = "http://192.168.8.42:3000";
+  const BACKEND_ADDRESS = "http://192.168.33.186:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
   const [addressesCoordinates, setAddressesCoordinates] = useState([]);
@@ -90,8 +76,8 @@ export default function RechercheScreen({ navigation }) {
             return {
               latitude: user.main_address.addressLatitude,
               longitude: user.main_address.adressLongitude,
-              // firstname: user.user.firstname,
-              // lastname: user.user.lastname,
+              firstname: user.user.firstname,
+              lastname: user.user.lastname,
             };
           });
           console.log("ADDRESS COORDINATES :", coordinates);
@@ -135,24 +121,25 @@ export default function RechercheScreen({ navigation }) {
 
   const remoteMarkers = addressesCoordinates.map((remoter, i) => {
     return (
-      <Marker
-        key={i}
-        coordinate={{
-          latitude: remoter.latitude,
-          longitude: remoter.longitude,
-        }}
-        title={`${remoter.firstname} ${remoter.lastname}`}
-        pinColor="#F08372"
-      />
-    );
-  });
-
+    <Marker
+    key={i}
+    coordinate={{
+      latitude: remoter.latitude,
+      longitude: remoter.longitude,
+    }}
+    title={`${remoter.firstname} ${remoter.lastname}`}
+    pinColor="#F08372"
+  />
+);
+});
+  
   // SECTION REMOTERS PROFILES
 
   //Cette fonction va de pair avec le composant <Flatlist> (qui permet de swiper vers la gauche)
   // Elle permet de récupérer les propriétés et les utiliser dans le composant.
   const renderItem = ({ item }) => (
     <View style={styles.remoterProfile}>
+    <Image source={require("../assets/photoJerome.png")} style={styles.photoRemoter} />
       {/* <Image source={{ uri: user.photoProfile }} style={styles.photoRemoter} /> */}
       <View style={styles.remoterNameContainer}>
         <Text style={styles.remoterFirstname}>{item.userData.firstname}</Text>
@@ -179,70 +166,79 @@ export default function RechercheScreen({ navigation }) {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Autour de moi"
-            onChangeText={(value) => setCityInput(value)}
-            value={cityInput}
-          />
-          <TouchableOpacity
-            style={styles.iconInput}
-            onPress={() => handleSearch()}
-          >
-            <FontAwesome name="search" size={23} color="#c0c1c1" />
-          </TouchableOpacity>
+        <View style={styles.header}>
+            <Icon name='search' style={styles.reply} size={30} color='#49B48C' />
+            <Text style={styles.h1}>Recherche</Text>
         </View>
-        {errorMessage ? (
-          <Text style={{ color: "red", margin: 10 }}>{errorMessage}</Text>
-        ) : null}
-        <View style={styles.mapContainer}>
-          <MapView
-            mapType="standard"
-            region={currentPosition}
-            style={styles.map}
-          >
-            {currentPosition && (
-              <Marker
-                coordinate={currentPosition}
-                title="My position"
-                pinColor="#F08372"
-              />
-            )}
-            {remoteMarkers}
-          </MapView>
+        <View style={styles.separator}></View>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+        <View>
+            <Text style={styles.h4}>Trouve le Remoter qui te ressemble à côté de chez toi</Text>
         </View>
-        <View style={styles.profilesContainer}>
-          {searchDone && remoterProfiles.length > 0 ? (
-            <FlatList
-              data={remoterProfiles}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            />
-          ) : (
-            searchDone && (
-              <>
-                <Text style={styles.noRemoterMessage}>
-                  😅 Oups ! Nous n'avons pas encore de Remoters dans cette
-                  ville.
-                </Text>
-                <Text style={styles.noRemoterMessage}>
-                  Essayez une autre ville !
-                </Text>
-              </>
-            )
-          )}
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Recherche par ville"
+                    onChangeText={(value) => setCityInput(value)}
+                    value={cityInput}
+                />
+                <TouchableOpacity
+                    style={styles.iconInput}
+                    onPress={() => handleSearch()}
+                >
+                    <FontAwesome name="search" size={23} color="#c0c1c1" />
+                </TouchableOpacity>
+            </View>
+            {errorMessage ? (
+                <Text style={{ color: "red", margin: 10 }}>{errorMessage}</Text>
+            ) : null}
+            <View style={styles.mapContainer}>
+                <MapView
+                    mapType="standard"
+                    region={currentPosition}
+                    style={styles.map}
+                >
+                    {currentPosition && (
+                        <Marker
+                            coordinate={currentPosition}
+                            title="My position"
+                            pinColor="#F08372"
+                        />
+                    )}
+                    {remoteMarkers}
+                </MapView>
+            </View>
+            <View style={styles.profilesContainer}>
+                {searchDone && remoterProfiles.length > 0 ? (
+                    <FlatList
+                        data={remoterProfiles}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
+                ) : (
+                    searchDone && (
+                        <>
+                            <Text style={styles.noRemoterMessage}>
+                                😅 Oups ! Nous n'avons pas encore de Remoters dans cette
+                                ville.
+                            </Text>
+                            <Text style={styles.noRemoterMessage}>
+                                Essayez une autre ville !
+                            </Text>
+                        </>
+                    )
+                )}
+            </View>
+        </ScrollView>
+    </KeyboardAvoidingView >
+);
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -250,16 +246,32 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
 
-  customHeader: {
-    marginTop: 300,
-    backgroundColor: "red",
-  },
-  scrollView: {
-    padding: 24,
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    header: {
+        marginTop: 60,
+        marginLeft: 30,
+        width: '80%',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    h1: {
+        marginLeft: 10,
+        fontSize: 24,
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
+        alignSelf: 'center',
+    },
+
+    customHeader: {
+        marginTop: 300,
+        backgroundColor: 'red',
+    },
+    scrollView: {
+        paddingBottom: 20,
+        flexGrow: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
 
   separator: {
     width: "80%",
@@ -290,13 +302,13 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 
-  mapContainer: {
-    width: "100%",
-    height: 270,
-    borderRadius: 20,
-    overflow: "hidden",
-    marginTop: 20,
-  },
+    mapContainer: {
+        width: '80%',
+        height: 270,
+        borderRadius: 20,
+        overflow: "hidden",
+        marginTop: 20,
+    },
 
   map: {
     flex: 1,
@@ -398,12 +410,21 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 
-  h2: {
-    width: 250,
-    alignSelf: "center",
-    fontSize: 18,
-    fontFamily: "Poppins-SemiBold",
-    textAlign: "center",
-    marginBottom: 20,
-  },
+    h2: {
+        width: 250,
+        alignSelf: 'center',
+        fontSize: 18,
+        fontFamily: 'Poppins-SemiBold',
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+
+    h4: {
+        width: 300,
+        alignSelf: 'center',
+        fontSize: 14,
+        fontFamily: 'Poppins-SemiBold',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
 });
