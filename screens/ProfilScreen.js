@@ -46,7 +46,7 @@ export default function ProfilScreen({ navigation }) {
       formData.append("Token", user.token);
 
       // Envoi de la photo au serveur
-      fetch("http://192.168.33.186:3000/profile", {
+      fetch("http://192.168.1.79:3000/profile", {
         method: "PUT",
         body: formData,
       })
