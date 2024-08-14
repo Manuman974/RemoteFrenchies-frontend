@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
+    "@pusher/pusher-websocket-react-native": "^1.3.1",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-navigation/bottom-tabs": "6",
@@ -25,6 +26,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "@rneui/base": "^4.0.0-rc.8",
     "@rneui/themed": "^4.0.0-rc.8",
+    "axios": "^1.7.3",
     "dotenv": "^16.4.5",
     "expo": "^51.0.14",
     "expo-app-loading": "^2.1.1",

@@ -15,8 +15,10 @@ import SignUpScreen from "./screens/SignUpScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import PublishScreen from "./screens/PublishScreen";
 import AnnouncementScreen from "./screens/AnnouncementScreen";
+import TchatScreen from './screens/TchatScreen';
 import PwdScreen from "./screens/PwdScreen";
 import React, { useEffect, useState } from "react";
+
 
 // redux imports
 import { Provider } from "react-redux";
@@ -169,6 +171,7 @@ export default function App() {
             <Stack.Screen name="PublishScreen" component={PublishScreen}  />
             <Stack.Screen name="AnnouncementScreen" component={AnnouncementScreen} />
             <Stack.Screen name="BlogScreen" component={BlogScreen} />
+            <Stack.Screen name="TchatScreen" component={TchatScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
