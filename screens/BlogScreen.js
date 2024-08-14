@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         height: 80,
         width: width * 0.9,
-        marginTop: 5,
+        marginTop: 15,
         // marginRight: 5,
         //  borderWidth: 1,
         // borderColor: 'red',
@@ -192,12 +192,12 @@ const styles = StyleSheet.create({
         height: 80,
         width: width * 0.9,
         marginTop: 10,
-        marginRight: 5,
+        // marginRight: 5,
         //  borderWidth: 1,
         // borderColor: 'red'
     },
     titleContainer3: {
-        marginRight: 10,
+        // marginRight: 5,
         height: 80,
         width: width * 0.9,
         marginTop: 10,
