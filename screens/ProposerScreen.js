@@ -40,12 +40,12 @@ export default function ProposerScreen({ navigation }) {
   const handleSubmit = () => {
     // Gérer l'envoi des données
     console.log("token :", user.token);
-    fetch("http://192.168.33.186:3000/proposition", {
+    fetch("http://192.168.1.39:3000/proposition", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        "main_address.address": adresse, //MODIF K
-        "main_address.city": city, //MODIF K
+        street: adresse, //MODIF K
+        city: city, //MODIF K
         welcome_day: jourAccueil,
         reception_hours: heureAccueil,
         fiber_connection: checkboxes.fiber_connection,
@@ -107,24 +107,24 @@ export default function ProposerScreen({ navigation }) {
         type: "image/jpeg",
       });
 
-      
 
 
-        // Envoi de la photo au serveur
-        fetch('http://192.168.1.79:3000/proposition/upload', {
-            method: "POST",
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data && data.result) {
-                    console.log(data);
-                    // Ajouter au magasin Redux si le téléchargement a réussi
-                    dispatch(addPhoto(data.url));
-                } else {
-                    Alert.alert("Échec du téléchargement de la photo");
-                }
-            });
+
+      // Envoi de la photo au serveur
+      fetch('http://192.168.1.39:3000/proposition/upload', {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.result) {
+            console.log(data);
+            // Ajouter au magasin Redux si le téléchargement a réussi
+            dispatch(addPhoto(data.url));
+          } else {
+            Alert.alert("Échec du téléchargement de la photo");
+          }
+        });
     }
   };
 
@@ -155,21 +155,21 @@ export default function ProposerScreen({ navigation }) {
       });
 
 
-        // Envoi de la photo au serveur
-        fetch('http://192.168.1.79:3000/proposition/upload', {
-            method: "POST",
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data && data.result) {
-                    console.log(data);
-                    // Ajouter au magasin Redux si le téléchargement a réussi
-                    dispatch(addPhoto(data.url));
-                } else {
-                    Alert.alert("Échec du téléchargement de la photo");
-                }
-            });
+      // Envoi de la photo au serveur
+      fetch('http://192.168.1.39:3000/proposition/upload', {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.result) {
+            console.log(data);
+            // Ajouter au magasin Redux si le téléchargement a réussi
+            dispatch(addPhoto(data.url));
+          } else {
+            Alert.alert("Échec du téléchargement de la photo");
+          }
+        });
     }
   };
 
