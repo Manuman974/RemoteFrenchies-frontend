@@ -30,7 +30,7 @@ export default function RechercheScreen({ navigation }) {
   //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
   // = > INITIALISATION DES ETATS
-  const BACKEND_ADDRESS = "http://192.168.1.79:3000";
+  const BACKEND_ADDRESS = "http://192.168.33.186:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
   const [addressesCoordinates, setAddressesCoordinates] = useState([]);

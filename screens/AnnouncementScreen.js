@@ -18,7 +18,7 @@ export default function AnnouncementScreen({ navigation }) {
     const photos = user.photos.map((photoUrl, index) => {
         return (
             <View key={index} style={styles.annonceContainer}>
-                {/* <Image source={{ uri: photoUrl }} style={styles.photo} /> */}
+                <Image source={{ uri: photoUrl }} style={styles.photo} />
                 <View style={styles.annonceFooter}>
                     <Text style={styles.locationText}>
                         <Icon name="map-marker" size={16} color="black" /> {user.city}
@@ -42,7 +42,7 @@ export default function AnnouncementScreen({ navigation }) {
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("ProfilScreen")}
+                    onPress={() => navigation.navigate("TabNavigator",{screen:"ProfilScreen"})}
                     activeOpacity={0.8}
                 >
                     <Icon

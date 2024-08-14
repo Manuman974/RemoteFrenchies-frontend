@@ -10,7 +10,7 @@ const initialState = {
     city: null,
     e_mail: null,
     photos: [],
-    photoProfile: "",
+    profile_picture: "",
   },
 };
 
@@ -36,7 +36,7 @@ export const userSlice = createSlice({
       );
     },
     addPhotoProfile: (state, action) => {
-      state.value.photoProfile = action.payload;
+      state.value.profile_picture = action.payload;
     },
   },
 });

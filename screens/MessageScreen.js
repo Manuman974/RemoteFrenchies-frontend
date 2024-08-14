@@ -31,7 +31,7 @@ export default function MessageScreen({ navigation }) {
     // Fonction pour récupérer les messages du serveur
     const fetchMessages = () => {
         // Faire une requête GET au serveur pour récupérer les messages de l'utilisateur actuel
-        fetch(`http://192.168.1.39:3000/users/messages/${user.token}`, {
+        fetch(`http://192.168.33.186:3000/users/messages/${user.token}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" }, // Indique que la requête et la réponse doivent être au format JSON
         })
