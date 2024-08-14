@@ -6,15 +6,17 @@ import {
   Platform,
   Image,
   ScrollView,
+  TouchableOpacity
 } from "react-native";
 import CustomHeader from "../components/CustomHeader";
 import CustomParagraph from "../components/CustomParagraph";
 import CustomButton from "../components/CustomButton";
 import CustomProfile, { CustomCity } from "../components/CustomProfile";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default function RemoterSelectedScreen({
   navigation,
-  route: {
+route: {
     params: { item },
   },
 }) {
@@ -45,12 +47,19 @@ export default function RemoterSelectedScreen({
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <CustomHeader
-        navigation={navigation}
-        title=""
-        useIcon={false}
-        clickableIcon={() => navigation.goBack()}
-      />
+        <View style={styles.icon}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("TabNavigator",{screen:"Recherche"})}
+            activeOpacity={0.8}
+          >
+            <Icon
+              name="arrow-left"
+              style={styles.reply}
+              size={30}
+              color="#000000"
+            />
+          </TouchableOpacity>
+        </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.profileContainer}>
           <CustomProfile
@@ -70,9 +79,9 @@ export default function RemoterSelectedScreen({
           />
         </View>
         <View style={styles.line}></View>
-        <View style={styles.adCountainer}>
-          <Image style></Image>
-          <CustomCity city={item.propositionData.main_address.city} />
+        <View >
+          <Image style={styles.photoCountainer}></Image>
+          <CustomCity style={styles.remoterCityStyle} city={item.propositionData.main_address.city} />
         </View>
         <View style={styles.descriptionsContainer}>
           <CustomParagraph
@@ -111,8 +120,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
-    borderColor: "purple",
-    borderWidth: 2,
+  },
+
+  icon: {
+    marginTop: 60,
+    width: "100%",
+    paddingLeft: 20,
   },
 
   scrollView: {
@@ -120,16 +133,12 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "green",
-    borderWidth: 3,
     paddingTop: 30,
   },
 
   profileContainer: {
     width: 280,
     height: 80,
-    borderColor: "green",
-    borderWidth: 2,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -149,6 +158,10 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 
+  remoterCityStyle: {
+    fontSize: 18,
+  },
+
   remoterFirstnameStyle: {
     fontSize: 18,
     lineHeight: 27,
@@ -165,17 +178,17 @@ const styles = StyleSheet.create({
   },
 
   line: {
-    borderColor: "red",
+    borderColor: "black",
     borderWidth: 1,
     width: 280,
     marginTop: 20,
   },
 
-  adCountainer: {
-    width: 280,
+  photoCountainer: {
+    width: 300,
     height: 178, // à enlever car s'adaptera en fonction des infos reçues
-    borderColor: "green",
-    borderWidth: 2,
+backgroundColor: '#DDDDDD',
     marginTop: 20,
+    borderRadius: 20,
   },
 });

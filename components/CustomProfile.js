@@ -58,7 +58,7 @@ export const CustomProfile = ({
 export const CustomCity = ({ city }) => {
   return (
     <View style={styles.remoterCityContainer}>
-      <FontAwesome name="map-marker" style={styles.icon} size={18} />
+      <FontAwesome name="map-marker" style={styles.icon} size={25} />
 
       <Text style={styles.remoterCity}>{city}</Text>
     </View>
@@ -67,8 +67,6 @@ export const CustomCity = ({ city }) => {
 
 const styles = StyleSheet.create({
   remoterProfile: {
-    borderColor: "yellow",
-    borderWidth: 3,
     height: 190,
     alignItems: "center",
     marginRight: 10,
@@ -81,66 +79,52 @@ const styles = StyleSheet.create({
   },
 
   remoterNameAndJobContainer: {
-    borderColor: "grey",
-    borderWidth: 2,
+
   },
 
   remoterNameContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "pink",
-    borderWidth: 2,
   },
 
   remoterFirstname: {
-    fontFamily: "poppins",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 14,
     lineHeight: 21,
-    fontWeight: "bold",
     marginRight: 5,
   },
 
   remoterLastname: {
-    fontFamily: "poppins",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 14,
     lineHeight: 21,
-    fontWeight: "bold",
   },
 
   remoterJob: {
-    fontFamily: "poppins",
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
     lineHeight: 21,
     marginBottom: 5,
-    borderColor: "pink",
-    borderWidth: 2,
   },
 
   remoterCityContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    marginLeft: 10,
+    marginTop: 10,
     alignItems: "center",
-    borderColor: "blue",
-    borderWidth: 2,
-
-    height: 21,
   },
 
   remoterCity: {
-    fontFamily: "poppins",
-    fontWeight: "bold",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 14,
     lineHeight: 21,
-    borderColor: "purple",
-    borderWidth: 3,
+    textAlign: 'left',
   },
 
   icon: {
-    width: 15,
-    height: 17,
-    borderColor: "grey",
-    borderWidth: 2,
+    width: 25,
+    height: 25,
   },
 
   button: {
@@ -154,8 +138,7 @@ const styles = StyleSheet.create({
   },
 
   textButton: {
-    fontFamily: "poppins",
-    fontWeight: "bold",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 14,
     lineHeight: 21,
     color: "#FFFFFF",

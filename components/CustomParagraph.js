@@ -39,19 +39,13 @@ export const CustomParagraph = ({ paragraphText, title, bulletPoints }) => {
 const styles = StyleSheet.create({
   paragraphContainer: {
     width: 284,
-
-    borderColor: "blue",
-    borderWidth: 1,
     marginTop: 30,
   },
 
   title: {
-    fontFamily: "poppins",
-    fontWeight: "bold",
-    fontSize: 15,
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 16,
     lineHeight: 22.5,
-    borderColor: "pink",
-    borderWidth: 1,
   },
 
   line: {
@@ -63,12 +57,9 @@ const styles = StyleSheet.create({
   },
 
   paragraphText: {
-    fontFamily: "poppins",
-    fontWeight: "400",
+    fontFamily: "Poppins-Regular",
     fontSize: 13,
     lineHeight: 19.5,
-    borderColor: "grey",
-    borderWidth: 1,
   },
 
   //BULLETPOINT STYLE
@@ -76,8 +67,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
 
     marginBottom: 5,
-    borderColor: "green",
-    borderWidth: 1,
   },
 
   bulletInnerContainer: {
@@ -86,7 +75,7 @@ const styles = StyleSheet.create({
   },
 
   bulletText: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontSize: 13,
     lineHeight: 20,
     marginLeft: 10,
