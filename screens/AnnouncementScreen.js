@@ -18,7 +18,7 @@ export default function AnnouncementScreen({ navigation }) {
     const photos = user.photos.map((photoUrl, index) => {
         return (
             <View key={index} style={styles.annonceContainer}>
-                {/* <Image source={{ uri: photoUrl }} style={styles.photo} /> */}
+                <Image source={{ uri: photoUrl }} style={styles.photo} />
                 <View style={styles.annonceFooter}>
                     <Text style={styles.locationText}>
                         <Icon name="map-marker" size={16} color="black" /> {user.city}
@@ -28,7 +28,7 @@ export default function AnnouncementScreen({ navigation }) {
                             onPress={() => navigation.navigate("Proposer")}
                             style={styles.modifyButton}
                         >
-                            <Text style={styles.modifyButtonText}>Modifier</Text>
+                            <Text style={styles.modifyButtonText}>Créer une autre annonce</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => dispatch(removePhoto(photoUrl))}>
                             <Icon name="trash-o" size={24} color="#FF6F61" />

@@ -56,7 +56,7 @@ export default function ProfilScreen({ navigation }) {
             // Ajouter au magasin Redux si le téléchargement a réussi
             dispatch(addPhotoProfile(data.url));
           } else {
-            Alert.alert("Échec du téléchargement de la photo");
+            Error("Échec du téléchargement de la photo");
           }
         });
     }

@@ -44,8 +44,8 @@ export default function ProposerScreen({ navigation }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        "main_address.address": adresse, //MODIF K
-        "main_address.city": city, //MODIF K
+        street: adresse, //MODIF K
+        city: city, //MODIF K
         welcome_day: jourAccueil,
         reception_hours: heureAccueil,
         fiber_connection: checkboxes.fiber_connection,
