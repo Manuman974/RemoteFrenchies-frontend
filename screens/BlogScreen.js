@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 import { useState } from "react";
 const { width, height } = Dimensions.get('window');
 // Texte de l'article avec un affichage limité à 250 caractéres
-export default function BlogScreen({navigation}) {
+export default function BlogScreen({ navigation }) {
     const [textCut1, setTextCut1] = useState(false);
     const [textCut2, setTextCut2] = useState(false);
     const [textCut3, setTextCut3] = useState(false);
@@ -31,89 +31,89 @@ export default function BlogScreen({navigation}) {
     return (
         // jsx des articles
         <SafeAreaView style={styles.safeArea}>
-        <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardAvoidingView}
-         >
-            <ScrollView contentContainerStyle={styles.scrollView}>
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Icon style={styles.icon1} name='file-lines' size={30} color='#49B48C' />
-                        <Text style={styles.h1}>Fil d'actualités</Text>
-                    </View>
-                    <View style={styles.separator}></View>
-                    <View style={styles.inputContainer}>
-                        < Icon style={styles.icon2} name='magnifying-glass' size={20} color='#49B48C' />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Rechercher"
-                        />
-                    </View>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Les Avantages du Télétravail pour les Employés</Text>
-                        <View style={styles.dateContainer}>
-                            <Text style={styles.h3}>13 Janvier 2024</Text>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.keyboardAvoidingView}
+            >
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                    <View style={styles.container}>
+                        <View style={styles.header}>
+                            <Icon style={styles.icon1} name='file-lines' size={30} color='#49B48C' />
+                            <Text style={styles.h1}>Fil d'actualités</Text>
                         </View>
-                    </View>
-                    <View style={styles.imageContainer}>
-                        <Image
-                            source={require("../assets/teletravail1.jpeg")}
-                            style={styles.photoRemoter}
-                        />
-                    </View>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.body}>{textCut1 ? text1 : truncatedText1}</Text>
-                        <TouchableOpacity onPress={() => setTextCut1(!textCut1)}>
-                            <Text style={styles.buttonText}>
-                                {textCut1 ? 'Voir moins' : 'Voir plus'}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.separator}></View>
+                        <View style={styles.inputContainer}>
+                            < Icon style={styles.icon2} name='magnifying-glass' size={20} color='#49B48C' />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Rechercher"
+                            />
+                        </View>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.title}>Les Avantages du Télétravail pour les Employés</Text>
+                            <View style={styles.dateContainer}>
+                                <Text style={styles.h3}>13 Janvier 2024</Text>
+                            </View>
+                        </View>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                source={require("../assets/teletravail1.jpeg")}
+                                style={styles.photoRemoter}
+                            />
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.body}>{textCut1 ? text1 : truncatedText1}</Text>
+                            <TouchableOpacity onPress={() => setTextCut1(!textCut1)}>
+                                <Text style={styles.buttonText}>
+                                    {textCut1 ? 'Voir moins' : 'Voir plus'}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View style={styles.titleContainer2}>
-                        <Text style={styles.title}>Comment Maintenir la Collaboration en Télétravail</Text>
-                        <View style={styles.dateContainer2}>
-                            <Text style={styles.h3}>18 Mai 2024</Text>
+                        <View style={styles.titleContainer2}>
+                            <Text style={styles.title}>Comment Maintenir la Collaboration en Télétravail</Text>
+                            <View style={styles.dateContainer2}>
+                                <Text style={styles.h3}>18 Mai 2024</Text>
+                            </View>
+                        </View>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                source={require("../assets/teletravaill2.jpeg")}
+                                style={styles.photoRemoter}
+                            />
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.body}>{textCut2 ? text2 : truncatedText2}</Text>
+                            <TouchableOpacity onPress={() => setTextCut2(!textCut2)}>
+                                <Text style={styles.buttonText}>
+                                    {textCut2 ? 'Voir moins' : 'Voir plus'}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.titleContainer3}>
+                            <Text style={styles.title}>Les Défis du Télétravail et Comment les Surmonter</Text>
+                            <View style={styles.dateContainer3}>
+                                <Text style={styles.h3}>23 Septembre 2024</Text>
+                            </View>
+                        </View>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                source={require("../assets/teletravaill3.jpeg")}
+                                style={styles.photoRemoter}
+                            />
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.body}>{textCut3 ? text3 : truncatedText3}</Text>
+                            <TouchableOpacity onPress={() => setTextCut3(!textCut3)}>
+                                <Text style={styles.buttonText}>
+                                    {textCut3 ? 'Voir moins' : 'Voir plus'}
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={styles.imageContainer}>
-                        <Image
-                            source={require("../assets/teletravaill2.jpeg")}
-                            style={styles.photoRemoter}
-                        />
-                    </View>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.body}>{textCut2 ? text2 : truncatedText2}</Text>
-                        <TouchableOpacity onPress={() => setTextCut2(!textCut2)}>
-                            <Text style={styles.buttonText}>
-                                {textCut2 ? 'Voir moins' : 'Voir plus'}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.titleContainer3}>
-                        <Text style={styles.title}>Les Défis du Télétravail et Comment les Surmonter</Text>
-                        <View style={styles.dateContainer3}>
-                            <Text style={styles.h3}>23 Septembre 2024</Text>
-                        </View>
-                    </View>
-                    <View style={styles.imageContainer}>
-                        <Image
-                            source={require("../assets/teletravaill3.jpeg")}
-                            style={styles.photoRemoter}
-                        />
-                    </View>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.body}>{textCut3 ? text3 : truncatedText3}</Text>
-                        <TouchableOpacity onPress={() => setTextCut3(!textCut3)}>
-                            <Text style={styles.buttonText}>
-                                {textCut3 ? 'Voir moins' : 'Voir plus'}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
 
-        </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
 
 
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: '#DDD',
         width: 280,
-        height: 50, 
+        height: 50,
         borderColor: '#8f8f8f',
         borderWidth: 1,
         borderRadius: 10,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginRight: 10,
         width: width * 0.8,
-        
+
     },
     titleContainer: {
         height: 80,
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
         marginLeft: 100,
     },
     icon2: {
-       marginRight: 10,
+        marginRight: 10,
     },
     buttonText: {
         color: "green",
