@@ -22,17 +22,17 @@ export default function RemoterSelectedScreen({
 
   // Condition pour les bulletPoints des avantages
   const remoterAdvantages = [];
-  if (item.proposition.fiber_connection) {
+  if (item.propositionData.fiber_connection) {
     remoterAdvantages.push({ bulletText: "Fibre optique" });
   }
-  if (item.proposition.coffee_tea) {
+  if (item.propositionData.coffee_tea) {
     remoterAdvantages.push({ bulletText: "Café/Thé " });
   }
-  if (item.proposition.dedicated_office) {
+  if (item.propositionData.dedicated_office) {
     remoterAdvantages.push({ bulletText: "Bureau dédié" });
   }
-  if (item.proposition.other) {
-    remoterAdvantages.push({ bulletText: item.proposition.other });
+  if (item.propositionData.other) {
+    remoterAdvantages.push({ bulletText: item.propositionData.other });
   }
 
   //Action click "se rencontrer"
@@ -54,11 +54,11 @@ export default function RemoterSelectedScreen({
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.profileContainer}>
           <CustomProfile
-            firstname={item.user.firstname}
-            lastname={item.user.lastname}
+            firstname={item.userData.firstname}
+            lastname={item.userData.lastname}
             showCity={false}
             showButton={false}
-            job={item.user.job}
+            job={item.userData.job}
             remoterProfileStyle={styles.remoterProfileStyle}
             photoStyle={styles.photoStyle}
             remoterNameAndJobContainerStyle={
@@ -72,23 +72,24 @@ export default function RemoterSelectedScreen({
         <View style={styles.line}></View>
         <View style={styles.adCountainer}>
           <Image style></Image>
-          <CustomCity city={item.proposition.main_address.city} />
+          <CustomCity city={item.propositionData.main_address.city} />
         </View>
         <View style={styles.descriptionsContainer}>
           <CustomParagraph
             title="Descriptif"
-            paragraphText={item.proposition.description}
+            paragraphText={item.propositionData.description}
           />
           <CustomParagraph
             title="Disponibilités"
             bulletPoints={[
               {
                 bulletText: "Jour : ",
-                detailsText: item.proposition.welcome_day || "Non spécifié",
+                detailsText: item.propositionData.welcome_day || "Non spécifié",
               },
               {
                 bulletText: "Horaires : ",
-                detailsText: item.proposition.reception_hours || "Non spécifié",
+                detailsText:
+                  item.propositionData.reception_hours || "Non spécifié",
               },
             ]}
           />

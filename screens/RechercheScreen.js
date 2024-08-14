@@ -15,7 +15,6 @@ import CustomHeader from "../components/CustomHeader";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
-import { useSelector } from "react-redux";
 
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
@@ -52,7 +51,6 @@ export default function RechercheScreen({ navigation }) {
   const [remoterProfiles, setRemoterProfiles] = useState([]);
   const [searchDone, setSearchDone] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const user = useSelector((state) => state.user.value);
 
   // = > ACTIONS
 
@@ -61,18 +59,18 @@ export default function RechercheScreen({ navigation }) {
       const result = await Location.requestForegroundPermissionsAsync();
       const status = result?.status;
 
-  if (status === "granted") {
-    Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-      setCurrentPosition({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        // Pour zoomer automatiquement sur la carte
-        latitudeDelta: 0.15,
-        longitudeDelta: 0.15,
-      });
-    });
-  }
-})();
+      if (status === "granted") {
+        Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+          setCurrentPosition({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            // Pour zoomer automatiquement sur la carte
+            latitudeDelta: 0.15,
+            longitudeDelta: 0.15,
+          });
+        });
+      }
+    })();
   }, []);
 
   //Recherche par ville des utilisateurs proposant leur annonce
@@ -92,12 +90,12 @@ export default function RechercheScreen({ navigation }) {
             return {
               latitude: user.main_address.addressLatitude,
               longitude: user.main_address.adressLongitude,
-              firstname: user.user.firstname,
-              lastname: user.user.lastname,
+              // firstname: user.user.firstname,
+              // lastname: user.user.lastname,
             };
           });
           console.log("ADDRESS COORDINATES :", coordinates);
-          const remoters = data.propositionData.map((user, i) => {
+          const remoters = data.propositionData.map((data, i) => {
             return {
               id: i,
               // firstname: user.user.firstname,
@@ -106,33 +104,33 @@ export default function RechercheScreen({ navigation }) {
               // city: user.main_address.city,
               // latitude: user.main_address.addressLatitude,
               // longitude: user.main_address.adressLongitude,
-              proposition: user,
-              user: user.user,
+              propositionData: data,
+              userData: data.user,
             };
           });
 
-      // Déplacer la carte vers la première coordonnée trouvée
-      if (coordinates.length > 0) {
-        setCurrentPosition({
-          latitude: coordinates[0].latitude,
-          longitude: coordinates[0].longitude,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
-        });
-      }
+          // Déplacer la carte vers la première coordonnée trouvée
+          if (coordinates.length > 0) {
+            setCurrentPosition({
+              latitude: coordinates[0].latitude,
+              longitude: coordinates[0].longitude,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1,
+            });
+          }
 
-      setAddressesCoordinates(coordinates);
-      console.log("REMOTERS PROFILES", remoters);
-      setRemoterProfiles(remoters);
-      setErrorMessage("");
-      setSearchDone(true);
-    } else {
-      setAddressesCoordinates([]);
-      setRemoterProfiles([]);
-      setErrorMessage("");
-      setSearchDone(true);
-    }
-  });
+          setAddressesCoordinates(coordinates);
+          console.log("REMOTERS PROFILES", remoters);
+          setRemoterProfiles(remoters);
+          setErrorMessage("");
+          setSearchDone(true);
+        } else {
+          setAddressesCoordinates([]);
+          setRemoterProfiles([]);
+          setErrorMessage("");
+          setSearchDone(true);
+        }
+      });
   };
 
   const remoteMarkers = addressesCoordinates.map((remoter, i) => {
@@ -155,28 +153,28 @@ export default function RechercheScreen({ navigation }) {
   // Elle permet de récupérer les propriétés et les utiliser dans le composant.
   const renderItem = ({ item }) => (
     <View style={styles.remoterProfile}>
-      <Image source={{ uri: user.photoProfile }} style={styles.photoRemoter} />
+      {/* <Image source={{ uri: user.photoProfile }} style={styles.photoRemoter} /> */}
       <View style={styles.remoterNameContainer}>
-        <Text style={styles.remoterFirstname}>{item.user.firstname}</Text>
-        <Text style={styles.remoterLastname}>{item.user.lastname}</Text>
+        <Text style={styles.remoterFirstname}>{item.userData.firstname}</Text>
+        <Text style={styles.remoterLastname}>{item.userData.lastname}</Text>
       </View>
 
-  <Text style={styles.remoterJob}>{item.user.job}</Text>
-  <View style={styles.remoterCityContainer}>
-    <FontAwesome name="map-marker" style={styles.icon} size={18} />
+      <Text style={styles.remoterJob}>{item.userData.job}</Text>
+      <View style={styles.remoterCityContainer}>
+        <FontAwesome name="map-marker" style={styles.icon} size={18} />
 
-    <Text style={styles.remoterCity}>
-      {item.proposition.main_address.city}
-    </Text>
-  </View>
-  <TouchableOpacity
-    onPress={() => navigation.navigate("RemoterSelected", { item })}
-    style={styles.button}
-    activeOpacity={0.8}
-  >
-    <Text style={styles.textButton}>Voir</Text>
-  </TouchableOpacity>
-</View>
+        <Text style={styles.remoterCity}>
+          {item.propositionData.main_address.city}
+        </Text>
+      </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("RemoterSelected", { item })}
+        style={styles.button}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.textButton}>Voir</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   return (
@@ -231,7 +229,7 @@ export default function RechercheScreen({ navigation }) {
             searchDone && (
               <>
                 <Text style={styles.noRemoterMessage}>
-                  :sweat_smile: Oups ! Nous n'avons pas encore de Remoters dans cette
+                  😅 Oups ! Nous n'avons pas encore de Remoters dans cette
                   ville.
                 </Text>
                 <Text style={styles.noRemoterMessage}>

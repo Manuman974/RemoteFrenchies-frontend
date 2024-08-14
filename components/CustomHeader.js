@@ -1,4 +1,3 @@
-	
 import React, { useLayoutEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -71,13 +70,13 @@ const CustomHeader = ({
         <View style={styles.headerTitleContainer}>
           <FontAwesome name={iconName} size={25} />
 
-      <Text style={[styles.headerTitleText, textStyle]}>{title}</Text>
-    </View>
-  ),
-  headerStyle: {
-    backgroundColor: "white",
-  },
-});
+          <Text style={[styles.headerTitleText, textStyle]}>{title}</Text>
+        </View>
+      ),
+      headerStyle: {
+        backgroundColor: "white",
+      },
+    });
   }, [navigation, title, textStyle, iconName]);
 
   return null; // Ce composant n'affiche rien, il configure seulement le header.
