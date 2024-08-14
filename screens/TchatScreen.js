@@ -14,7 +14,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 
-export default function TchatScreen({ route, navigation }) {
+export default function TchatScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
@@ -38,9 +38,9 @@ export default function TchatScreen({ route, navigation }) {
                     })));
                 }
             })
-            .catch(error => console.error("Error fetching messages:", error));
     };
 
+    // Fonction pour envoyer un message au serveur
     const sendMessageToServer = (message) => {
         return fetch("http://192.168.1.39:3000/discussions/messages", {
             method: "POST",
@@ -62,13 +62,15 @@ export default function TchatScreen({ route, navigation }) {
             })
             .then((data) => {
                 console.log('Message sent:', data);
-                fetchMessages(); // Refetch messages after sending
+                fetchMessages(); // Récupère les messages après l'envoi
             })
-            .catch(error => console.error("Error sending message:", error));
     };
 
+    // Fonction pour gérer l'envoi d'un message
     const sendMessage = () => {
+        // Vérifiez si le nouveau message n'est pas juste un espace
         if (newMessage.trim().length > 0) {
+            // Efface le champ de saisie
             setNewMessage('');
 
             // Envoie un message au serveur
@@ -76,7 +78,9 @@ export default function TchatScreen({ route, navigation }) {
         }
     };
 
+    // Composant fonctionnel pour afficher une bulle de message
     const MessageBubble = ({ text, isSentByUser }) => (
+        // Afficher le conteneur avec des styles selon que le message est envoyé par l'utilisateur ou reçu
         <View style={[
             styles.messageBubble,
             isSentByUser ? styles.sentMessage : styles.receivedMessage
@@ -85,7 +89,9 @@ export default function TchatScreen({ route, navigation }) {
         </View>
     );
 
+    // Fonction pour restituer un élément de message individuel
     const renderItem = ({ item }) => (
+        // Afficher le conteneur du message, stylisé selon qu'il a été envoyé par l'utilisateur ou reçu
         <View style={[
             styles.messageContainer,
             item.isSentByUser ? styles.sentContainer : styles.receivedContainer

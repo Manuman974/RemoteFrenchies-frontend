@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
 import {
     StyleSheet,
     View,
@@ -14,32 +14,60 @@ import { useSelector } from 'react-redux';
 
 
 
-export default function MessagingScreen({ navigation }) {
+export default function MessageScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
-    const messages = [
-        { id: '1', name: 'Rémy Gaillard', job: 'Développeur web', messagesCount: 5 },
-        { id: '2', name: 'Rémy Gaillard', job: 'Développeur web', messagesCount: 5 },
-        { id: '3', name: 'Rémy Gaillard', job: 'Développeur web', messagesCount: 5 },
-        { id: '4', name: 'Rémy Gaillard', job: 'Développeur web', messagesCount: 5 },
-    ];
+    const [messages, setMessages] = useState([]);
 
+    useEffect(() => {
+        // Fonction pour récupérer les messages toutes les 1 secondes
+        const interval = setInterval(() => {
+            fetchMessages();
+        }, 1000); // 1000 milliseconds = 1 seconds
+
+        // Efface l'intervalle lorsque le composant est démonté
+        return () => clearInterval(interval);
+    }, []);
+
+    // Fonction pour récupérer les messages du serveur
+    const fetchMessages = () => {
+        // Faire une requête GET au serveur pour récupérer les messages de l'utilisateur actuel
+        fetch(`http://192.168.1.39:3000/users/messages/${user.token}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }, // Indique que la requête et la réponse doivent être au format JSON
+        })
+            .then((response) => response.json()) 
+            .then(data => {
+                console.log(data.data.discussion)
+                // Vérifiez si le tableau des discussions existe et n'est pas vide
+                if (data.data.discussion && data.data.discussion.length > 0) {
+                    // Mappez le tableau de discussions à un nouveau tableau d'objets de message
+                    setMessages(data.data.discussion.map((discussion) => ({
+                        id: discussion._id, // ID unique de la discussion
+                        name: `${data.data.firstname} ${data.data.lastname}`,
+                        job: data.data.job,
+                        messagesCount: discussion.message.length // Nombre de messages dans la discussion
+                    })));
+                }
+            })
+    };
+
+    // Composant fonctionnel pour restituer un élément de message individuel
     const MessageItem = ({ name, job, messagesCount }) => (
-        <TouchableOpacity onPress={ () => navigation.navigate("TchatScreen")}>
+        <TouchableOpacity onPress={() => navigation.navigate("TchatScreen")}>
             <View style={styles.messageContainer}>
                 <Image
-                    source={{ uri: user.photoProfile }} // Remplacez par le chemin réel de l'image
+                    source={{ uri: user.photoProfile }} // URL de la photo de profil de l'objet utilisateur
                     style={styles.profileImage}
                 />
                 <View style={styles.textContainer}>
-                    <Text style={styles.firstname}>{user.firstname}</Text>
-                    <Text style={styles.lastname}>{user.lastname}</Text>
+                    <Text style={styles.name}>{name}</Text>
+                    <Text style={styles.job}>{job}</Text>
                 </View>
-                <View>
-                    <Text style={styles.job}>{user.job}</Text>
-                </View>
-                <View style={styles.messageCountContainer}>
-                    <Text style={styles.messageCount}>{messagesCount.toString().padStart(2, '0')}</Text>
-                </View>
+                {messagesCount > 0 && (
+                    <View style={styles.messageCountContainer}>
+                        <Text style={styles.messageCount}>{messagesCount.toString().padStart(2, '0')}</Text>
+                    </View>
+                )}
             </View>
         </TouchableOpacity>
     );
@@ -109,17 +137,18 @@ const styles = StyleSheet.create({
     textContainer: {
         flex: 1,
         marginLeft: 10,
-        flexDirection: 'row',
+        // flexDirection: 'row',
     },
-    firstname: {
-        fontSize: 16,
-        fontFamily: 'Poppins-SemiBold',
-    },
-    lastname: {
-        fontSize: 16,
+    name: {
         marginLeft: 10,
+        fontSize: 16,
         fontFamily: 'Poppins-SemiBold',
     },
+    // lastname: {
+    //     fontSize: 16,
+    //     marginLeft: 10,
+    //     fontFamily: 'Poppins-SemiBold',
+    // },
     job: {
         fontSize: 14,
         marginLeft: 10,
