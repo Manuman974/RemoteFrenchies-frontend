@@ -6,7 +6,7 @@ import {
   Platform,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import CustomHeader from "../components/CustomHeader";
 import CustomParagraph from "../components/CustomParagraph";
@@ -16,7 +16,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default function RemoterSelectedScreen({
   navigation,
-route: {
+  route: {
     params: { item },
   },
 }) {
@@ -47,19 +47,21 @@ route: {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-        <View style={styles.icon}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("TabNavigator",{screen:"Recherche"})}
-            activeOpacity={0.8}
-          >
-            <Icon
-              name="arrow-left"
-              style={styles.reply}
-              size={30}
-              color="#000000"
-            />
-          </TouchableOpacity>
-        </View>
+      <View style={styles.icon}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("TabNavigator", { screen: "Recherche" })
+          }
+          activeOpacity={0.8}
+        >
+          <Icon
+            name="arrow-left"
+            style={styles.reply}
+            size={30}
+            color="#000000"
+          />
+        </TouchableOpacity>
+      </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.profileContainer}>
           <CustomProfile
@@ -79,9 +81,12 @@ route: {
           />
         </View>
         <View style={styles.line}></View>
-        <View >
+        <View>
           <Image style={styles.photoCountainer}></Image>
-          <CustomCity style={styles.remoterCityStyle} city={item.propositionData.main_address.city} />
+          <CustomCity
+            style={styles.remoterCityStyle}
+            city={item.propositionData.main_address.city}
+          />
         </View>
         <View style={styles.descriptionsContainer}>
           <CustomParagraph
@@ -107,7 +112,7 @@ route: {
         <CustomButton
           title="Se rencontrer"
           style={{ marginTop: 40 }}
-          onPress={() => navigation.navigate("Chat")}
+          onPress={() => navigation.navigate("TchatScreen")}
         />
       </ScrollView>
     </KeyboardAvoidingView>
@@ -187,7 +192,7 @@ const styles = StyleSheet.create({
   photoCountainer: {
     width: 300,
     height: 178, // à enlever car s'adaptera en fonction des infos reçues
-backgroundColor: '#DDDDDD',
+    backgroundColor: "#DDDDDD",
     marginTop: 20,
     borderRadius: 20,
   },
