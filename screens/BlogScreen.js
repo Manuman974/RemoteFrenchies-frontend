@@ -7,12 +7,14 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
-    TextInput
+    TextInput,
+    Dimensions,
+    Platform,
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome6';
 
 import { useState } from "react";
-
+const { width, height } = Dimensions.get('window');
 // Texte de l'article avec un affichage limité à 250 caractéres
 export default function BlogScreen({navigation}) {
     const [textCut1, setTextCut1] = useState(false);
@@ -29,13 +31,17 @@ export default function BlogScreen({navigation}) {
     return (
         // jsx des articles
         <SafeAreaView style={styles.safeArea}>
-        <KeyboardAvoidingView >
+        <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}
+         >
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <Icon style={styles.icon1} name='file-lines' size={30} color='#49B48C' />
                         <Text style={styles.h1}>Fil d'actualités</Text>
                     </View>
+                    <View style={styles.separator}></View>
                     <View style={styles.inputContainer}>
                         < Icon style={styles.icon2} name='magnifying-glass' size={20} color='#49B48C' />
                         <TextInput
@@ -115,6 +121,20 @@ export default function BlogScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#ffffff',
+    },
+    keyboardAvoidingView: {
+        flex: 1,
+    },
+    separator: {
+        width: width * 0.9,
+        height: 2,
+        backgroundColor: '#8f8f8f',
+        marginVertical: 20,
+        alignSelf: 'center',
+    },
     container: {
         // width: '100%',
         flex: 1,
@@ -123,21 +143,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     header: {
-        borderBottomWidth: 2,
-        marginTop: 40,
-        width: '100%',
+        // borderBottomWidth: 2,
+        marginTop: 50,
+        width: width * 0.9,
         flexDirection: 'row',
-        marginBottom: 10,
+        // marginBottom: 10,
+        marginRight: 170,
         // borderTop: 5,
         // padding: 10,
     },
     h1: {
-        marginRight: 120,
+        marginRight: 140,
         fontSize: 24,
         textAlign: 'center',
         fontFamily: 'Poppins-SemiBold',
         alignSelf: 'center',
-        width: "80%",
+        width: "70%",
         // borderWidth: 1,
         // borderColor: 'red',
     },
@@ -156,27 +177,29 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 10,
         marginRight: 10,
+        width: width * 0.8,
         
     },
     titleContainer: {
         height: 80,
-        width: "100%",
+        width: width * 0.9,
         marginTop: 5,
-        marginLeft: 15,
+        // marginRight: 5,
         //  borderWidth: 1,
         // borderColor: 'red',
     },
     titleContainer2: {
         height: 80,
-        width: "100%",
+        width: width * 0.9,
         marginTop: 10,
+        marginRight: 5,
         //  borderWidth: 1,
         // borderColor: 'red'
     },
     titleContainer3: {
-        marginRight: 20,
+        marginRight: 10,
         height: 80,
-        width: "100%",
+        width: width * 0.9,
         marginTop: 10,
         //  borderWidth: 1,
         // borderColor: 'red',
@@ -195,7 +218,7 @@ const styles = StyleSheet.create({
         // borderColor: 'red',
     },
     title: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'Poppins-SemiBold',
         marginTop: 10,
     },
@@ -208,12 +231,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 30,
+        marginTop: 10,
+        width: width * 0.90,
         //  borderWidth: 1,
         // borderColor: 'red',
     },
     h3: {
-        fontSize: 20,
+        fontSize: 15,
         fontFamily: 'Poppins-Regular',
         marginBottom: 30,
         alignItems: "center",
@@ -223,6 +247,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderBottomWidth: 1,
         paddingBottom: 10,
+        width: width * 0.90,
     },
     scrollView: {
         // padding: 24,
