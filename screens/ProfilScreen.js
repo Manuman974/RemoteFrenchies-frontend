@@ -11,7 +11,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { addPhotoProfile } from "../reducers/user";
+import { addPhotoProfile, logout } from "../reducers/user";
 import CustomProfilButton from "../components/CustomProfilButton";
 
 export default function ProfilScreen({ navigation }) {
@@ -22,7 +22,7 @@ export default function ProfilScreen({ navigation }) {
     let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert(
+      alert(
         "Autorisez-vous Remote frenchies à accéder à votre appareil photo"
       );
       return;
@@ -46,12 +46,13 @@ export default function ProfilScreen({ navigation }) {
       formData.append("Token", user.token);
 
       // Envoi de la photo au serveur
-      fetch("http://192.168.1.79:3000/profile", {
+      fetch("http://192.168.1.39:3000/profile", {
         method: "PUT",
         body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data)
           if (data && data.result) {
             // Ajouter au magasin Redux si le téléchargement a réussi
             dispatch(addPhotoProfile(data.url));
@@ -62,8 +63,17 @@ export default function ProfilScreen({ navigation }) {
     }
   };
 
+  const handlelogout = () => {
+    dispatch(logout());
+    console.log(test)
+    navigation.navigate("Home");
+  }
+
   return (
     <KeyboardAvoidingView>
+      <TouchableOpacity style={styles.logoutButton} onPress={() => handlelogout()}>
+        <Text style={styles.logoutText}>logout</Text>
+      </TouchableOpacity>
       <SafeAreaView style={styles.safeArea}>
         <View>
           <View style={styles.header}>
@@ -138,6 +148,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  logoutButton: {
+    position: "absolute",
+    top: 50,
+    left: 10,
+    backgroundColor: "#f44336", // Rouge
+    padding: 10,
+    borderRadius: 5,
+  },
+  logoutText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
   header: {
     marginTop: 50,
