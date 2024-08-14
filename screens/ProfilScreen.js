@@ -42,10 +42,12 @@ export default function ProfilScreen({ navigation }) {
         name: "photo.jpg",
         type: "image/jpeg",
       });
+      //MES MODIFS
+      formData.append("Token", user.token);
 
       // Envoi de la photo au serveur
       fetch("http://192.168.8.42:3000/profile", {
-        method: "POST",
+        method: "PUT",
         body: formData,
       })
         .then((response) => response.json())

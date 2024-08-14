@@ -30,6 +30,7 @@ export default function ProposerScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const [adresse, setAdresse] = useState("");
+  const [city, setCity] = useState(""); //MODIF K
   const [jourAccueil, setJourAccueil] = useState("");
   const [heureAccueil, setHeureAccueil] = useState("");
   const [autresAvantages, setAutresAvantages] = useState("");
@@ -43,7 +44,8 @@ export default function ProposerScreen({ navigation }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        main_address: adresse,
+        "main_address.address": adresse, //MODIF K
+        "main_address.city": city, //MODIF K
         welcome_day: jourAccueil,
         reception_hours: heureAccueil,
         fiber_connection: checkboxes.fiber_connection,
@@ -59,6 +61,7 @@ export default function ProposerScreen({ navigation }) {
         console.log(data);
         if (data.result) {
           setAdresse("");
+          setCity("");
           setJourAccueil("");
           setHeureAccueil("");
           setCheckboxes(initialCheckboxes);
@@ -195,6 +198,12 @@ export default function ProposerScreen({ navigation }) {
             placeholder="Adresse"
             value={adresse}
             onChangeText={setAdresse}
+          />
+
+          <CustomTextInput
+            placeholder="City"
+            value={city}
+            onChangeText={setCity}
           />
 
           <CustomTextInput
