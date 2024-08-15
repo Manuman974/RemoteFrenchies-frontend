@@ -46,7 +46,7 @@ export default function ProfilScreen({ navigation }) {
       formData.append("Token", user.token);
 
       // Envoi de la photo au serveur
-      fetch("http://192.168.1.39:3000/profile", {
+      fetch("http://192.168.1.79:3000/profile", {
         method: "PUT",
         body: formData,
       })
@@ -65,7 +65,7 @@ export default function ProfilScreen({ navigation }) {
 
   const handlelogout = () => {
     dispatch(logout());
-    console.log(test)
+    console.log("test")
     navigation.navigate("Home");
   }
 
