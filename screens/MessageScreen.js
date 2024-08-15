@@ -15,15 +15,15 @@ export default function MessageScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const [messages, setMessages] = useState([]);
 
-  // useEffect(() => {
-  //   // Fonction pour récupérer les messages toutes les 1 secondes
-  //   const interval = setInterval(() => {
-  //     fetchMessages();
-  //   }, 1000); // 1000 milliseconds = 1 seconds
+  useEffect(() => {
+    // Fonction pour récupérer les messages toutes les 1 secondes
+    const interval = setInterval(() => {
+      fetchMessages();
+    }, 1000); // 1000 milliseconds = 1 seconds
 
-  //   // Efface l'intervalle lorsque le composant est démonté
-  //   return () => clearInterval(interval);
-  // }, []);
+    // Efface l'intervalle lorsque le composant est démonté
+    return () => clearInterval(interval);
+  }, []);
 
   // Fonction pour récupérer les messages du serveur
   const fetchMessages = () => {

@@ -37,15 +37,16 @@ export default function ProposerScreen({ navigation }) {
   const [messageAnnonce, setMessageAnnonce] = useState("");
   const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
 
+  console.log("ETAT USER PHOTO:", user.photos);
   const handleSubmit = () => {
     // Gérer l'envoi des données
     console.log("token :", user.token);
-    fetch("http://192.168.33.186:3000/proposition", {
+    fetch("http://192.168.8.42:3000/proposition", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        "main_address.address": adresse, //MODIF K
-        "main_address.city": city, //MODIF K
+        street: adresse, //MODIF K
+        city: city, //MODIF K
         welcome_day: jourAccueil,
         reception_hours: heureAccueil,
         fiber_connection: checkboxes.fiber_connection,
@@ -54,6 +55,7 @@ export default function ProposerScreen({ navigation }) {
         other: autresAvantages,
         description: messageAnnonce,
         token: user.token,
+        home_photo: user.photos[0],
       }),
     })
       .then((response) => response.json())

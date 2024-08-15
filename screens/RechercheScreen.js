@@ -74,12 +74,14 @@ export default function RechercheScreen({ navigation }) {
           const coordinates = data.propositionData.map((user) => {
             return {
               latitude: user.main_address.addressLatitude,
-              longitude: user.main_address.adressLongitude,
-              firstname: user.user.firstname,
-              lastname: user.user.lastname,
+              longitude: user.main_address.addressLongitude,
+              // firstname: user.user.firstname,
+              // lastname: user.user.lastname,
             };
           });
           console.log("ADDRESS COORDINATES :", coordinates);
+
+          //Récupération des données des propositions et des users
           const remoters = data.propositionData.map((data, i) => {
             return {
               id: i,
