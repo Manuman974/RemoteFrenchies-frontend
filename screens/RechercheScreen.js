@@ -16,7 +16,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector } from "react-redux";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function RechercheScreen({ navigation }) {
   //SECTION HEADER
@@ -25,7 +25,6 @@ export default function RechercheScreen({ navigation }) {
   // Garantit que les options du <header> pour cette page s'appliquent correctement
   // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
   //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
-
 
   //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
@@ -75,12 +74,14 @@ export default function RechercheScreen({ navigation }) {
           const coordinates = data.propositionData.map((user) => {
             return {
               latitude: user.main_address.addressLatitude,
-              longitude: user.main_address.adressLongitude,
-              firstname: user.user.firstname,
-              lastname: user.user.lastname,
+              longitude: user.main_address.addressLongitude,
+              // firstname: user.user.firstname,
+              // lastname: user.user.lastname,
             };
           });
           console.log("ADDRESS COORDINATES :", coordinates);
+
+          //Récupération des données des propositions et des users
           const remoters = data.propositionData.map((data, i) => {
             return {
               id: i,
@@ -139,7 +140,10 @@ export default function RechercheScreen({ navigation }) {
   // Elle permet de récupérer les propriétés et les utiliser dans le composant.
   const renderItem = ({ item }) => (
     <View style={styles.remoterProfile}>
-      <Image source={require("../assets/photoJerome.png")} style={styles.photoRemoter} />
+      <Image
+        source={require("../assets/photoJerome.png")}
+        style={styles.photoRemoter}
+      />
       {/* <Image source={{ uri: user.photoProfile }} style={styles.photoRemoter} /> */}
       <View style={styles.remoterNameContainer}>
         <Text style={styles.remoterFirstname}>{item.userData.firstname}</Text>
@@ -170,13 +174,15 @@ export default function RechercheScreen({ navigation }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <View style={styles.header}>
-        <Icon name='search' style={styles.reply} size={30} color='#49B48C' />
+        <Icon name="search" style={styles.reply} size={30} color="#49B48C" />
         <Text style={styles.h1}>Recherche</Text>
       </View>
       <View style={styles.separator}></View>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View>
-          <Text style={styles.h4}>Trouve le Remoter qui te ressemble à côté de chez toi</Text>
+          <Text style={styles.h4}>
+            Trouve le Remoter qui te ressemble à côté de chez toi
+          </Text>
         </View>
         <View style={styles.inputContainer}>
           <TextInput
@@ -235,10 +241,9 @@ export default function RechercheScreen({ navigation }) {
           )}
         </View>
       </ScrollView>
-    </KeyboardAvoidingView >
+    </KeyboardAvoidingView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -249,22 +254,22 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 60,
     marginLeft: 30,
-    width: '80%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    width: "80%",
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   h1: {
     marginLeft: 10,
     fontSize: 24,
-    textAlign: 'center',
-    fontFamily: 'Poppins-SemiBold',
-    alignSelf: 'center',
+    textAlign: "center",
+    fontFamily: "Poppins-SemiBold",
+    alignSelf: "center",
   },
 
   customHeader: {
     marginTop: 300,
-    backgroundColor: 'red',
+    backgroundColor: "red",
   },
   scrollView: {
     paddingBottom: 20,
@@ -303,7 +308,7 @@ const styles = StyleSheet.create({
   },
 
   mapContainer: {
-    width: '80%',
+    width: "80%",
     height: 270,
     borderRadius: 20,
     overflow: "hidden",
@@ -412,19 +417,19 @@ const styles = StyleSheet.create({
 
   h2: {
     width: 250,
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
-    textAlign: 'center',
+    fontFamily: "Poppins-SemiBold",
+    textAlign: "center",
     marginBottom: 20,
   },
 
   h4: {
     width: 300,
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
-    textAlign: 'center',
+    fontFamily: "Poppins-SemiBold",
+    textAlign: "center",
     marginBottom: 10,
   },
 });
