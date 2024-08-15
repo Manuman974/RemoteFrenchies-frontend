@@ -51,7 +51,7 @@ export default function ModifyProfilScreen({ navigation }) {
             return;
         }
 
-        fetch("http://192.168.1.39:3000/users/", {
+        fetch("http://192.168.33.186:3000/users/", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
