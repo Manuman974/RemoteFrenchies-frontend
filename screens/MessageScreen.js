@@ -35,7 +35,7 @@ export default function MessageScreen({ navigation }) {
             method: "GET",
             headers: { "Content-Type": "application/json" }, // Indique que la requête et la réponse doivent être au format JSON
         })
-            .then((response) => response.json()) 
+            .then((response) => response.json())
             .then(data => {
                 console.log(data.data.discussion)
                 // Vérifiez si le tableau des discussions existe et n'est pas vide
@@ -76,8 +76,8 @@ export default function MessageScreen({ navigation }) {
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Icon name='envelope' style={styles.icon} size={30} color='#49B48C' />
-                    <Text style={styles.h1}>Messagerie</Text>
+                    <Icon name='envelope-o' style={styles.reply} size={30} color='#49B48C' />
+                    <Text style={styles.h1}>Message</Text>
                 </View>
                 <View style={styles.separator}></View>
                 <FlatList
@@ -100,17 +100,22 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        padding: 16,
-    },
+        backgroundColor: "#ffffff",
+      },
+
     header: {
+        marginTop: 60,
+        marginLeft: 30,
+        width: '80%',
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 50,
-        marginLeft: 30,
-    },
-    icon: {
-        marginRight: 10,
-    },
+      },
+
+reply: {
+marginBottom:5,
+marginRight: 10,
+},
+
     h1: {
         fontSize: 24,
         fontFamily: 'Poppins-SemiBold',

@@ -178,21 +178,15 @@ export default function ProposerScreen({ navigation }) {
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+              <View style={styles.header}>
+        <Icon name='hand-paper-o' style={styles.reply} size={30} color='#49B48C' />
+        <Text style={styles.h1}>Recherche</Text>
+      </View>
+      <View style={styles.separator}></View>
         <ScrollView
           contentContainerStyle={styles.scrollViewContent}
           style={styles.scrollView}
         >
-          <View style={styles.header}>
-            <Icon
-              name="hand-paper-o"
-              style={styles.reply}
-              size={30}
-              color="#49B48C"
-            />
-            <Text style={styles.title}>Proposer</Text>
-          </View>
-          <View style={styles.separator} />
-
           <Text style={styles.sectionTitle1}>
             Accueillir un télétravailleur
           </Text>
@@ -244,7 +238,7 @@ export default function ProposerScreen({ navigation }) {
             />
           </View>
           <CustomTextInput
-            placeholder="Autres : exemples (Vues, matériels sup...)"
+            placeholder="Autres : (ex: vues, matériels...)"
             value={autresAvantages}
             onChangeText={setAutresAvantages}
           />
@@ -271,6 +265,7 @@ export default function ProposerScreen({ navigation }) {
             style={styles.input2}
             onChangeText={(value) => setMessageAnnonce(value)}
             value={messageAnnonce}
+            multiline={true}
           />
 
           <CustomButton
@@ -286,16 +281,17 @@ export default function ProposerScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+
   safeArea: {
     flex: 1,
     backgroundColor: "white",
   },
+
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center",
   },
+
   scrollView: {
     flex: 1,
     width: "100%",
@@ -305,44 +301,51 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 20,
   },
+
   header: {
-    // borderWidth: 1,
-    // borderColor: 'red',
-    width: 300,
-    flexDirection: "row",
+    marginTop: 60,
+    marginLeft: 30,
+    width: '80%',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    paddingLeft: 10,
-  },
+  
+  reply: {
+    marginBottom:5,
+    },
+
+    h1: {
+      marginLeft: 10,
+      fontSize: 24,
+      textAlign: 'center',
+      fontFamily: 'Poppins-SemiBold',
+      alignSelf: 'center',
+    },
+
   separator: {
-    width: "90%",
+    width: "80%",
     height: 1,
     backgroundColor: "#8f8f8f",
     marginVertical: 20,
+    alignSelf: "center",
   },
+
   sectionTitle1: {
-    // borderWidth: 1,
-    // borderColor: 'red',
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: 'Poppins-SemiBold',
     alignSelf: "flex-start",
     marginLeft: 20,
     marginBottom: 10,
     paddingLeft: 30,
   },
+
   CustomTextInput: {
-    // borderWidth: 1,
-    // borderColor: 'red',
     width: 290,
   },
+
   sectionTitle2: {
-    // borderWidth: 1,
-    // borderColor: 'red',
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: 'Poppins-SemiBold',
     alignSelf: "flex-start",
     marginLeft: 20,
     marginBottom: 10,
@@ -357,10 +360,9 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     marginTop: 20,
+    textAlignVertical: "top",
   },
   checkboxes: {
-    // borderWidth: 1,
-    // borderColor: 'red',
     width: 330,
   },
 });

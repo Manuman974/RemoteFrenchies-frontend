@@ -122,7 +122,7 @@ export default function SignUpScreen({ navigation }) {
           contentContainerStyle={styles.scrollViewContent}
           style={styles.scrollView}
         >
-          <View style={styles.input}>
+          <View>
             <CustomTextInput
               placeholder="Nom"
               value={signUpFirstname}
@@ -168,13 +168,15 @@ export default function SignUpScreen({ navigation }) {
               onChangeText={setSignUpPassword}
               secureTextEntry={true}
             />
+
+            <CustomButton
+              title="Continuer"
+              onPress={handleRegister}
+              style={styles.button}
+              textStyle={styles.textButton}
+            />
+
           </View>
-          <CustomButton
-            title="Continuer"
-            onPress={handleRegister}
-            style={styles.button}
-            textStyle={styles.textButton}
-          />
         </ScrollView>
         <Text style={styles.errorText}>{error}</Text>
       </KeyboardAvoidingView>
@@ -183,11 +185,18 @@ export default function SignUpScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+
+button: {
+alignSelf: 'center',
+width: 250,
+marginTop: 20,
+},
+
   safeArea: {
     flex: 1,
     backgroundColor: "white",
-    justifyContent: "flex-start",
   },
+
   container: {
     marginTop: 30,
     flex: 1,
@@ -195,25 +204,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   icon: {
     marginTop: 30,
     width: "100%",
     paddingLeft: 20,
   },
+
   image: {
     resizeMode: "contain",
     width: 250,
     alignSelf: "center",
-  },
-  text: {
-    width: 300,
-    height: 92,
-    // fontFamily: 'Poppins',
-    // fontWeight: '600',
-    // fontSize: 24,
-    lineHeight: 36,
-    textAlign: "center",
-    marginTop: 20,
   },
 
   h1: {
@@ -225,51 +226,16 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
-    marginTop: 0,
+    flex: 1,
+    width: "100%",
   },
+
   scrollViewContent: {
-    alignSelf: "center",
-    paddingVertical: 200,
-    paddingTop: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 20,
   },
-  input: {
-    width: 290,
-    height: 400,
-    marginTop: 20,
-  },
-  nom: {
-    margin: 10,
-    backgroundColor: "#DDD",
-    borderWidth: 1,
-    borderColor: "#8f8f8f",
-    width: 290,
-    height: 50,
-    borderRadius: 10,
-    padding: 10,
-    fontFamily: "Poppins-Regular",
-    fontSize: 13,
-    alignSelf: "center",
-  },
-  button: {
-    // borderColor: 'red',
-    // borderWidth: '1',
-    alignSelf: "center",
-    paddingTop: 8,
-    height: 50,
-    width: "70%",
-    marginTop: 100,
-    backgroundColor: "#49B48C",
-    borderRadius: 40,
-  },
-  textButton: {
-    color: "#ffffff",
-    height: 30,
-    fontSize: 16,
-    paddingTop: 5,
-    fontSize: 14,
-    textAlign: "center",
-    fontFamily: "Poppins-SemiBold",
-  },
+
   errorText: {
     color: "red",
     marginBottom: 20,

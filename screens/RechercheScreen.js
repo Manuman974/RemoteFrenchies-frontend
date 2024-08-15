@@ -189,7 +189,7 @@ export default function RechercheScreen({ navigation }) {
             style={styles.iconInput}
             onPress={() => handleSearch()}
           >
-            <FontAwesome name="search" size={23} color="#c0c1c1" />
+            <FontAwesome name="search" size={23} color="#49B48C" />
           </TouchableOpacity>
         </View>
         {errorMessage ? (
@@ -254,6 +254,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+reply: {
+marginBottom:5,
+},
+
   h1: {
     marginLeft: 10,
     fontSize: 24,
@@ -275,7 +279,7 @@ const styles = StyleSheet.create({
 
   separator: {
     width: "80%",
-    height: 2,
+    height: 1,
     backgroundColor: "#8f8f8f",
     marginVertical: 20,
     alignSelf: "center",
@@ -288,18 +292,18 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: 280,
+    width: 250,
     height: 50,
     borderRadius: 10,
     borderColor: "#8F8F8F",
     borderWidth: 1,
     backgroundColor: "#DDDDDD",
     paddingLeft: 20,
-    marginLeft: 22,
+    marginLeft: 15,
   },
 
   iconInput: {
-    marginLeft: 5,
+    marginLeft: 10,
   },
 
   mapContainer: {
