@@ -37,6 +37,7 @@ export default function ProposerScreen({ navigation }) {
   const [messageAnnonce, setMessageAnnonce] = useState("");
   const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
 
+  console.log("ETAT USER PHOTO:", user.photos);
   const handleSubmit = () => {
     // Gérer l'envoi des données
     console.log("token :", user.token);
@@ -54,6 +55,7 @@ export default function ProposerScreen({ navigation }) {
         other: autresAvantages,
         description: messageAnnonce,
         token: user.token,
+        home_photo: user.photos[0],
       }),
     })
       .then((response) => response.json())
@@ -204,7 +206,7 @@ export default function ProposerScreen({ navigation }) {
           />
 
           <CustomTextInput
-            placeholder="City"
+            placeholder="Ville"
             value={city}
             onChangeText={setCity}
           />

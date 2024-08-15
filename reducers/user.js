@@ -10,6 +10,7 @@ const initialState = {
     city: null,
     e_mail: null,
     photos: [],
+    // photos: "",
     profile_picture: "",
   },
 };
@@ -30,6 +31,7 @@ export const userSlice = createSlice({
     },
     addPhoto: (state, action) => {
       state.value.photos.push(action.payload);
+      // state.value.photos = action.payload;
     },
     removePhoto: (state, action) => {
       state.value.photos = state.value.photos.filter(
