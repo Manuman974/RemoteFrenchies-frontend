@@ -28,7 +28,7 @@ export default function AnnouncementScreen({ navigation }) {
                             onPress={() => navigation.navigate("Proposer")}
                             style={styles.modifyButton}
                         >
-                            <Text style={styles.modifyButtonText}>Modifier</Text>
+                            <Text style={styles.modifyButtonText}>Créer une autre annonce</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => dispatch(removePhoto(photoUrl))}>
                             <Icon name="trash-o" size={24} color="#FF6F61" />

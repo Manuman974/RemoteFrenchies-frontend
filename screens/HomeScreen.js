@@ -19,7 +19,6 @@ export default function HomeScreen({ navigation }) {
       <Text style={styles.h1}>Remote Frenchies, c'est quoi ?</Text>
       <Text style={styles.body}>Partage tes meilleurs pratiques de télétravail selon ta discipline métier. Rencontre tes pairs qui font partie de la communauté.</Text>
       <Text style={styles.body}>Allons coworker les uns chez les autres en rencontrant des Remote Frenchies près de chez toi.</Text>
-      {/* <TextInput style={styles.input} placeholder="Nickname" /> */}
       <View style={styles.btn}>
         <TouchableOpacity onPress={() => navigation.navigate('SignUp')} style={styles.button} activeOpacity={0.8}>
           <Text style={styles.textButton}>S'inscrire</Text>

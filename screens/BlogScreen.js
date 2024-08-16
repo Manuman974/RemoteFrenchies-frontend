@@ -12,8 +12,8 @@ import {
     Platform,
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome6';
-
 import { useState } from "react";
+//Composant react permettant d'ajuster les tailles pour s'adapter à tous les écrans
 const { width, height } = Dimensions.get('window');
 // Texte de l'article avec un affichage limité à 250 caractéres
 export default function BlogScreen({ navigation }) {
@@ -23,6 +23,7 @@ export default function BlogScreen({ navigation }) {
     const text1 = "Le télétravail offre une flexibilité inégalée aux employés, permettant un meilleur équilibre entre vie professionnelle et vie personnelle. En travaillant depuis chez eux, les employés évitent les trajets quotidiens, réduisant ainsi le stress et économisant du temps. Cette autonomie accrue favorise également une meilleure concentration et une productivité accrue. De plus, les télétravailleurs peuvent personnaliser leur espace de travail selon leurs préférences, contribuant à une atmosphère plus agréable et motivante.";
     const text2 = "Maintenir une collaboration efficace en télétravail peut être un défi, mais avec les bons outils, c'est tout à fait faisable. Les plateformes de communication comme Slack ou Microsoft Teams facilitent les échanges instantanés et le partage de documents. Les réunions virtuelles via Zoom ou Google Meet permettent de garder un contact visuel et de discuter en temps réel. Il est crucial d’établir des routines régulières pour garantir que tous les membres de l’équipe restent connectés et engagés.";
     const text3 = "Bien que le télétravail présente de nombreux avantages, il n’est pas exempt de défis. L’isolement social et la difficulté à séparer le travail de la vie personnelle peuvent affecter le moral des employés. Pour surmonter ces obstacles, il est essentiel de maintenir des interactions régulières avec les collègues et de définir des limites claires entre les heures de travail et de détente. La mise en place d’un espace de travail dédié et la prise de pauses régulières peuvent également aider à maintenir une bonne santé mentale et une productivité optimale.";
+    //variable permettant de limiter l'affichage à 250 caractéres.
     const maxLength = 250;
     const truncatedText1 = text1.length > maxLength ? text1.substring(0, maxLength) + '...' : text1;
     const truncatedText2 = text1.length > maxLength ? text2.substring(0, maxLength) + '...' : text2;

@@ -53,11 +53,10 @@ export default function OnboardingScreen({ navigation, route }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           navigation.navigate("TabNavigator");
         });
     } catch (error) {
-      console.error(error);
+
     }
   };
 

@@ -14,12 +14,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 
-export default function TchatScreen({
-  navigation,
-  route: {
-    params: { item },
-  },
-}) {
+export default function TchatScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -28,63 +23,63 @@ export default function TchatScreen({
     fetchMessages();
   }, []);
 
-    const fetchMessages = () => {
-        fetch(`http://192.168.33.186:3000/users/messages/${user.token}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.data.discussion && data.data.discussion.length > 0) {
-                    setMessages(
-                      data.data.discussion[0].message.map((e) => ({
-                        id: e._id,
-                        author: e.author,
-                        message: e.message,
-                        date: e.date,
-                        isSentByUser: e.author === user._id // Determine if the message was sent by the user
-                    }))
-                  );
-                }
-            });
-    };
-
-    // Fonction pour envoyer un message au serveur
-    const sendMessageToServer = (message) => {
-        return fetch("http://192.168.33.186:3000/discussions/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                token: user.token,
-                userId: user._id,
-                text: message,
-                timestamp: new Date().toISOString(),
-            }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    return response.json().then((error) => {
-                        throw new Error(error.message || 'Failed to send message');
-                    });
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('Message sent:', data);
-                fetchMessages(); // Récupère les messages après l'envoi
-            })
-    };
-
-    // Fonction pour gérer l'envoi d'un message
-    const sendMessage = () => {
-        // Vérifiez si le nouveau message n'est pas juste un espace
-        if (newMessage.trim().length > 0) {
-            // Efface le champ de saisie
-            setNewMessage('');
-
-            // Envoie un message au serveur
-            sendMessageToServer(newMessage);
+  const fetchMessages = () => {
+    fetch(`http://192.168.33.186:3000/users/messages/${user.token}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data.discussion && data.data.discussion.length > 0) {
+          setMessages(
+            data.data.discussion[0].message.map((e) => ({
+              id: e._id,
+              author: e.author,
+              message: e.message,
+              date: e.date,
+              isSentByUser: e.author === user._id, // Determine if the message was sent by the user
+            }))
+          );
         }
+      });
+  };
+
+  // Fonction pour envoyer un message au serveur
+  const sendMessageToServer = (message) => {
+    return fetch("http://192.168.33.186:3000/discussions/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: user.token,
+        userId: user._id,
+        text: message,
+        timestamp: new Date().toISOString(),
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw new Error(error.message || "Failed to send message");
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Message sent:", data);
+        fetchMessages(); // Récupère les messages après l'envoi
+      });
+  };
+
+  // Fonction pour gérer l'envoi d'un message
+  const sendMessage = () => {
+    // Vérifiez si le nouveau message n'est pas juste un espace
+    if (newMessage.trim().length > 0) {
+      // Efface le champ de saisie
+      setNewMessage("");
+
+      // Envoie un message au serveur
+      sendMessageToServer(newMessage);
+    }
   };
 
   // Composant fonctionnel pour afficher une bulle de message
@@ -135,7 +130,7 @@ export default function TchatScreen({
             style={styles.profileImage}
           />
           <Text style={styles.name}>
-            {item.userData.firstname} {item.userData.lastname}
+            {user.firstname} {user.lastname}
           </Text>
         </View>
         <View style={styles.separator}></View>

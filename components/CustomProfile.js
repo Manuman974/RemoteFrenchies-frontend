@@ -2,8 +2,13 @@ import React from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CustomButton from "./CustomButton";
+import { addPhotoProfile, logout } from "../reducers/user";
+
+
+
 
 export const CustomProfile = ({
+  profile_picture,
   photoStyle,
   remoterProfileStyle,
   remoterNameAndJobContainerStyle,
@@ -21,7 +26,7 @@ export const CustomProfile = ({
   return (
     <View style={[styles.remoterProfile, remoterProfileStyle]}>
       <Image
-        source={require("../assets/photoJerome.png")}
+        source={{uri: profile_picture}}
         style={[styles.photoRemoter, photoStyle]}
       />
       <View

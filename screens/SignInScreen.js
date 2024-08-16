@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -30,13 +29,12 @@ export default function SignInScreen({ navigation }) {
   };
 
   const handleConnection = () => {
-    console.log("test");
     if (!validateEmail(signInE_mail)) {
       setError("Adresse email invalide");
       return;
     }
 
-        fetch("http://192.168.33.186:3000/users/signin", {
+    fetch("http://192.168.33.186:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
@@ -44,7 +42,6 @@ export default function SignInScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          console.log(data);
           dispatch(
             login({
               firstname: data.firstname,

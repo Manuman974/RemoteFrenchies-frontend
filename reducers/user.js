@@ -27,7 +27,7 @@ export const userSlice = createSlice({
       state.value.business = action.payload.business;
       state.value.city = action.payload.city;
       state.value.e_mail = action.payload.e_mail;
-      state.value.photoProfile = action.payload.photoProfile;
+      state.value.profile_picture = action.payload.profile_picture;
     },
     addPhoto: (state, action) => {
       state.value.photos.push(action.payload);
