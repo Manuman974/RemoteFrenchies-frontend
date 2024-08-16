@@ -8,7 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import CustomHeader from "../components/CustomHeader";
+
 import CustomParagraph from "../components/CustomParagraph";
 import CustomButton from "../components/CustomButton";
 import CustomProfile, { CustomCity } from "../components/CustomProfile";
@@ -36,6 +36,9 @@ export default function RemoterSelectedScreen({
   if (item.propositionData.other) {
     remoterAdvantages.push({ bulletText: item.propositionData.other });
   }
+  // Récupére la première URL du tableau des photos (en verifiant d'abord si c'est bien un tableau et si il contient un URL)
+const homePhotoUri = Array.isArray(item.propositionData.home_photo) && item.propositionData.home_photo.length > 0
+? item.propositionData.home_photo[0] : null;
 
   //Action click "se rencontrer"
   handleClick = () => {
@@ -65,6 +68,7 @@ export default function RemoterSelectedScreen({
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.profileContainer}>
           <CustomProfile
+            profile_picture={item.userData.profile_picture} 
             firstname={item.userData.firstname}
             lastname={item.userData.lastname}
             showCity={false}
@@ -82,7 +86,7 @@ export default function RemoterSelectedScreen({
         </View>
         <View style={styles.line}></View>
         <View>
-          <Image style={styles.photoCountainer}></Image>
+        <Image style={styles.photoCountainer} source={{ uri: homePhotoUri }} /> 
           <CustomCity
             style={styles.remoterCityStyle}
             city={item.propositionData.main_address.city}

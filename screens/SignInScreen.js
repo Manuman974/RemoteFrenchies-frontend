@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -30,7 +29,6 @@ export default function SignInScreen({ navigation }) {
   };
 
   const handleConnection = () => {
-    console.log("test");
     if (!validateEmail(signInE_mail)) {
       setError("Adresse email invalide");
       return;
@@ -44,7 +42,6 @@ export default function SignInScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          console.log(data);
           dispatch(
             login({
               firstname: data.firstname,

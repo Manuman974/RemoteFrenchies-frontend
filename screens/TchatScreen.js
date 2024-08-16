@@ -14,12 +14,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 
-export default function TchatScreen({
-  navigation,
-  route: {
-    params: { item },
-  },
-}) {
+export default function TchatScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -135,7 +130,7 @@ export default function TchatScreen({
             style={styles.profileImage}
           />
           <Text style={styles.name}>
-            {item.userData.firstname} {item.userData.lastname}
+            {user.firstname} {user.lastname}
           </Text>
         </View>
         <View style={styles.separator}></View>
