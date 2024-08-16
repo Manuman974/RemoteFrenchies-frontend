@@ -36,23 +36,24 @@ export default function BlogScreen({ navigation }) {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.keyboardAvoidingView}
             >
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    <View style={styles.container}>
-                        <View style={styles.header}>
-                            <Icon style={styles.icon1} name='file-lines' size={30} color='#49B48C' />
-                            <Text style={styles.h1}>Fil d'actualités</Text>
-                        </View>
-                        <View style={styles.separator}></View>
+
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Icon style={styles.icon1} name='file-lines' size={30} color='#49B48C' />
+                        <Text style={styles.h1}>Fil d'actualités</Text>
+                    </View>
+                    <View style={styles.separator}></View>
+                    <ScrollView contentContainerStyle={styles.scrollView}>
                         <View style={styles.inputContainer}>
-                            < Icon style={styles.icon2} name='magnifying-glass' size={20} color='#49B48C' />
                             <TextInput
                                 style={styles.input}
                                 placeholder="Rechercher"
                             />
+                            < Icon style={styles.icon2} name='magnifying-glass' size={20} color='#49B48C' />
                         </View>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Les Avantages du Télétravail pour les Employés</Text>
-                            <View style={styles.dateContainer}>
+                            <View>
                                 <Text style={styles.h3}>13 Janvier 2024</Text>
                             </View>
                         </View>
@@ -73,7 +74,7 @@ export default function BlogScreen({ navigation }) {
 
                         <View style={styles.titleContainer2}>
                             <Text style={styles.title}>Comment Maintenir la Collaboration en Télétravail</Text>
-                            <View style={styles.dateContainer2}>
+                            <View>
                                 <Text style={styles.h3}>18 Mai 2024</Text>
                             </View>
                         </View>
@@ -93,7 +94,7 @@ export default function BlogScreen({ navigation }) {
                         </View>
                         <View style={styles.titleContainer3}>
                             <Text style={styles.title}>Les Défis du Télétravail et Comment les Surmonter</Text>
-                            <View style={styles.dateContainer3}>
+                            <View>
                                 <Text style={styles.h3}>23 Septembre 2024</Text>
                             </View>
                         </View>
@@ -111,24 +112,28 @@ export default function BlogScreen({ navigation }) {
                                 </Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                </ScrollView>
+                        </ScrollView>
+                </View>
 
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+
+        </KeyboardAvoidingView>
+        </SafeAreaView >
 
 
     );
 }
 
 const styles = StyleSheet.create({
+
     safeArea: {
         flex: 1,
         backgroundColor: '#ffffff',
     },
+
     keyboardAvoidingView: {
         flex: 1,
     },
+
     separator: {
         width: width * 0.9,
         height: 2,
@@ -137,22 +142,19 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     container: {
-        // width: '100%',
         flex: 1,
         backgroundColor: '#ffffff',
         alignItems: 'center',
         justifyContent: 'center',
     },
+
     header: {
-        // borderBottomWidth: 2,
         marginTop: 50,
         width: width * 0.9,
         flexDirection: 'row',
-        // marginBottom: 10,
         marginRight: 170,
-        // borderTop: 5,
-        // padding: 10,
     },
+
     h1: {
         marginRight: 140,
         fontSize: 24,
@@ -160,17 +162,17 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-SemiBold',
         alignSelf: 'center',
         width: "70%",
-        // borderWidth: 1,
-        // borderColor: 'red',
     },
+
     input: {
         backgroundColor: '#DDD',
-        width: 280,
+        width: 250,
         height: 50,
         borderColor: '#8f8f8f',
         borderWidth: 1,
         borderRadius: 10,
         paddingLeft: 10,
+
     },
     inputContainer: {
         flexDirection: "row",
@@ -185,39 +187,23 @@ const styles = StyleSheet.create({
         height: 80,
         width: width * 0.9,
         marginTop: 15,
-        // marginRight: 5,
-        //  borderWidth: 1,
-        // borderColor: 'red',
+        marginBottom: 20,
+
     },
     titleContainer2: {
         height: 80,
         width: width * 0.9,
-        marginTop: 10,
-        // marginRight: 5,
-        //  borderWidth: 1,
-        // borderColor: 'red'
+        marginBottom: 20,
+        marginTop: 20,
+
     },
     titleContainer3: {
-        // marginRight: 5,
         height: 80,
         width: width * 0.9,
-        marginTop: 10,
-        //  borderWidth: 1,
-        // borderColor: 'red',
+        marginBottom: 20,
+        marginTop: 20,
     },
-    dateContainer: {
-        // paddingBottom: 30,
-        // borderWidth: 1,
-        // borderColor: 'red'
-    },
-    dateContainer2: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-    },
-    dateContainer3: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-    },
+
     title: {
         fontSize: 16,
         fontFamily: 'Poppins-SemiBold',
@@ -234,15 +220,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 10,
         width: width * 0.90,
-        //  borderWidth: 1,
-        // borderColor: 'red',
     },
+
     h3: {
         fontSize: 15,
         fontFamily: 'Poppins-Regular',
         marginBottom: 30,
         alignItems: "center",
     },
+
     textContainer: {
         paddingLeft: 5,
         marginTop: 10,
@@ -250,27 +236,25 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         width: width * 0.90,
     },
+
     scrollView: {
-        // padding: 24,
         flexGrow: 1,
         justifyContent: "center",
         alignItems: "center",
-        borderWidth: 3,
     },
     body: {
         fontSize: 13,
         fontFamily: 'Poppins-Regular',
     },
     icon1: {
-        // borderWidth: 1,
-        // borderColor: 'red',
         marginLeft: 100,
+        marginTop: 5,
     },
     icon2: {
-        marginRight: 10,
+        marginLeft: 10,
     },
     buttonText: {
-        color: "green",
+        color: "#49B48C",
         fontFamily: 'Poppins-SemiBold',
     },
 });

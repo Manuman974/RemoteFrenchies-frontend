@@ -13,7 +13,7 @@ const CustomCheckBox = ({ checked, onPress, label, containerStyle, labelStyle })
                 uncheckedIcon="checkbox-blank-outline"
                 checkedColor="#49B48C"
             />
-            <Text style={[styles.label, labelStyle]}>{label}</Text>
+            <Text style={styles.label}>{label}</Text>
         </View>
     );
 };
@@ -25,8 +25,10 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     label: {
-        fontSize: 16,
+        fontSize: 15,
+        fontFamily: 'Poppins-Regular',
     },
+
 });
 
 export default CustomCheckBox;

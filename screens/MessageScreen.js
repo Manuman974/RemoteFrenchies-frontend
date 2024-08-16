@@ -32,7 +32,7 @@ export default function MessageScreen({ navigation }) {
             method: "GET",
             headers: { "Content-Type": "application/json" }, // Indique que la requête et la réponse doivent être au format JSON
         })
-            .then((response) => response.json()) 
+            .then((response) => response.json())
             .then(data => {
                 console.log(data.data.discussion)
                 // Vérifiez si le tableau des discussions existe et n'est pas vide
@@ -71,104 +71,105 @@ export default function MessageScreen({ navigation }) {
     </TouchableOpacity>
   );
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Icon name="envelope" style={styles.icon} size={30} color="#49B48C" />
-          <Text style={styles.h1}>Messagerie</Text>
-        </View>
-        <View style={styles.separator}></View>
-        <FlatList
-          data={messages}
-          renderItem={({ item }) => (
-            <MessageItem
-              name={item.name}
-              job={item.job}
-              messagesCount={item.messagesCount}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
-        />
-      </View>
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Icon name='envelope-o' style={styles.reply} size={30} color='#49B48C' />
+                    <Text style={styles.h1}>Message</Text>
+                </View>
+                <View style={styles.separator}></View>
+                <FlatList
+                    data={messages}
+                    renderItem={({ item }) => (
+                        <MessageItem name={item.name} job={item.job} messagesCount={item.messagesCount} />
+                    )}
+                    keyExtractor={item => item.id}
+                    ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+                />
+            </View>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 50,
-    marginLeft: 30,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  h1: {
-    fontSize: 24,
-    fontFamily: "Poppins-SemiBold",
-  },
-  separator: {
-    width: "80%",
-    height: 2,
-    backgroundColor: "#8f8f8f",
-    marginVertical: 20,
-    alignSelf: "center",
-  },
-  messageContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#E8F5E9",
-    padding: 10,
-    borderRadius: 8,
-  },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  textContainer: {
-    flex: 1,
-    marginLeft: 10,
-    // flexDirection: 'row',
-  },
-  name: {
-    marginLeft: 10,
-    fontSize: 16,
-    fontFamily: "Poppins-SemiBold",
-  },
-  // lastname: {
-  //     fontSize: 16,
-  //     marginLeft: 10,
-  //     fontFamily: 'Poppins-SemiBold',
-  // },
-  job: {
-    fontSize: 14,
-    marginLeft: 10,
-    color: "#888",
-    fontFamily: "Poppins-Regular",
-  },
-  messageCountContainer: {
-    backgroundColor: "#66BB6A",
-    borderRadius: 12,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-  },
-  messageCount: {
-    color: "#FFF",
-    fontFamily: "Poppins-SemiBold",
-  },
-  listSeparator: {
-    height: 10,
-  },
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#ffffff',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: "#ffffff",
+      },
+
+    header: {
+        marginTop: 60,
+        marginLeft: 30,
+        width: '80%',
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+
+reply: {
+marginBottom:5,
+marginRight: 10,
+},
+
+    h1: {
+        fontSize: 24,
+        fontFamily: 'Poppins-SemiBold',
+    },
+    separator: {
+        width: '80%',
+        height: 2,
+        backgroundColor: '#8f8f8f',
+        marginVertical: 20,
+        alignSelf: 'center',
+    },
+    messageContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#E8F5E9',
+        padding: 10,
+        borderRadius: 8,
+    },
+    profileImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+    },
+    textContainer: {
+        flex: 1,
+        marginLeft: 10,
+        // flexDirection: 'row',
+    },
+    name: {
+        marginLeft: 10,
+        fontSize: 16,
+        fontFamily: 'Poppins-SemiBold',
+    },
+    // lastname: {
+    //     fontSize: 16,
+    //     marginLeft: 10,
+    //     fontFamily: 'Poppins-SemiBold',
+    // },
+    job: {
+        fontSize: 14,
+        marginLeft: 10,
+        color: '#888',
+        fontFamily: 'Poppins-Regular',
+    },
+    messageCountContainer: {
+        backgroundColor: '#66BB6A',
+        borderRadius: 12,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+    },
+    messageCount: {
+        color: '#FFF',
+        fontFamily: 'Poppins-SemiBold',
+    },
+    listSeparator: {
+        height: 10,
+    },
 });
