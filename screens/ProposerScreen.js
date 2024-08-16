@@ -170,20 +170,17 @@ export default function ProposerScreen({ navigation }) {
                 style={styles.container}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
+
+<View style={styles.header}>
+                <Icon name="hand-paper-o" style={styles.reply} size={30} color="#49B48C" />
+                <Text style={styles.h1}>Proposer</Text>
+            </View>
+            <View style={styles.separator}></View>
+
                 <ScrollView
                     contentContainerStyle={styles.scrollViewContent}
                     style={styles.scrollView}
                 >
-                    <View style={styles.header}>
-                        <Icon
-                            name="hand-paper-o"
-                            style={styles.reply}
-                            size={30}
-                            color="#49B48C"
-                        />
-                        <Text style={styles.title}>Proposer</Text>
-                    </View>
-                    <View style={styles.separator} />
 
                     <Text style={styles.sectionTitle1}>
                         Accueillir un télétravailleur
@@ -297,12 +294,23 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingVertical: 20,
     },
+
     header: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-        width: 300,
+        marginTop: 40,
+        marginLeft: 0,
+        width: "80%",
         flexDirection: "row",
+        alignItems: "center",
     },
+
+    h1: {
+        marginLeft: 10,
+        fontSize: 24,
+        textAlign: "center",
+        fontFamily: "Poppins-SemiBold",
+        alignSelf: "center",
+    },
+
     title: {
         fontSize: 24,
         fontWeight: "bold",

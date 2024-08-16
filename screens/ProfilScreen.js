@@ -72,7 +72,7 @@ export default function ProfilScreen({ navigation }) {
     return (
         <KeyboardAvoidingView>
             <TouchableOpacity style={styles.logoutButton} onPress={() => handlelogout()}>
-                <Text style={styles.logoutText}>logout</Text>
+                <Text style={styles.logoutText}>Logout</Text>
             </TouchableOpacity>
             <SafeAreaView style={styles.safeArea}>
                 <View>
@@ -150,24 +150,24 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     logoutButton: {
-        width: 70,
+        width: 100,
+        height: 50,
+        marginTop: 20,
         marginLeft: 250,
         top: 50,
         left: 10,
-        backgroundColor: "#f44336", // Rouge
+        backgroundColor: "#49B48C",
         padding: 10,
         borderRadius: 5,
-        //   borderWidth: 1,
-        //     borderColor: 'red',
     },
     logoutText: {
         color: "#fff",
-        fontWeight: "bold",
         fontFamily: "Poppins-SemiBold",
         fontSize: 15,
+        textAlign: 'center'
     },
     header: {
-        marginTop: 10,
+        marginTop: 5,
         marginLeft: 30,
         width: "80%",
         flexDirection: "row",
@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         fontSize: 18,
         fontFamily: "Poppins-Regular",
+        marginBottom: 10,
     },
 
     body2: {
@@ -246,5 +247,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 20,
+
     },
 });
