@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
+import CustomHeader from "../components/CustomHeader";
 
 export default function MessageScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
@@ -28,7 +29,7 @@ export default function MessageScreen({ navigation }) {
     // Fonction pour récupérer les messages du serveur
     const fetchMessages = () => {
         // Faire une requête GET au serveur pour récupérer les messages de l'utilisateur actuel
-        fetch(`http://192.168.33.186:3000/users/messages/${user.token}`, {
+        fetch(`https://remote-frenchies-backend-delta.vercel.app/users/messages/${user.token}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" }, // Indique que la requête et la réponse doivent être au format JSON
         })
@@ -42,18 +43,19 @@ export default function MessageScreen({ navigation }) {
                         id: discussion._id, // ID unique de la discussion
                         name: `${data.data.firstname} ${data.data.lastname}`,
                         job: data.data.job,
-                        messagesCount: discussion.message.length // Nombre de messages dans la discussion
+                        messagesCount: discussion.message.length, // Nombre de messages dans la discussion
+                        profileImage: user.photoProfile,
                     })));
                 }
             })
     };
 
   // Composant fonctionnel pour restituer un élément de message individuel
-  const MessageItem = ({ name, job, messagesCount }) => (
+  const MessageItem = ({ name, job, messagesCount, profileImage }) => (
     <TouchableOpacity onPress={() => navigation.navigate("TchatScreen")}>
       <View style={styles.messageContainer}>
         <Image
-          source={{ uri: user.photoProfile }} // URL de la photo de profil de l'objet utilisateur
+          source={{ uri: profileImage }} // URL de la photo de profil de l'objet utilisateur
           style={styles.profileImage}
         />
         <View style={styles.textContainer}>
@@ -73,16 +75,17 @@ export default function MessageScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.safeArea}>
+                     <View>
+                <CustomHeader
+                    title="Message"
+                    icon="envelope-o"
+                />
+            </View>
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Icon name='envelope-o' style={styles.reply} size={30} color='#49B48C' />
-                    <Text style={styles.h1}>Message</Text>
-                </View>
-                <View style={styles.separator}></View>
                 <FlatList
                     data={messages}
                     renderItem={({ item }) => (
-                        <MessageItem name={item.name} job={item.job} messagesCount={item.messagesCount} />
+                        <MessageItem name={item.name} job={item.job} messagesCount={item.messagesCount} profileImage={item.profileImage} />
                     )}
                     keyExtractor={item => item.id}
                     ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
@@ -100,6 +103,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#ffffff",
+        marginTop:50,
+        borderBottomWidth:2,
+        borderColor:'#DDDDDD',
       },
 
     header: {

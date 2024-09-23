@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { useState } from "react";
+import CustomHeader from "../components/CustomHeader";
 //Composant react permettant d'ajuster les tailles pour s'adapter à tous les écrans
 const { width, height } = Dimensions.get('window');
 // Texte de l'article avec un affichage limité à 250 caractéres
@@ -36,13 +37,12 @@ export default function BlogScreen({ navigation }) {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.keyboardAvoidingView}
             >
-
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Icon style={styles.icon1} name='file-lines' size={30} color='#49B48C' />
-                        <Text style={styles.h1}>Fil d'actualités</Text>
+                    <View>
+                        <CustomHeader
+                            title="Blog"
+                            icon="newspaper-o"
+                        />
                     </View>
-                    <View style={styles.separator}></View>
                     <ScrollView contentContainerStyle={styles.scrollView}>
                         <View style={styles.inputContainer}>
                             <TextInput
@@ -112,11 +112,8 @@ export default function BlogScreen({ navigation }) {
                                 </Text>
                             </TouchableOpacity>
                         </View>
-                        </ScrollView>
-                </View>
-
-
-        </KeyboardAvoidingView>
+                    </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView >
 
 

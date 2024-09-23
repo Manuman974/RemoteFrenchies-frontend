@@ -23,13 +23,14 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     input: {
-        backgroundColor: '#DDD',
+        backgroundColor: '#E7E7E7',
         width: 290,
         height: 50,
         borderColor: '#8f8f8f',
-        borderWidth: 1,
         borderRadius: 10,
-        paddingLeft: 10,
+        paddingLeft: 20,
+        fontFamily: "Poppins-Regular",
+        fontSize: 13,
     },
 });
 

@@ -24,7 +24,7 @@ export default function TchatScreen({ navigation }) {
   }, []);
 
   const fetchMessages = () => {
-    fetch(`http://192.168.33.186:3000/users/messages/${user.token}`, {
+    fetch(`https://remote-frenchies-backend-delta.vercel.app/messages/${user.token}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -46,7 +46,7 @@ export default function TchatScreen({ navigation }) {
 
   // Fonction pour envoyer un message au serveur
   const sendMessageToServer = (message) => {
-    return fetch("http://192.168.33.186:3000/discussions/messages", {
+    return fetch("https://remote-frenchies-backend-delta.vercel.app/discussions/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

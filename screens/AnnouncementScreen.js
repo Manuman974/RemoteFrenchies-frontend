@@ -9,13 +9,15 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { removePhoto } from '../reducers/user';
 import Icon from "react-native-vector-icons/FontAwesome";
+import CustomHeader from "../components/CustomHeader";
 //import Icon1 from "react-native-vector-icons/Evillcons";
 
 export default function AnnouncementScreen({ navigation }) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
 
-    const photos = user.photos.map((photoUrl, index) => {
+    // Affichage des annonces sous forme de photo
+    const photos = user.photos.map((photoUrl, index) => { 
         return (
             <View key={index} style={styles.annonceContainer}>
                 <Image source={{ uri: photoUrl }} style={styles.photo} />
@@ -40,21 +42,13 @@ export default function AnnouncementScreen({ navigation }) {
     });
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("TabNavigator",{screen:"ProfilScreen"})}
-                    activeOpacity={0.8}
-                >
-                    <Icon
-                        name="arrow-left"
-                        style={styles.reply}
-                        size={30}
-                        color="black"
-                    />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Mes annonces</Text>
+<View>
+                <CustomHeader
+                    title="Mes Annonces"
+                    icon="arrow-left"
+                    onPress={() => navigation.goBack()}
+                />
             </View>
-            <View style={styles.separator}></View>
             <Text style={styles.annonceCount}>{photos.length} annonces</Text>
             <ScrollView>
                 {photos}
@@ -92,6 +86,7 @@ const styles = StyleSheet.create({
     },
     annonceCount: {
         textAlign: 'right',
+        marginTop: 30,
         marginBottom: 10,
         marginLeft: 180,
         fontSize: 16,

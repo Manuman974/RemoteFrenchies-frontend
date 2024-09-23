@@ -16,6 +16,7 @@ import * as ImagePicker from "expo-image-picker";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomCheckBox from "../components/CustomCheckbox";
 import CustomButton from "../components/CustomButton";
+import CustomHeader from "../components/CustomHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
 
@@ -39,7 +40,7 @@ export default function ProposerScreen({ navigation }) {
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
-        fetch("http://192.168.33.186:3000/proposition", {
+        fetch("https://remote-frenchies-backend-delta.vercel.app/proposition", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -105,7 +106,7 @@ export default function ProposerScreen({ navigation }) {
             });
 
             // Envoi de la photo au serveur
-            fetch('http://192.168.33.186:3000/proposition/upload', {
+            fetch('https://remote-frenchies-backend-delta.vercel.app/proposition/upload', {
                 method: "POST",
                 body: formData,
             })
@@ -148,7 +149,7 @@ export default function ProposerScreen({ navigation }) {
             });
 
             // Envoi de la photo au serveur
-            fetch('http://192.168.33.186:3000/proposition/upload', {
+            fetch('https://remote-frenchies-backend-delta.vercel.app/proposition/upload', {
                 method: "POST",
                 body: formData,
             })
@@ -169,13 +170,15 @@ export default function ProposerScreen({ navigation }) {
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
             >
 
-<View style={styles.header}>
-                <Icon name="hand-paper-o" style={styles.reply} size={30} color="#49B48C" />
-                <Text style={styles.h1}>Proposer</Text>
+<View>
+                <CustomHeader
+                    title="Proposer"
+                    icon="hand-paper-o"
+                />
             </View>
-            <View style={styles.separator}></View>
 
                 <ScrollView
                     contentContainerStyle={styles.scrollViewContent}
@@ -233,7 +236,7 @@ export default function ProposerScreen({ navigation }) {
                         />
                     </View>
                     <CustomTextInput
-                        placeholder="Autres : exemples (Vues, matériels sup...)"
+                        placeholder="Autres (Vue, matériel...)"
                         value={autresAvantages}
                         onChangeText={setAutresAvantages}
                     />
@@ -260,6 +263,10 @@ export default function ProposerScreen({ navigation }) {
                         style={styles.input2}
                         onChangeText={(value) => setMessageAnnonce(value)}
                         value={messageAnnonce}
+                        multiline={true}
+                        onSubmitEditing={handleSubmit}
+                        returnKeyType="send"
+                        blurOnSubmit={false}
                     />
 
                     <CustomButton
@@ -282,8 +289,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#ffffff",
-        alignItems: "center",
-        justifyContent: "center",
     },
     scrollView: {
         flex: 1,
@@ -301,14 +306,6 @@ const styles = StyleSheet.create({
         width: "80%",
         flexDirection: "row",
         alignItems: "center",
-    },
-
-    h1: {
-        marginLeft: 10,
-        fontSize: 24,
-        textAlign: "center",
-        fontFamily: "Poppins-SemiBold",
-        alignSelf: "center",
     },
 
     title: {
@@ -348,15 +345,16 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     input2: {
-        backgroundColor: "#DDD",
-        borderWidth: 1,
-        borderColor: "#8f8f8f",
+        backgroundColor: "#E7E7E7",
         width: 290,
         height: 150,
         borderRadius: 10,
-        padding: 10,
+        padding: 20,
         marginBottom: 20,
         marginTop: 20,
+        fontFamily: "Poppins-Regular",
+        fontSize: 13,
+        textAlignVertical: "top",
     },
     checkboxes: {
         // borderWidth: 1,

@@ -10,7 +10,6 @@ const initialState = {
     city: null,
     e_mail: null,
     photos: [],
-    // photos: "",
     profile_picture: "",
   },
 };
@@ -47,6 +46,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, addPhoto, removePhoto, addPhotoProfile, logout } =
-  userSlice.actions;
+export const { login, addPhoto, removePhoto, addPhotoProfile, logout } = userSlice.actions;
 export default userSlice.reducer;

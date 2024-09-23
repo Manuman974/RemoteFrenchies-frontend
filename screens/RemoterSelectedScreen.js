@@ -12,13 +12,12 @@ import {
 import CustomParagraph from "../components/CustomParagraph";
 import CustomButton from "../components/CustomButton";
 import CustomProfile, { CustomCity } from "../components/CustomProfile";
+import CustomHeader from "../components/CustomHeader";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default function RemoterSelectedScreen({
   navigation,
-  route: {
-    params: { item },
-  },
+  route: { params: { item },},
 }) {
   console.log("ITEM: ", item);
 
@@ -52,21 +51,13 @@ const homePhotoUri = Array.isArray(item.propositionData.home_photo) && item.prop
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={styles.icon}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("TabNavigator", { screen: "Recherche" })
-          }
-          activeOpacity={0.8}
-        >
-          <Icon
-            name="arrow-left"
-            style={styles.reply}
-            size={30}
-            color="#000000"
-          />
-        </TouchableOpacity>
-      </View>
+<View>
+                <CustomHeader
+                    title="Annonce"
+                    icon="arrow-left"
+                    onPress={() => navigation.goBack()}
+                />
+            </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.profileContainer}>
           <CustomProfile

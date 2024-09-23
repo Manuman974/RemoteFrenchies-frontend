@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../components/CustomButton";
 
 export default function OnboardingScreen({ navigation, route }) {
-  // const userId = route.params.userId;
+  // Recupère les données d'un utilisateur
   const user = useSelector((state) => state.user.value);
   // Initialisez l'état avec un objet où les clés sont les identifiants des checkboxes
   const initialCheckboxes = {
@@ -34,15 +34,15 @@ export default function OnboardingScreen({ navigation, route }) {
 
   const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
 
-  // Mise à jour de l'état avec setCkeckboxes // Modifier pour avoir un code plus compréhensible
+  // Mise à jour de l'état avec setCkeckboxes
   const toggleCheckbox = (key) => {
-    setCheckboxes((prevState) => ({
-      ...prevState,
-      [key]: !prevState[key],
+    setCheckboxes((prevState) => ({ // prevState représente l'état actuel de checkbox
+      ...prevState, // copie les propriétés de prevState dans le nouvel objet d'état
+      [key]: !prevState[key], //identifie la case à cocher + inversion de la valeur
     }));
   };
 
-  const BACKEND_ADDRESS = "http://192.168.33.186:3000";
+  const BACKEND_ADDRESS = "https://remote-frenchies-backend-delta.vercel.app";
 
   const handleSubmit = () => {
     try {
@@ -166,7 +166,7 @@ export default function OnboardingScreen({ navigation, route }) {
               onPress={() => toggleCheckbox("go_to_remoters")}
               iconType="material-community"
               checkedIcon="checkbox-marked"
-              uncheckedIcon="checkbox-blank-outline"
+              uncheckedIcon="checkbox-blank-outline"n
               checkedColor="#49B48C"
             />
             <Text style={styles.h5}>
@@ -209,8 +209,9 @@ const styles = StyleSheet.create({
   containerInfos: {
     marginTop: 20,
     width: "80%",
-    marginBottom: 10,
+    marginBottom: 20,
     borderBottomWidth: 1,
+
   },
 
   containerCheckBox: {
@@ -218,6 +219,7 @@ const styles = StyleSheet.create({
     width: "80%",
     alignItems: "center",
     marginLeft: -25,
+    marginTop: 5,
   },
 
   image: {
@@ -240,7 +242,7 @@ const styles = StyleSheet.create({
   },
 
   h5: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: "Poppins-Regular",
   },
 
@@ -256,7 +258,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
     height: 50,
-    width: "70%",
+    width: 200,
+    marginTop: 20,
+    marginBottom: 40,
   },
 
   btn1: {

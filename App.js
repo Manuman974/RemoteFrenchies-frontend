@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -116,7 +116,8 @@ const TabNavigator = () => {
           paddingTop: 20,
           paddingBottom: 20,
         },
-
+        // Hide the TabBar when navigating to RemoterSelectedScreen
+        tabBarVisible: route.name !== "RemoterSelectedScreen",
         headerShown: false,
       })}
     >
@@ -132,6 +133,7 @@ const TabNavigator = () => {
 export default function App() {
   // Préparer et charger les fonts
   const [isReady, setIsReady] = useState(false);
+  const [loading, setLoading] = useState(false); // État de chargement pour la transition
 
   useEffect(() => {
     const prepare = async () => {
@@ -148,22 +150,30 @@ export default function App() {
     prepare();
   }, []);
 
+  // Ajout d'un écouteur d'événements de navigation
+  const handleNavigationChange = () => {
+    setLoading(true); // Début du chargement
+    setTimeout(() => {
+      setLoading(false); // Arrêt du chargement après un délai simulé
+    }, 500); // Vous pouvez ajuster ce délai en fonction de vos besoins
+  };
+
   if (!isReady) {
     return null; // ou un écran de chargement personnalisé
   }
 
   return (
-    // REMETTRE ECRAN REMOTER SELECTED AU BON ENDROIT
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
+        <NavigationContainer
+        onStateChange={(state) => handleNavigationChange(state)}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             <Stack.Screen name="Recherche" component={RechercheScreen} />
-            <Stack.Screen name="RemoterSelected" component={RemoterSelectedScreen} options={{ tabBarButton: (props) => {} }} />
+            <Stack.Screen name="RemoterSelectedScreen" component={RemoterSelectedScreen} options={{ tabBarVisible: false }}  />
             <Stack.Screen name="Pwd" component={PwdScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
@@ -173,8 +183,22 @@ export default function App() {
             <Stack.Screen name="BlogScreen" component={BlogScreen} />
             <Stack.Screen name="TchatScreen" component={TchatScreen} />
           </Stack.Navigator>
+          {loading && (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="#49B48C" />
+            </View>
+          )}
         </NavigationContainer>
       </PersistGate>
     </Provider>
   );
 }
+
+const styles = StyleSheet.create({
+  loaderContainer: {
+    ...StyleSheet.absoluteFillObject, // Couvre tout l'écran
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Couleur de fond semi-transparente
+  },
+});

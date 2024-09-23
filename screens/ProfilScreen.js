@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Text,
-    KeyboardAvoidingView,
     SafeAreaView,
     TouchableOpacity,
     Image,
@@ -13,6 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { addPhotoProfile, logout } from "../reducers/user";
 import CustomProfilButton from "../components/CustomProfilButton";
+import CustomHeader from "../components/CustomHeader";
 
 export default function ProfilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
@@ -46,7 +46,7 @@ export default function ProfilScreen({ navigation }) {
             formData.append("Token", user.token);
 
             // Envoi de la photo au serveur
-            fetch("http://192.168.33.186:3000/profile", {
+            fetch("https://remote-frenchies-backend-delta.vercel.app/profile", {
                 method: "PUT",
                 body: formData,
             })
@@ -70,22 +70,16 @@ export default function ProfilScreen({ navigation }) {
     }
 
     return (
-        <KeyboardAvoidingView>
-            <TouchableOpacity style={styles.logoutButton} onPress={() => handlelogout()}>
-                <Text style={styles.logoutText}>Logout</Text>
-            </TouchableOpacity>
             <SafeAreaView style={styles.safeArea}>
-                <View>
-                    <View style={styles.header}>
-                        <Icon
-                            name="user-o"
-                            style={styles.reply}
-                            size={30}
-                            color="#49B48C"
-                        />
-                        <Text style={styles.h1}>Mon profil</Text>
-                    </View>
-                    <View style={styles.separator}></View>
+            <View style={styles.container}>
+            <View style={styles.headerContainer}>
+                <CustomHeader
+                    title="Profil"
+                    icon="user-o"
+                    showLogoutButton={true} // Affiche le bouton logout sur cette page
+                    onLogoutPress={handlelogout} // Fonction à appeler lors de l'appui
+                />
+            </View>
                     <View style={styles.profilContainer}>
                         {user.profile_picture ? (
                             <Image
@@ -138,32 +132,41 @@ export default function ProfilScreen({ navigation }) {
                     </View>
                 </View>
             </SafeAreaView>
-        </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
+    
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#ffffff',
+    },
+
     container: {
         flex: 1,
         backgroundColor: "#ffffff",
-        alignItems: "center",
-        justifyContent: "center",
     },
+
+    headerContainer: {
+        flexDirection: "row",
+        alignItems: "center", // Centre les éléments verticalement
+        justifyContent: "space-between", // Espace entre CustomHeader et Logout
+        width: "100%",
+    },
+
     logoutButton: {
         width: 100,
-        height: 50,
-        marginTop: 20,
-        marginLeft: 250,
-        top: 50,
-        left: 10,
+        height: 40,
         backgroundColor: "#49B48C",
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 40,
+        justifyContent: 'center', // Centre le texte dans le bouton
+        alignItems: 'center', // Centre le texte dans le bouton
     },
     logoutText: {
         color: "#fff",
         fontFamily: "Poppins-SemiBold",
-        fontSize: 15,
+        fontSize: 14,
         textAlign: 'center'
     },
     header: {

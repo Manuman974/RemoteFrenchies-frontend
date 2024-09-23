@@ -34,7 +34,7 @@ export default function SignInScreen({ navigation }) {
       return;
     }
 
-    fetch("http://192.168.33.186:3000/users/signin", {
+    fetch("https://remote-frenchies-backend-delta.vercel.app/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),

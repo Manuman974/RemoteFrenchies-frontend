@@ -10,6 +10,7 @@ import {
     Platform,
     TouchableOpacity,
     FlatList,
+    ActivityIndicator
 } from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -17,6 +18,7 @@ import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome";
+import CustomHeader from "../components/CustomHeader";
 
 export default function RechercheScreen({ navigation }) {
     //SECTION HEADER
@@ -29,13 +31,17 @@ export default function RechercheScreen({ navigation }) {
     //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
   // = > INITIALISATION DES ETATS
-  const BACKEND_ADDRESS = "http://192.168.33.186:3000";
+  const BACKEND_ADDRESS = "https://remote-frenchies-backend-delta.vercel.app";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
   const [addressesCoordinates, setAddressesCoordinates] = useState([]);
   const [remoterProfiles, setRemoterProfiles] = useState([]);
   const [searchDone, setSearchDone] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [filteredCities, setFilteredCities] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [loading, setLoading] = useState(false); // Pour gérer l'état de chargement
+
 
     // = > ACTIONS
 
@@ -58,25 +64,70 @@ export default function RechercheScreen({ navigation }) {
         })();
     }, []);
 
+  // Fonction pour récupérer les villes depuis l'API
+  const handleCityInputChange = async (input) => {
+    setCityInput(input);
+
+    if (input.length > 2) { // Ne lancer la recherche que si l'utilisateur tape au moins 3 caractères
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://api-adresse.data.gouv.fr/search/?q=${input}&limit=5&type=municipality`
+        );
+        const data = await response.json();
+
+        const citySuggestions = data.features.map((feature) => ({
+          name: feature.properties.city, // nom de la ville
+          postcode: feature.properties.postcode, // code postal
+          id: feature.properties.id, // id unique pour chaque ville
+        }));
+
+        setFilteredCities(citySuggestions);
+        setShowSuggestions(true);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des suggestions :", error);
+      }
+      setLoading(false);
+    } else {
+      setFilteredCities([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  // Gérer la sélection d'une ville dans la liste de suggestions
+  const handleCitySelect = (city) => {
+    setCityInput(`${city.name} (${city.postcode})`); // Afficher la ville et le code postal
+    setShowSuggestions(false); // Masquer les suggestions après sélection
+    handleSearch(city.name); // Appeler handleSearch avec le nom de la ville sélectionnée
+  };
+
+  // Gérer la soumission de la recherche (via le clavier "Enter")
+  const handleSearchSubmit = () => {
+    console.log("Recherche validée pour :", cityInput);
+    // Ici, vous pouvez appeler votre fonction de recherche ou API
+  };
+
+
     //Recherche par ville des utilisateurs proposant leur annonce
-    const handleSearch = () => {
-        if (cityInput.length === 0) {
-            setErrorMessage("Veuillez entrer un nom de ville.");
-            return;
+        // message d'erreur si aucune ville de noté
+        const handleSearch = (cityName) => {
+            if (!cityName) {
+                setErrorMessage("Veuillez entrer un nom de ville.");
+                return;
         }
-        console.log("Icône cliquée!");
         //1ère requête : Rechercher les données des utilisateurs d'une ville
         fetch(`${BACKEND_ADDRESS}/proposition/search/${cityInput}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log("PROPOSITIONS data :", data.propositionData);
                 if (data.result === true) {
+                    // coordonnées des utilisateurs sont extraites de la réponse du serveur et stockées dans l'état addressesCoordinates
                     const coordinates = data.propositionData.map((user) => {
                         return {
                             latitude: user.main_address.addressLatitude,
                             longitude: user.main_address.addressLongitude,
-                            // firstname: user.user.firstname,
-                            // lastname: user.user.lastname,
+                            firstname: user.user.firstname,
+                            lastname: user.user.lastname,
                         };
                     });
                     console.log("ADDRESS COORDINATES :", coordinates);
@@ -119,8 +170,8 @@ export default function RechercheScreen({ navigation }) {
                 }
             });
     };
-
-    const remoteMarkers = addressesCoordinates.map((remoter, i) => {
+// les coordonnées des remoters sont stockées (adressesCoordinates), Utilisation du composant Marker pour créer et afficher les markers sur la map
+    const remoteMarkers = addressesCoordinates.map((remoter, i) => { // methode .map pour parcourir le tableau adresseCoordinates et créer un marker pour chaque remoter
         return (
             <Marker
                 key={i}
@@ -155,7 +206,7 @@ export default function RechercheScreen({ navigation }) {
                 </Text>
             </View>
             <TouchableOpacity
-                onPress={() => navigation.navigate("RemoterSelected", { item })}
+                onPress={() => navigation.navigate("RemoterSelectedScreen", { item })}
                 style={styles.button}
                 activeOpacity={0.8}
             >
@@ -169,31 +220,41 @@ export default function RechercheScreen({ navigation }) {
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <View style={styles.header}>
-                <Icon name="search" style={styles.reply} size={30} color="#49B48C" />
-                <Text style={styles.h1}>Recherche</Text>
+            <View>
+                <CustomHeader
+                title= "Recherche"
+                icon="search"
+                />
             </View>
-            <View style={styles.separator}></View>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <View>
-                    <Text style={styles.h4}>
-                        Trouve le Remoter qui te ressemble à côté de chez toi
-                    </Text>
-                </View>
                 <View style={styles.inputContainer}>
+                <FontAwesome name="search" size={23} color="#000000" style={styles.searchIcon} />
                     <TextInput
                         style={styles.input}
-                        placeholder="Recherche par ville"
-                        onChangeText={(value) => setCityInput(value)}
+                        placeholder="Recherche ton Remoter"
+                        onChangeText={handleCityInputChange}
+                        //onChangeText={(value) => setCityInput(value)}
                         value={cityInput}
+                        onSubmitEditing={handleSearchSubmit} // Valider la recherche avec le clavier
                     />
-                    <TouchableOpacity
-                        style={styles.iconInput}
-                        onPress={() => handleSearch()}
-                    >
-                        <FontAwesome name="search" size={23} color="#c0c1c1" />
-                    </TouchableOpacity>
                 </View>
+
+                {loading && <ActivityIndicator size="small" color="#0000ff" />}
+
+                {showSuggestions && (
+                <View style={styles.suggestionsContainer}>
+                    <FlatList
+                        data={filteredCities}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => handleCitySelect(item)} style={styles.suggestionItem}>
+                                <Text>{`${item.name} (${item.postcode})`}</Text>
+                            </TouchableOpacity>
+                        )}
+                    />
+                </View>
+            )}
+
                 {errorMessage ? (
                     <Text style={{ color: "red", margin: 10 }}>{errorMessage}</Text>
                 ) : null}
@@ -202,6 +263,8 @@ export default function RechercheScreen({ navigation }) {
                         mapType="standard"
                         region={currentPosition}
                         style={styles.map}
+                        MapView toolbarEnabled={false}
+
                     >
                         {currentPosition && (
                             <Marker
@@ -216,11 +279,11 @@ export default function RechercheScreen({ navigation }) {
                 <View style={styles.profilesContainer}>
                     {searchDone && remoterProfiles.length > 0 ? (
                         <FlatList
-                            data={remoterProfiles}
-                            renderItem={renderItem}
-                            keyExtractor={(item) => item.id}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
+                            data={remoterProfiles} // Données des remoters
+                            renderItem={renderItem} // Fonction qui définit comment chaque élément est affiché
+                            keyExtractor={(item) => item.id} // Clé unique pour chaque élément
+                            horizontal // Affichage horizontal
+                            showsHorizontalScrollIndicator={false} // Désactive l'indicateur de défilement horizontal
                         />
                     ) : (
                         searchDone && (
@@ -283,25 +346,48 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#8F8F8F',
+        borderRadius: 10,
+        backgroundColor: '#E7E7E7',
+        paddingLeft: 10, // Pour ajouter de l'espace entre l'icône et la bordure
+        marginLeft: 22,
+        marginRight: 22, // Si besoin d'espace entre les marges
+        width: '80%',
     },
 
+    searchIcon: {
+        padding: 10, // Ajuste l'espacement autour de l'icône
+      },
+
     input: {
-        width: 280,
+        flex: 1, // Prend tout l'espace disponible à droite de l'icône
         height: 50,
-        borderRadius: 10,
-        borderColor: "#8F8F8F",
-        borderWidth: 1,
-        backgroundColor: "#DDDDDD",
-        paddingLeft: 20,
-        marginLeft: 22,
+        paddingLeft: 10, // Ajout de l'espace entre l'icône et le texte
+        fontFamily: "Poppins-SemiBold",
+        fontSize: 14,
+        textAlignVertical: "center",
     },
 
     iconInput: {
         marginLeft: 5,
     },
+
+    suggestionsContainer: {
+        position: 'absolute', // Position absolue pour superposer les suggestions
+        top: 70, // Ajustez en fonction de la position de votre champ de saisie
+        width: "80%",
+        backgroundColor: 'white', // Couleur de fond
+        borderRadius: 0,
+        elevation: 5, // Ombre pour Android
+        zIndex: 10, // Assurez-vous que cela est au-dessus des autres éléments
+      },
+      suggestionItem: {
+        padding: 10,
+        borderBottomColor: "#ccc",
+
+      },
 
     mapContainer: {
         width: "80%",
