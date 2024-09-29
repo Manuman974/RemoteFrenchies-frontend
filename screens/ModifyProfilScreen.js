@@ -51,7 +51,7 @@ export default function ModifyProfilScreen({ navigation }) {
             return;
         }
 
-        fetch("https://remote-frenchies-backend-delta.vercel.app/users/", {
+        fetch("http://192.168.154.186:3000/users/", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

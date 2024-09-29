@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const initialState = {
   value: {
     token: null,
+    userId: null,
     firstname: null,
     lastname: null,
     job: null,
@@ -19,18 +21,16 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.value.token = action.payload.token;
-      state.value.firstname = action.payload.firstname;
-      state.value.lastname = action.payload.lastname;
-      state.value.job = action.payload.job;
-      state.value.business = action.payload.business;
-      state.value.city = action.payload.city;
-      state.value.e_mail = action.payload.e_mail;
-      state.value.profile_picture = action.payload.profile_picture;
+      // Mettre à jour l'état avec les nouvelles données utilisateur
+      state.value = { ...state.value, ...action.payload };
+      // Sauvegarder les données de l'utilisateur dans AsyncStorage
+      AsyncStorage.setItem('user', JSON.stringify(state.value)).catch(err => console.log(err));
+    },
+    loadUserData: (state, action) => {
+      state.value = action.payload; // Charge les données utilisateur
     },
     addPhoto: (state, action) => {
       state.value.photos.push(action.payload);
-      // state.value.photos = action.payload;
     },
     removePhoto: (state, action) => {
       state.value.photos = state.value.photos.filter(
@@ -41,10 +41,10 @@ export const userSlice = createSlice({
       state.value.profile_picture = action.payload;
     },
     logout: (state) => {
-      state.value = initialState.value;
+      state.value = initialState.value; // Réinitialiser l'état utilisateur
     },
   },
 });
 
-export const { login, addPhoto, removePhoto, addPhotoProfile, logout } = userSlice.actions;
+export const { login, addPhoto, loadUserData, removePhoto, addPhotoProfile, logout } = userSlice.actions;
 export default userSlice.reducer;

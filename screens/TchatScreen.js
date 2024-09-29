@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   Text,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
   FlatList,
   TextInput,
-  KeyboardAvoidingView,
-  Platform,
+  TouchableOpacity,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 
-export default function TchatScreen({ navigation }) {
+export default function TchatScreen({ route }) {
+  const { otherUserId } = route.params; // L'ID de l'utilisateur avec lequel on discute
+  console.log("Other user ID:", otherUserId);
   const user = useSelector((state) => state.user.value);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -24,138 +21,103 @@ export default function TchatScreen({ navigation }) {
   }, []);
 
   const fetchMessages = () => {
-    fetch(`https://remote-frenchies-backend-delta.vercel.app/messages/${user.token}`, {
+    console.log("Fetching messages for user:", user.token);
+    fetch(`http://192.168.154.186:3000/discussions/messages/${user.token}/${otherUserId}`, {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.data.discussion && data.data.discussion.length > 0) {
-          setMessages(
-            data.data.discussion[0].message.map((e) => ({
-              id: e._id,
-              author: e.author,
-              message: e.message,
-              date: e.date,
-              isSentByUser: e.author === user._id, // Determine if the message was sent by the user
-            }))
-          );
-        }
-      });
-  };
-
-  // Fonction pour envoyer un message au serveur
-  const sendMessageToServer = (message) => {
-    return fetch("https://remote-frenchies-backend-delta.vercel.app/discussions/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: user.token,
-        userId: user._id,
-        text: message,
-        timestamp: new Date().toISOString(),
-      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
       .then((response) => {
         if (!response.ok) {
-          return response.json().then((error) => {
-            throw new Error(error.message || "Failed to send message");
-          });
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched data:", data); // Journaliser la réponse
+        if (data.result && data.discussions) {
+          // Filtrer la discussion correspondant à l'autre utilisateur
+          const foundDiscussion = data.discussions.find(
+            (discussion) =>
+              (discussion.user_1._id === user._id && discussion.user_2._id === otherUserId) ||
+              (discussion.user_1._id === otherUserId && discussion.user_2._id === user._id)
+          );
+  
+          if (foundDiscussion) {
+            setMessages(foundDiscussion.message); // Assure-toi que c'est bien un tableau de messages
+          } else {
+            console.error("Discussion not found between the users.");
+          }
+        } else {
+          console.error("No discussions found in the response.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching messages:", error);
+      });
+  };
+
+  const sendMessage = () => {
+    if (!newMessage.trim()) return; // Empêche l'envoi de messages vides
+
+    const messageData = {
+      token: user.token,
+      userId: otherUserId,
+      text: newMessage,
+    };
+
+    fetch(`http://192.168.154.186:3000/discussions/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(messageData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
       .then((data) => {
         console.log("Message sent:", data);
-        fetchMessages(); // Récupère les messages après l'envoi
+        if (data.result) {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { message: newMessage, author: user._id }, // Ajoute le message à la liste des messages
+          ]);
+          setNewMessage(""); // Réinitialiser le champ de message
+        } else {
+          console.error("Failed to send message:", data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
       });
   };
 
-  // Fonction pour gérer l'envoi d'un message
-  const sendMessage = () => {
-    // Vérifiez si le nouveau message n'est pas juste un espace
-    if (newMessage.trim().length > 0) {
-      // Efface le champ de saisie
-      setNewMessage("");
-
-      // Envoie un message au serveur
-      sendMessageToServer(newMessage);
-    }
-  };
-
-  // Composant fonctionnel pour afficher une bulle de message
-  const MessageBubble = ({ text, isSentByUser }) => (
-    // Afficher le conteneur avec des styles selon que le message est envoyé par l'utilisateur ou reçu
-    <View
-      style={[
-        styles.messageBubble,
-        isSentByUser ? styles.sentMessage : styles.receivedMessage,
-      ]}
-    >
-      <Text style={styles.messageText}>{text}</Text>
-    </View>
-  );
-
-  // Fonction pour restituer un élément de message individuel
-  const renderItem = ({ item }) => (
-    // Afficher le conteneur du message, stylisé selon qu'il a été envoyé par l'utilisateur ou reçu
-    <View
-      style={[
-        styles.messageContainer,
-        item.isSentByUser ? styles.sentContainer : styles.receivedContainer,
-      ]}
-    >
-      {!item.isSentByUser && (
-        <Image
-          source={{ uri: user.photoProfile }}
-          style={styles.smallProfileImage}
-        />
-      )}
-      <MessageBubble text={item.message} isSentByUser={item.isSentByUser} />
-    </View>
-  );
-
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-      >
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrow-left" size={20} color="#000" />
-          </TouchableOpacity>
-          <Image
-            source={{ uri: user.photoProfile }}
-            style={styles.profileImage}
-          />
-          <Text style={styles.name}>
-            {user.firstname} {user.lastname}
-          </Text>
-        </View>
-        <View style={styles.separator}></View>
-        <FlatList
-          data={messages}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
-        />
-        {/* <View style={styles.messageText}>
-                    <Text> bonjour</Text>
-                </View> */}
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            value={newMessage}
-            onChangeText={setNewMessage}
-            placeholder="Tapez votre message..."
-          />
-          <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-            <Icon name="paper-plane" size={20} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <FlatList
+        data={messages}
+        renderItem={({ item }) => (
+          <View style={styles.messageContainer}>
+            <Text>{item.message}</Text>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      <TextInput
+        style={styles.input}
+        value={newMessage}
+        onChangeText={setNewMessage}
+        placeholder="Type a message..."
+      />
+      <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+        <Text>Send</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 

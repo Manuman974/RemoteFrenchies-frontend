@@ -42,7 +42,7 @@ export default function OnboardingScreen({ navigation, route }) {
     }));
   };
 
-  const BACKEND_ADDRESS = "https://remote-frenchies-backend-delta.vercel.app";
+  const BACKEND_ADDRESS = "http://192.168.154.186:3000";
 
   const handleSubmit = () => {
     try {

@@ -166,21 +166,22 @@ export default function App() {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer
-        onStateChange={(state) => handleNavigationChange(state)}>
+          onStateChange={(state) => handleNavigationChange(state)}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             <Stack.Screen name="Recherche" component={RechercheScreen} />
-            <Stack.Screen name="RemoterSelectedScreen" component={RemoterSelectedScreen} options={{ tabBarVisible: false }}  />
+            <Stack.Screen name="RemoterSelectedScreen" component={RemoterSelectedScreen} options={{ tabBarVisible: false }} />
             <Stack.Screen name="Pwd" component={PwdScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
-            <Stack.Screen name="ProposerScreen" component={ProposerScreen}  />
-            <Stack.Screen name="PublishScreen" component={PublishScreen}  />
+            <Stack.Screen name="ProposerScreen" component={ProposerScreen} />
+            <Stack.Screen name="PublishScreen" component={PublishScreen} />
             <Stack.Screen name="AnnouncementScreen" component={AnnouncementScreen} />
             <Stack.Screen name="BlogScreen" component={BlogScreen} />
+            <Stack.Screen name="Message" component={MessageScreen} />
             <Stack.Screen name="TchatScreen" component={TchatScreen} />
           </Stack.Navigator>
           {loading && (

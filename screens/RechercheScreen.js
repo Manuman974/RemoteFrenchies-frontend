@@ -31,7 +31,7 @@ export default function RechercheScreen({ navigation }) {
     //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
   // = > INITIALISATION DES ETATS
-  const BACKEND_ADDRESS = "https://remote-frenchies-backend-delta.vercel.app";
+  const BACKEND_ADDRESS = "http://192.168.154.186:3000";
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
   const [addressesCoordinates, setAddressesCoordinates] = useState([]);

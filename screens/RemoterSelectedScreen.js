@@ -109,7 +109,7 @@ const homePhotoUri = Array.isArray(item.propositionData.home_photo) && item.prop
         <CustomButton
           title="Se rencontrer"
           style={{ marginTop: 40 }}
-          onPress={() => navigation.navigate("TchatScreen", { item })} //MODIF K
+          onPress={() => navigation.navigate("TchatScreen", { otherUserId: item.userData._id })} //MODIF K
         />
       </ScrollView>
     </KeyboardAvoidingView>

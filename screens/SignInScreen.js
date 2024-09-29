@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -28,22 +29,33 @@ export default function SignInScreen({ navigation }) {
     return EMAIL_REGEX.test(email);
   };
 
+  // Fonction pour enregistrer l'URL de la photo de profil
+  const saveProfilePicture = async (url) => {
+    try {
+      await AsyncStorage.setItem('profile_picture', url);
+    } catch (error) {
+      console.error("Erreur lors de la sauvegarde de l'URL de la photo de profil :", error);
+    }
+  };
+
   const handleConnection = () => {
     if (!validateEmail(signInE_mail)) {
       setError("Adresse email invalide");
       return;
     }
 
-    fetch("https://remote-frenchies-backend-delta.vercel.app/users/signin", {
+    fetch("http://192.168.154.186:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("Data received from sign-in:", data);
         if (data.result) {
           dispatch(
             login({
+              userId: data.userId,
               firstname: data.firstname,
               lastname: data.lastname,
               job: data.job,
@@ -51,8 +63,17 @@ export default function SignInScreen({ navigation }) {
               main_adress: data.main_adress,
               e_mail: signInE_mail,
               token: data.token,
+              profile_picture: data.url,
             })
           );
+
+      // Vérifiez si data.url est défini avant de l'enregistrer
+      if (data.url) {
+        saveProfilePicture(data.url); // Appel de la fonction uniquement si l'URL est valide
+      } else {
+        console.warn("Aucune URL de photo de profil fournie.");
+      }
+
           setSignInE_mail("");
           setSignInPassword("");
           setError("");

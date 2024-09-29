@@ -40,7 +40,7 @@ export default function ProposerScreen({ navigation }) {
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
-        fetch("https://remote-frenchies-backend-delta.vercel.app/proposition", {
+        fetch("http://192.168.154.186:3000/proposition", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -106,7 +106,7 @@ export default function ProposerScreen({ navigation }) {
             });
 
             // Envoi de la photo au serveur
-            fetch('https://remote-frenchies-backend-delta.vercel.app/proposition/upload', {
+            fetch('http://192.168.154.186:3000/proposition/upload', {
                 method: "POST",
                 body: formData,
             })
@@ -149,7 +149,7 @@ export default function ProposerScreen({ navigation }) {
             });
 
             // Envoi de la photo au serveur
-            fetch('https://remote-frenchies-backend-delta.vercel.app/proposition/upload', {
+            fetch('http://192.168.154.186:3000/proposition/upload', {
                 method: "POST",
                 body: formData,
             })

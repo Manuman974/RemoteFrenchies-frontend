@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
     StyleSheet,
     View,
@@ -9,14 +9,28 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, } from "react-redux";
 import { addPhotoProfile, logout } from "../reducers/user";
 import CustomProfilButton from "../components/CustomProfilButton";
 import CustomHeader from "../components/CustomHeader";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfilScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
+    console.log("User data:", user);
     const dispatch = useDispatch();
+
+        // Fonction pour charger la photo de profil depuis AsyncStorage
+        const loadProfilePicture = async () => {
+            const profilePicture = await AsyncStorage.getItem("profile_picture");
+            if (profilePicture) {
+                dispatch(addPhotoProfile(profilePicture)); // Met à jour l'état Redux
+            }
+        };
+    
+        useEffect(() => {
+            loadProfilePicture(); // Charge la photo de profil lorsque le composant est monté
+        }, []);
 
     const openCameraAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -46,22 +60,25 @@ export default function ProfilScreen({ navigation }) {
             formData.append("Token", user.token);
 
             // Envoi de la photo au serveur
-            fetch("https://remote-frenchies-backend-delta.vercel.app/profile", {
+            fetch("http://192.168.154.186:3000/profile", {
                 method: "PUT",
                 body: formData,
             })
                 .then((response) => response.json())
-                .then((data) => {
+                .then(async(data) => {
                     console.log(data)
                     if (data && data.result) {
                         // Ajouter au magasin Redux si le téléchargement a réussi
                         dispatch(addPhotoProfile(data.url));
-                    } else {
-                        Error("Échec du téléchargement de la photo");
-                    }
-                });
-        }
-    };
+// Persister la photo dans AsyncStorage
+await AsyncStorage.setItem("profile_picture", data.url);
+} else {
+    console.error("Échec du téléchargement de la photo");
+}
+})
+.catch((error) => console.error("Erreur de fetch :", error));
+}
+};
 
     const handlelogout = () => {
         dispatch(logout());
