@@ -1,4 +1,4 @@
-import { useEffect, useState, useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     StyleSheet,
     View,
@@ -16,17 +16,9 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
-import { useSelector } from "react-redux";
-import Icon from "react-native-vector-icons/FontAwesome";
 import CustomHeader from "../components/CustomHeader";
 
 export default function RechercheScreen({ navigation }) {
-    //SECTION HEADER
-
-    //useLayoutEffect : hook pour configurer les options de navigation juste avant que le composant soit rendu.
-    // Garantit que les options du <header> pour cette page s'appliquent correctement
-    // navigation.setOptions : Méthode pour définir les options du header directement dans le composant.
-    //useLayoutEffect + navigation.setOptions permet de centraliser la configuration du header directement dans chaque composant, ce qui peut être plus clair et plus facile à gérer, surtout si les options du header varient beaucoup d'un écran à l'autre.
 
     //SECTION MAP ET AFFICHAGE REMOTERS SUR CARTE
 
@@ -51,18 +43,82 @@ export default function RechercheScreen({ navigation }) {
             const status = result?.status;
 
             if (status === "granted") {
-                Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-                    setCurrentPosition({
-                        latitude: location.coords.latitude,
-                        longitude: location.coords.longitude,
-                        // Pour zoomer automatiquement sur la carte
-                        latitudeDelta: 0.15,
-                        longitudeDelta: 0.15,
-                    });
+                const location = await Location.getCurrentPositionAsync({});
+                const { latitude, longitude } = location.coords;
+
+                setCurrentPosition({
+                    latitude,
+                    longitude,
+                    latitudeDelta: 0.15,
+                    longitudeDelta: 0.15,
                 });
+
+
+                            // Appeler la fonction pour rechercher les remoters dans un périmètre donné
+            handleSearchInProximity(latitude, longitude);
+
+                // Récupérer la ville à partir des coordonnées
+                const cityResponse = await fetch(
+                    `https://api-adresse.data.gouv.fr/reverse/?lon=${longitude}&lat=${latitude}`
+                );
+                const cityData = await cityResponse.json();
+                const cityName = cityData.features[0]?.properties.city; // obtenir le nom de la ville
+                if (cityName) {
+                    setCityInput(cityName);
+                    handleSearch(cityName); // Recherche automatique
+                }
             }
         })();
     }, []);
+
+    const handleSearchInProximity = (latitude, longitude) => {
+        const radius = 5000; // rayon de 5 km
+    
+        fetch(`${BACKEND_ADDRESS}/proposition/searchInProximity`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                latitude,
+                longitude,
+                radius,
+            }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.result === true) {
+                // Traitement des données reçues
+                const coordinates = data.propositionData.map((user) => ({
+                    latitude: user.main_address.addressLatitude,
+                    longitude: user.main_address.addressLongitude,
+                    firstname: user.user.firstname,
+                    lastname: user.user.lastname,
+                }));
+    
+                setAddressesCoordinates(coordinates);
+    
+                const remoters = data.propositionData.map((data, i) => ({
+                    id: i,
+                    propositionData: data,
+                    userData: data.user,
+                }));
+    
+                setRemoterProfiles(remoters);
+                setErrorMessage("");
+                setSearchDone(true);
+            } else {
+                setAddressesCoordinates([]);
+                setRemoterProfiles([]);
+                setErrorMessage("Aucun remoter trouvé dans le périmètre.");
+                setSearchDone(true);
+            }
+        })
+        .catch((error) => {
+            console.error("Erreur lors de la recherche dans le périmètre :", error);
+        });
+    };
+
 
   // Fonction pour récupérer les villes depuis l'API
   const handleCityInputChange = async (input) => {
@@ -136,12 +192,6 @@ export default function RechercheScreen({ navigation }) {
                     const remoters = data.propositionData.map((data, i) => {
                         return {
                             id: i,
-                            // firstname: user.user.firstname,
-                            // lastname: user.user.lastname,
-                            // job: user.user.job,
-                            // city: user.main_address.city,
-                            // latitude: user.main_address.addressLatitude,
-                            // longitude: user.main_address.adressLongitude,
                             propositionData: data,
                             userData: data.user,
                         };

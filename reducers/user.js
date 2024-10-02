@@ -40,11 +40,17 @@ export const userSlice = createSlice({
     addPhotoProfile: (state, action) => {
       state.value.profile_picture = action.payload;
     },
+
+    updateProfile: (state, action) => {
+      state.value = { ...state.value, ...action.payload };
+      AsyncStorage.setItem('user', JSON.stringify(state.value)).catch(err => console.log(err));
+    },
+
     logout: (state) => {
       state.value = initialState.value; // Réinitialiser l'état utilisateur
     },
   },
 });
 
-export const { login, addPhoto, loadUserData, removePhoto, addPhotoProfile, logout } = userSlice.actions;
+export const { login, addPhoto, loadUserData, removePhoto, addPhotoProfile, logout, updateProfile } = userSlice.actions;
 export default userSlice.reducer;

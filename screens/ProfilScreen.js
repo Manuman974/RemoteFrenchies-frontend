@@ -4,11 +4,9 @@ import {
     View,
     Text,
     SafeAreaView,
-    TouchableOpacity,
     Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector, } from "react-redux";
 import { addPhotoProfile, logout } from "../reducers/user";
 import CustomProfilButton from "../components/CustomProfilButton";
@@ -32,53 +30,6 @@ export default function ProfilScreen({ navigation }) {
             loadProfilePicture(); // Charge la photo de profil lorsque le composant est monté
         }, []);
 
-    const openCameraAsync = async () => {
-        let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-        if (permissionResult.granted === false) {
-            alert(
-                "Autorisez-vous Remote frenchies à accéder à votre appareil photo"
-            );
-            return;
-        }
-
-        let result = await ImagePicker.launchCameraAsync({
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-        // Si l'utilisateur n'a pas annulé la prise de photo
-        if (!result.canceled) {
-            // Préparer les données pour l'envoi
-            const formData = new FormData();
-            formData.append("photoFromFront", {
-                uri: result.assets[0].uri,
-                name: "photo.jpg",
-                type: "image/jpeg",
-            });
-            //MES MODIFS
-            formData.append("Token", user.token);
-
-            // Envoi de la photo au serveur
-            fetch("http://192.168.154.186:3000/profile", {
-                method: "PUT",
-                body: formData,
-            })
-                .then((response) => response.json())
-                .then(async(data) => {
-                    console.log(data)
-                    if (data && data.result) {
-                        // Ajouter au magasin Redux si le téléchargement a réussi
-                        dispatch(addPhotoProfile(data.url));
-// Persister la photo dans AsyncStorage
-await AsyncStorage.setItem("profile_picture", data.url);
-} else {
-    console.error("Échec du téléchargement de la photo");
-}
-})
-.catch((error) => console.error("Erreur de fetch :", error));
-}
-};
 
     const handlelogout = () => {
         dispatch(logout());
@@ -116,39 +67,26 @@ await AsyncStorage.setItem("profile_picture", data.url);
                             {user.firstname} {user.lastname}
                         </Text>
                         <Text style={styles.h3}> {user.job} </Text>
-                        <TouchableOpacity style={styles.modifyProfil}>
-                            <Text style={styles.body2}> Modifier mon profil</Text>
-                            <Icon
-                                name="pencil"
-                                style={styles.reply}
-                                size={20}
-                                color="#49B48C"
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={openCameraAsync}
-                            style={styles.modifyProfil}
-                        >
-                            <Text style={styles.body2}> Modifier ma photo</Text>
-                            <Icon
-                                name="pencil"
-                                style={styles.reply}
-                                size={20}
-                                color="#49B48C"
-                            />
-                        </TouchableOpacity>
-
                         <View>
                             <CustomProfilButton
+                            icon="pencil-alt"
+                                onPress={() => navigation.navigate("ModifyProfilScreen")}
+                                title="Modifier mon  profil"
+                                style={{borderTopWidth: 1, marginTop: 30}}
+                            />
+                                                        <CustomProfilButton
+                            icon="hand-paper"
                                 onPress={() => navigation.navigate("AnnouncementScreen")}
                                 title="Mes annonces"
-                            ></CustomProfilButton>
-                            <CustomProfilButton title="Mon historique de rencontre"></CustomProfilButton>
-                            <CustomProfilButton title="Paramètres et sécurité"></CustomProfilButton>
+                            />
+                                                        <CustomProfilButton
+                            icon="cog"
+                                title="Paramètres et sécurité"
+                            />
                         </View>
-                    </View>
                 </View>
-            </SafeAreaView>
+            </View>
+        </SafeAreaView>
     );
 }
 
@@ -236,6 +174,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "center",
         width: "80%",
+        marginBottom: 40,
     },
 
     buttonContainer: {},

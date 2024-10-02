@@ -2,10 +2,6 @@ import React from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CustomButton from "./CustomButton";
-import { addPhotoProfile, logout } from "../reducers/user";
-
-
-
 
 export const CustomProfile = ({
   profile_picture,
@@ -78,8 +74,8 @@ const styles = StyleSheet.create({
   },
 
   photoRemoter: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     borderRadius: 150,
   },
 
@@ -89,28 +85,30 @@ const styles = StyleSheet.create({
 
   remoterNameContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
+    marginLeft: 10,
   },
 
   remoterFirstname: {
     fontFamily: "Poppins-SemiBold",
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 21,
     marginRight: 5,
   },
 
   remoterLastname: {
     fontFamily: "Poppins-SemiBold",
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 21,
   },
 
   remoterJob: {
     fontFamily: "Poppins-Regular",
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 21,
     marginBottom: 5,
+    marginLeft: 10,
   },
 
   remoterCityContainer: {

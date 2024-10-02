@@ -8,49 +8,99 @@ import {
     ScrollView,
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
-import { removePhoto } from '../reducers/user';
+import { useSelector } from 'react-redux';
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomHeader from "../components/CustomHeader";
+import CustomTabBar from '../components/CustomTabBar';
+import { useNavigation } from '@react-navigation/native';
 //import Icon1 from "react-native-vector-icons/Evillcons";
 
 export default function AnnouncementScreen({ navigation }) {
-    const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
     const [announcements, setAnnouncements] = useState([]);
 
-        // Fonction pour charger les annonces depuis AsyncStorage
-        const loadAnnouncements = async () => {
-            try {
-                const jsonValue = await AsyncStorage.getItem('announcements');
-                const savedAnnouncements = jsonValue ? JSON.parse(jsonValue) : [];
-                setAnnouncements(savedAnnouncements); // Met à jour l'état avec les annonces sauvegardées
-            } catch (e) {
-                console.error("Erreur lors de la récupération des annonces :", e);
+
+    // Fonction pour charger les annonces depuis AsyncStorage
+    const loadAnnouncements = async () => {
+        try {
+            const response = await fetch(`http://192.168.154.186:3000/proposition/${user.token}`);
+            const data = await response.json();
+
+            if (data.result) {
+                setAnnouncements(data.propositionData);
+
+                // Mettre à jour AsyncStorage
+                await AsyncStorage.setItem('announcements', JSON.stringify(data.propositionData));
             }
-        };
-    
-        useEffect(() => {
-            loadAnnouncements(); // Appel de la fonction pour charger les annonces lors du chargement du composant
-        }, []);
+        } catch (error) {
+            console.error("Erreur lors du chargement des annonces :", error);
+        }
+    };
+
+    useEffect(() => {
+        loadAnnouncements(); // Appel de la fonction pour charger les annonces lors du chargement du composant
+    }, []);
 
     // Affichage des annonces sous forme de photo
-    const photos = announcements.map((announcement, index) => { 
+    const photos = announcements.map((announcement, index) => {
+        // Vérifie si home_photo contient des images
+        const photoUrl = announcement.home_photo.length > 0 ? announcement.home_photo[0] : 'defaultImageUrl'; // Remplace 'defaultImageUrl' par une URL par défaut si aucune image n'est présente.
+
+
+        // SUppirmer une annonce //
+        const handleDelete = async (announcementId) => {
+            try {
+                const response = await fetch(`http://192.168.154.186:3000/proposition/${announcementId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`, // Ajouter le token si nécessaire
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.result) {
+                    // Supprimer l'annonce de l'état local
+                    setAnnouncements((prev) => {
+                        const updatedAnnouncements = prev.filter((item) => item._id !== announcementId);
+
+                        // Mettre à jour AsyncStorage
+                        AsyncStorage.setItem('announcements', JSON.stringify(updatedAnnouncements));
+
+                        return updatedAnnouncements;
+                    });
+                } else {
+                    console.error(data.error);
+                }
+            } catch (error) {
+                console.error("Erreur lors de la suppression de l'annonce :", error.message);
+            }
+        };
+        const handleNavigate = (announcement) => {
+            console.log("Naviguer avec item : ", announcement);
+            navigation.navigate("RemoterSelectedScreen", { item: announcement });
+        };
+
         return (
             <View key={index} style={styles.annonceContainer}>
-                <Image source={{ uri: announcement.photoUrl }} style={styles.photo} />
+                <Image source={{ uri: photoUrl }} style={styles.photo} />
                 <View style={styles.annonceFooter}>
                     <Text style={styles.locationText}>
-                        <Icon name="map-marker" size={16} color="black" /> {user.city}
+                        <Icon name="map-marker" size={16} color="black" /> {announcement.main_address.city}
                     </Text>
                     <View style={styles.buttonsContainer}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate("Proposer")}
+                            onPress={() => handleNavigate(announcement)}
                             style={styles.modifyButton}
                         >
-                            <Text style={styles.modifyButtonText}>Créer une autre annonce</Text>
+                            <Text style={styles.modifyButtonText}>Voir</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => dispatch(removePhoto(announcement.photoUrl))}>
+                        <TouchableOpacity onPress={() => handleDelete(item)}>
                             <Icon name="trash-o" size={24} color="#FF6F61" />
                         </TouchableOpacity>
                     </View>
@@ -60,7 +110,7 @@ export default function AnnouncementScreen({ navigation }) {
     });
     return (
         <View style={styles.container}>
-<View>
+            <View>
                 <CustomHeader
                     title="Mes Annonces"
                     icon="arrow-left"
@@ -71,7 +121,9 @@ export default function AnnouncementScreen({ navigation }) {
             <ScrollView>
                 {photos}
             </ScrollView>
+            <CustomTabBar navigation={navigation} />
         </View>
+
     );
 
 }

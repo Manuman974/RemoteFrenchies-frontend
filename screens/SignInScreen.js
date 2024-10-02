@@ -24,6 +24,7 @@ export default function SignInScreen({ navigation }) {
   const [signInE_mail, setSignInE_mail] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
   const [error, setError] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false)
 
   const validateEmail = (email) => {
     return EMAIL_REGEX.test(email);
@@ -114,12 +115,18 @@ export default function SignInScreen({ navigation }) {
           autoCapitalize="none"
           autoComplete="email"
         />
-        <CustomTextInput
-          placeholder="Mot de passe"
-          value={signInPassword}
-          onChangeText={setSignInPassword}
-          secureTextEntry={true}
-        />
+         <View style={styles.passwordContainer}>
+          <CustomTextInput
+            placeholder="Mot de passe"
+            value={signInPassword}
+            onChangeText={setSignInPassword}
+            secureTextEntry={!passwordVisible}
+            style={styles.passwordInput}
+          />
+          <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={styles.iconButton}>
+            <Icon name={passwordVisible ? "eye-slash" : "eye"} size={20} color="black" />
+          </TouchableOpacity>
+        </View>
       </View>
       <Text style={styles.errorText}>{error}</Text>
       <CustomButton
@@ -139,6 +146,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    width: "100%",
+  },
+  passwordInput: {
+    flex: 1,
+    paddingRight: 40, // Espace pour l'icône
+  },
+  iconButton: {
+    position: "absolute",
+    right: 10, // Position de l'icône
+  },
+
   button: {
     // borderColor: 'red',
     // borderWidth: '1',

@@ -5,9 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  TouchableOpacity,
 } from 'react-native';
+import CustomButton from '../components/CustomButton';
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -20,14 +19,20 @@ export default function HomeScreen({ navigation }) {
       <Text style={styles.body}>Partage tes meilleurs pratiques de télétravail selon ta discipline métier. Rencontre tes pairs qui font partie de la communauté.</Text>
       <Text style={styles.body}>Allons coworker les uns chez les autres en rencontrant des Remote Frenchies près de chez toi.</Text>
       <View style={styles.btn}>
-        <TouchableOpacity onPress={() => navigation.navigate('SignUp')} style={styles.button} activeOpacity={0.8}>
-          <Text style={styles.textButton}>S'inscrire</Text>
-        </TouchableOpacity>
+      <CustomButton
+        title="S'inscrire"
+        onPress={() => navigation.navigate('SignUp')}
+        style={styles.button}
+        textStyle={styles.textButton}
+      />
       </View>
       <View style={styles.btn1}>
-        <TouchableOpacity onPress={() => navigation.navigate('SignIn')} style={styles.button1} activeOpacity={0.8}>
-          <Text style={styles.textButton}>Se connecter</Text>
-        </TouchableOpacity>
+      <CustomButton
+        title="Se connecter"
+        onPress={() => navigation.navigate('SignIn')}
+        style={styles.button}
+        textStyle={styles.textButton}
+      />
       </View>
     </KeyboardAvoidingView>
   );

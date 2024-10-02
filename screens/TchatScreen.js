@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSelector } from "react-redux";
+import CustomTabBar from '../components/CustomTabBar';
 
-export default function TchatScreen({ route }) {
+export default function TchatScreen({ navigation, route }) {
   const { otherUserId } = route.params; // L'ID de l'utilisateur avec lequel on discute
   console.log("Other user ID:", otherUserId);
   const user = useSelector((state) => state.user.value);
@@ -117,6 +118,7 @@ export default function TchatScreen({ route }) {
       <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
         <Text>Send</Text>
       </TouchableOpacity>
+      <CustomTabBar navigation={navigation} />
     </View>
   );
 }

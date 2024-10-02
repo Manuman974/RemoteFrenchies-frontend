@@ -9,6 +9,7 @@ import {
     SafeAreaView,
     ScrollView,
     Alert,
+    Image,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -37,6 +38,7 @@ export default function ProposerScreen({ navigation }) {
     const [autresAvantages, setAutresAvantages] = useState("");
     const [messageAnnonce, setMessageAnnonce] = useState("");
     const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
+    const [imageUri, setImageUri] = useState(null); // Ajoute un état pour l'image
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
@@ -67,6 +69,7 @@ export default function ProposerScreen({ navigation }) {
                     setCheckboxes(initialCheckboxes);
                     setAutresAvantages("");
                     setMessageAnnonce("");
+                    setImageUri(null); // Réinitialisez l'URI de l'image
                     navigation.navigate("PublishScreen");
                 }
             });
@@ -97,6 +100,9 @@ export default function ProposerScreen({ navigation }) {
         });
         // Vérifie si l'utilisateur n'a pas annulé la sélection
         if (!result.canceled) {
+                        // Mettre à jour l'état de l'URI de l'image
+                        setImageUri(result.assets[0].uri);
+
             // Préparer les données pour l'envoi
             const formData = new FormData();
             formData.append("photoFromFront", {
@@ -140,6 +146,9 @@ export default function ProposerScreen({ navigation }) {
 
         // Si l'utilisateur n'a pas annulé la prise de photo
         if (!result.canceled) {
+                        // Mettre à jour l'état de l'URI de l'image
+                        setImageUri(result.assets[0].uri);
+
             // Préparer les données pour l'envoi
             const formData = new FormData();
             formData.append("photoFromFront", {
@@ -173,12 +182,12 @@ export default function ProposerScreen({ navigation }) {
                 keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
             >
 
-<View>
-                <CustomHeader
-                    title="Proposer"
-                    icon="hand-paper-o"
-                />
-            </View>
+                <View>
+                    <CustomHeader
+                        title="Proposer"
+                        icon="hand-paper-o"
+                    />
+                </View>
 
                 <ScrollView
                     contentContainerStyle={styles.scrollViewContent}
@@ -256,7 +265,12 @@ export default function ProposerScreen({ navigation }) {
                         textStyle={styles.textButton}
                     />
 
-                    {/* {image && <Image source={{ uri: image }} style={styles.image} />} */}
+                    {imageUri && (
+                        <Image
+                            source={{ uri: imageUri }}
+                            style={styles.imagePreview} // Ajoutez un style pour l'image
+                        />
+                    )}
 
                     <TextInput
                         placeholder="Message de l’annonce"
@@ -360,5 +374,13 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
         // borderColor: 'red',
         width: 330,
+    },
+
+    imagePreview: {
+        width: 290, // Largeur de l'aperçu de l'image
+        height: 200, // Hauteur de l'aperçu de l'image
+        borderRadius: 10, // Arrondi des coins
+        marginVertical: 20, // Espace vertical
+        alignSelf: "center", // Centrer l'image
     },
 });

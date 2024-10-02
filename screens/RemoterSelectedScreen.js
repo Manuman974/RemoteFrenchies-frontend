@@ -13,16 +13,17 @@ import CustomParagraph from "../components/CustomParagraph";
 import CustomButton from "../components/CustomButton";
 import CustomProfile, { CustomCity } from "../components/CustomProfile";
 import CustomHeader from "../components/CustomHeader";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import CustomTabBar from '../components/CustomTabBar';
 
-export default function RemoterSelectedScreen({
-  navigation,
-  route: { params: { item },},
-}) {
-  console.log("ITEM: ", item);
+export default function RemoterSelectedScreen({ navigation, route }) {
+  const { item } = route.params; // Accès correct à item
+
+  console.log("Item reçu:", item); // Affiche l'objet item
+  console.log("Proposition Data:", item?.propositionData); // Affiche propositionData
 
   // Condition pour les bulletPoints des avantages
   const remoterAdvantages = [];
+  if (item.propositionData) { // Vérifiez si propositionData est défini
   if (item.propositionData.fiber_connection) {
     remoterAdvantages.push({ bulletText: "Fibre optique" });
   }
@@ -35,12 +36,17 @@ export default function RemoterSelectedScreen({
   if (item.propositionData.other) {
     remoterAdvantages.push({ bulletText: item.propositionData.other });
   }
-  // Récupére la première URL du tableau des photos (en verifiant d'abord si c'est bien un tableau et si il contient un URL)
-const homePhotoUri = Array.isArray(item.propositionData.home_photo) && item.propositionData.home_photo.length > 0
-? item.propositionData.home_photo[0] : null;
+}
+// Vérifiez si home_photo est défini avant d'y accéder
+const homePhotoUri = 
+  item.propositionData.home_photo && 
+  Array.isArray(item.propositionData.home_photo) && 
+  item.propositionData.home_photo.length > 0 
+    ? item.propositionData.home_photo[0] 
+    : null;
 
 
-  
+
   //Action click "se rencontrer"
   handleClick = () => {
     console.log("click activé sur bouton Se rencontrer");
@@ -51,17 +57,17 @@ const homePhotoUri = Array.isArray(item.propositionData.home_photo) && item.prop
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-<View>
-                <CustomHeader
-                    title="Annonce"
-                    icon="arrow-left"
-                    onPress={() => navigation.goBack()}
-                />
-            </View>
+      <View>
+        <CustomHeader
+          title="Annonce"
+          icon="arrow-left"
+          onPress={() => navigation.goBack()}
+        />
+      </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.profileContainer}>
           <CustomProfile
-            profile_picture={item.userData.profile_picture} 
+            profile_picture={item.userData.profile_picture}
             firstname={item.userData.firstname}
             lastname={item.userData.lastname}
             showCity={false}
@@ -79,7 +85,7 @@ const homePhotoUri = Array.isArray(item.propositionData.home_photo) && item.prop
         </View>
         <View style={styles.line}></View>
         <View>
-        <Image style={styles.photoCountainer} source={{ uri: homePhotoUri }} /> 
+          <Image style={styles.photoCountainer} source={{ uri: homePhotoUri }} />
           <CustomCity
             style={styles.remoterCityStyle}
             city={item.propositionData.main_address.city}
@@ -111,8 +117,11 @@ const homePhotoUri = Array.isArray(item.propositionData.home_photo) && item.prop
           style={{ marginTop: 40 }}
           onPress={() => navigation.navigate("TchatScreen", { otherUserId: item.userData._id })} //MODIF K
         />
+ 
       </ScrollView>
+      <CustomTabBar navigation={navigation} />
     </KeyboardAvoidingView>
+    
   );
 }
 

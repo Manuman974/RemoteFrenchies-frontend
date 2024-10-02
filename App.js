@@ -9,6 +9,7 @@ import RemoterSelectedScreen from "./screens/RemoterSelectedScreen";
 import ProposerScreen from "./screens/ProposerScreen";
 import MessageScreen from "./screens/MessageScreen";
 import ProfilScreen from "./screens/ProfilScreen";
+import ModifyProfilScreen from "./screens/ModifyProfilScreen";
 import BlogScreen from "./screens/BlogScreen";
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
@@ -173,10 +174,11 @@ export default function App() {
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             <Stack.Screen name="Recherche" component={RechercheScreen} />
-            <Stack.Screen name="RemoterSelectedScreen" component={RemoterSelectedScreen} options={{ tabBarVisible: false }} />
+            <Stack.Screen name="RemoterSelectedScreen" component={RemoterSelectedScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Pwd" component={PwdScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
+            <Stack.Screen name="ModifyProfilScreen" component={ModifyProfilScreen} />
             <Stack.Screen name="ProposerScreen" component={ProposerScreen} />
             <Stack.Screen name="PublishScreen" component={PublishScreen} />
             <Stack.Screen name="AnnouncementScreen" component={AnnouncementScreen} />

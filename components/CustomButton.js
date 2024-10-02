@@ -27,14 +27,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
     height: 50,
-    width: "70%",
+    width: "60%",
   },
   text: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 13,
     paddingTop: 4,
-    fontWeight: "bold",
     lineHeight: 21,
+    fontFamily: "Poppins-SemiBold",
   },
 });
 

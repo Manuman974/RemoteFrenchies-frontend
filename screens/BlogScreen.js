@@ -44,13 +44,6 @@ export default function BlogScreen({ navigation }) {
                         />
                     </View>
                     <ScrollView contentContainerStyle={styles.scrollView}>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Rechercher"
-                            />
-                            < Icon style={styles.icon2} name='magnifying-glass' size={20} color='#49B48C' />
-                        </View>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Les Avantages du Télétravail pour les Employés</Text>
                             <View>
