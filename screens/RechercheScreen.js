@@ -24,6 +24,7 @@ export default function RechercheScreen({ navigation }) {
 
   // = > INITIALISATION DES ETATS
   const BACKEND_ADDRESS = "http://192.168.154.186:3000";
+
   const [currentPosition, setCurrentPosition] = useState(null);
   const [cityInput, setCityInput] = useState("");
   const [addressesCoordinates, setAddressesCoordinates] = useState([]);
@@ -369,10 +370,17 @@ const styles = StyleSheet.create({
     },
 
     h1: {
-        marginLeft: 10,
-        fontSize: 24,
+        marginTop: 10,
+        fontSize: 20,
         textAlign: "center",
         fontFamily: "Poppins-SemiBold",
+        alignSelf: "center",
+    },
+
+    h2: {
+        fontSize: 16,
+        textAlign: "center",
+        fontFamily: "Poppins-Regular",
         alignSelf: "center",
     },
 
@@ -381,6 +389,7 @@ const styles = StyleSheet.create({
         backgroundColor: "red",
     },
     scrollView: {
+        paddingTop: 20,
         paddingBottom: 20,
         flexGrow: 1,
         justifyContent: "center",
@@ -441,7 +450,7 @@ const styles = StyleSheet.create({
 
     mapContainer: {
         width: "80%",
-        height: 270,
+        height: 320,
         borderRadius: 20,
         overflow: "hidden",
         marginTop: 20,
@@ -477,6 +486,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        fontFamily: "Poppins-Regular",
+        fontSize: 10,
+        
     },
 
     remoterFirstname: {
@@ -545,15 +557,6 @@ const styles = StyleSheet.create({
         lineHeight: 21,
         textAlign: "center",
         marginBottom: 8,
-    },
-
-    h2: {
-        width: 250,
-        alignSelf: "center",
-        fontSize: 18,
-        fontFamily: "Poppins-SemiBold",
-        textAlign: "center",
-        marginBottom: 20,
     },
 
     h4: {

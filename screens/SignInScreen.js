@@ -79,7 +79,7 @@ export default function SignInScreen({ navigation }) {
           setSignInPassword("");
           setError("");
 
-          navigation.navigate("TabNavigator");
+          navigation.replace('WelcomeScreen');
         } else {
           setError("Email ou Mot de passe invalide");
         }
@@ -150,8 +150,6 @@ const styles = StyleSheet.create({
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: "#ccc",
     width: "100%",
   },
   passwordInput: {
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     position: "absolute",
-    right: 10, // Position de l'icône
+    right: 20, // Position de l'icône
   },
 
   button: {
@@ -233,6 +231,7 @@ const styles = StyleSheet.create({
     height: 190,
     paddingLeft: 20,
   },
+
   image: {
     resizeMode: "contain",
     width: 250,

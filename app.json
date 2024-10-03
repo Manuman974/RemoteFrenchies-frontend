@@ -2,6 +2,7 @@
   "expo": {
     "name": "remote-frenchies",
     "slug": "remote-frenchies",
+    "scheme": "remote-frenchies",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -18,6 +18,7 @@ import PublishScreen from "./screens/PublishScreen";
 import AnnouncementScreen from "./screens/AnnouncementScreen";
 import TchatScreen from './screens/TchatScreen';
 import PwdScreen from "./screens/PwdScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
 import React, { useEffect, useState } from "react";
 
 
@@ -172,6 +173,7 @@ export default function App() {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             <Stack.Screen name="Recherche" component={RechercheScreen} />
             <Stack.Screen name="RemoterSelectedScreen" component={RemoterSelectedScreen} options={{ headerShown: false }} />
