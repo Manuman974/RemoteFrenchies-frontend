@@ -14,6 +14,9 @@ import CustomButton from "../components/CustomButton";
 import CustomProfile, { CustomCity } from "../components/CustomProfile";
 import CustomHeader from "../components/CustomHeader";
 import CustomTabBar from '../components/CustomTabBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
+import { useSelector } from 'react-redux';
 
 export default function RemoterSelectedScreen({ navigation, route }) {
   const { item } = route.params; // Accès correct à item
@@ -48,8 +51,52 @@ const homePhotoUri =
 
 
   //Action click "se rencontrer"
-  handleClick = () => {
-    console.log("click activé sur bouton Se rencontrer");
+  const userToken = useSelector((state) => state.user.value.token);
+  const handleMeeting = async () => {
+    if (item.userData && item.userData._id) {
+      console.log("ID de l'utilisateur à contacter:", item.userData._id);
+      try {
+        if (!userToken) {
+          throw new Error('Token d\'authentification non trouvé');
+        }
+
+        const response = await fetch(`http://192.168.154.186:3000/discussions/create/${item.userData._id}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${userToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ token: userToken })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Erreur lors de la création de la discussion');
+        }
+
+        const data = await response.json();
+        console.log('Réponse de la création/récupération de la discussion:', data);
+        
+        if (data.result && data.discussionId) {
+          navigation.navigate("TchatScreen", { 
+            otherUserId: item.userData._id,
+            discussionId: data.discussionId,
+            otherUser: {
+              username: item.userData.firstname, // ou utilisez une autre propriété appropriée
+              // Ajoutez d'autres propriétés utiles ici
+            }
+          });
+        } else {
+          throw new Error('ID de discussion non reçu');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la création/récupération de la discussion:', error.message);
+        Alert.alert("Erreur", "Impossible de créer une discussion pour le moment. Veuillez réessayer.");
+      }
+    } else {
+      console.error("L'ID de l'utilisateur n'est pas disponible", item.userData);
+      Alert.alert("Erreur", "Impossible de contacter cet utilisateur pour le moment.");
+    }
   };
 
   return (
@@ -115,7 +162,7 @@ const homePhotoUri =
         <CustomButton
           title="Se rencontrer"
           style={{ marginTop: 40 }}
-          onPress={() => navigation.navigate("TchatScreen", { otherUserId: item.userData._id })} //MODIF K
+          onPress={handleMeeting}
         />
  
       </ScrollView>
