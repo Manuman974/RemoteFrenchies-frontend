@@ -94,7 +94,7 @@ const ModifyProfilScreen = ({ navigation }) => {
         });
         formData.append("Token", user.token);
 
-        fetch("http://192.168.154.186:3000/profile", {
+        fetch(`${API_URL}/profile`, {
             method: "PUT",
             body: formData,
         })
@@ -125,7 +125,7 @@ const ModifyProfilScreen = ({ navigation }) => {
         };
 
         // Appel API pour mettre à jour les informations sur le backend
-        fetch(`http://192.168.154.186:3000/users/update/${user.userId}`, {
+        fetch(`${API_URL}/users/update/${user.userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -218,11 +218,6 @@ const ModifyProfilScreen = ({ navigation }) => {
                         placeholder="Entreprise"
                         value={business}
                         onChangeText={setBusiness}
-                    />
-                    <CustomTextInput
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={setEmail}
                     />
                     <CustomTextInput
                         placeholder="Ville"

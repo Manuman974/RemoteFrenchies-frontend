@@ -13,6 +13,7 @@ const initialState = {
     e_mail: null,
     photos: [],
     profile_picture: "",
+    propositions: [], // Ajout du champ propositions
   },
 };
 
@@ -49,8 +50,24 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.value = initialState.value; // Réinitialiser l'état utilisateur
     },
+
+    setPropositions: (state, action) => {
+      state.value.propositions = action.payload;
+      // Optionnel : sauvegarder dans AsyncStorage si nécessaire
+      AsyncStorage.setItem('user', JSON.stringify(state.value)).catch(err => console.log(err));
+    },
   },
 });
 
-export const { login, addPhoto, loadUserData, removePhoto, addPhotoProfile, logout, updateProfile } = userSlice.actions;
+export const { 
+  login, 
+  addPhoto, 
+  loadUserData, 
+  removePhoto, 
+  addPhotoProfile, 
+  logout, 
+  updateProfile,
+  setPropositions // N'oubliez pas d'exporter le nouveau reducer
+} = userSlice.actions;
+
 export default userSlice.reducer;

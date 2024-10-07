@@ -14,6 +14,7 @@ import CustomButton from "../components/CustomButton";
 import CustomProfile, { CustomCity } from "../components/CustomProfile";
 import CustomHeader from "../components/CustomHeader";
 import CustomTabBar from '../components/CustomTabBar';
+import { API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -60,7 +61,7 @@ const homePhotoUri =
           throw new Error('Token d\'authentification non trouvé');
         }
 
-        const response = await fetch(`http://192.168.154.186:3000/discussions/create/${item.userData._id}`, {
+        const response = await fetch(`${API_URL}/discussions/create/${item.userData._id}`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${userToken}`,
@@ -82,7 +83,7 @@ const homePhotoUri =
             otherUserId: item.userData._id,
             discussionId: data.discussionId,
             otherUser: {
-              username: item.userData.firstname, // ou utilisez une autre propriété appropriée
+              firstname: item.userData.firstname, // ou utilisez une autre propriété appropriée
               // Ajoutez d'autres propriétés utiles ici
             }
           });
@@ -130,7 +131,6 @@ const homePhotoUri =
             remoterJobStyle={styles.remoterJobStyle}
           />
         </View>
-        <View style={styles.line}></View>
         <View>
           <Image style={styles.photoCountainer} source={{ uri: homePhotoUri }} />
           <CustomCity

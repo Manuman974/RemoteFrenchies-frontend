@@ -1,5 +1,4 @@
 import { API_URL } from '@env';
-console.log('API_URL from .env:', API_URL);
 
 // Fonction utilitaire pour gérer les erreurs de fetch
 const handleApiResponse = async (response) => {

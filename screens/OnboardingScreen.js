@@ -15,6 +15,7 @@ import { CheckBox, Button, ThemeProvider } from "@rneui/themed";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../components/CustomButton";
+import { API_URL } from '@env';
 
 export default function OnboardingScreen({ navigation, route }) {
   // Recupère les données d'un utilisateur
@@ -42,11 +43,9 @@ export default function OnboardingScreen({ navigation, route }) {
     }));
   };
 
-  const BACKEND_ADDRESS = "http://192.168.154.186:3000";
-
   const handleSubmit = () => {
     try {
-      fetch(`${BACKEND_ADDRESS}/onboarding`, {
+      fetch(`${API_URL}/onboarding`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: user.token, checkboxes: checkboxes }),

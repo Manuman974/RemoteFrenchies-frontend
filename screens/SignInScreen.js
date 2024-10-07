@@ -10,13 +10,17 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useDispatch } from "react-redux";
-import { login } from "../reducers/user";
+import { login, setPropositions } from '../reducers/user'; // Assurez-vous d'avoir une action setPropositions dans votre reducer
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from '@env';
+import * as Location from 'expo-location';
 
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -25,6 +29,30 @@ export default function SignInScreen({ navigation }) {
   const [signInPassword, setSignInPassword] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false)
+
+  const handleSearchInProximity = async (latitude, longitude) => {
+    try {
+      const response = await fetch(`${API_URL}/proposition/searchInProximity`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ latitude, longitude, radius: 10000 }), // 10km de rayon
+      });
+    
+      const data = await response.json();
+      if (data.result) {
+        console.log("PROPOSITIONS data :", data.propositionData);
+        dispatch(setPropositions(data.propositionData));
+      } else {
+        console.log("Aucune proposition trouvée à proximité");
+        dispatch(setPropositions([]));
+      }
+    } catch (error) {
+      console.error("Erreur lors de la recherche des propositions à proximité:", error);
+      dispatch(setPropositions([]));
+    }
+  };
 
   const validateEmail = (email) => {
     return EMAIL_REGEX.test(email);
@@ -36,54 +64,86 @@ export default function SignInScreen({ navigation }) {
       await AsyncStorage.setItem('profile_picture', url);
     } catch (error) {
       console.error("Erreur lors de la sauvegarde de l'URL de la photo de profil :", error);
+      console.log("Type de profile_picture:", typeof data.profile_picture);
+      console.log("Contenu de profile_picture:", data.profile_picture);
     }
   };
 
-  const handleConnection = () => {
+  const handleConnection = async () => {
     if (!validateEmail(signInE_mail)) {
       setError("Adresse email invalide");
       return;
     }
 
-    fetch("http://192.168.154.186:3000/users/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Data received from sign-in:", data);
-        if (data.result) {
-          dispatch(
-            login({
-              userId: data.userId,
-              firstname: data.firstname,
-              lastname: data.lastname,
-              job: data.job,
-              business: data.business,
-              main_adress: data.main_adress,
-              e_mail: signInE_mail,
-              token: data.token,
-              profile_picture: data.url,
-            })
-          );
-
-      // Vérifiez si data.url est défini avant de l'enregistrer
-      if (data.url) {
-        saveProfilePicture(data.url); // Appel de la fonction uniquement si l'URL est valide
-      } else {
-        console.warn("Aucune URL de photo de profil fournie.");
-      }
-
-          setSignInE_mail("");
-          setSignInPassword("");
-          setError("");
-
-          navigation.replace('WelcomeScreen');
-        } else {
-          setError("Email ou Mot de passe invalide");
-        }
+    try {
+      const response = await fetch(`${API_URL}/users/signin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ e_mail: signInE_mail, password: signInPassword }),
       });
+
+      const data = await response.json();
+      console.log("Data received from sign-in:", data);
+
+      if (data.result) {
+        // Vérification de la photo de profil
+        if (data.profile_picture && data.profile_picture.trim() !== '') {
+          console.log("URL de la photo de profil:", data.profile_picture);
+          await saveProfilePicture(data.profile_picture);
+        } else {
+          console.warn("Aucune URL de photo de profil valide fournie.");
+        }
+
+        // Vérification des photos supplémentaires
+        if (data.photos && data.photos.length > 0) {
+          console.log("Photos de l'utilisateur:", data.photos);
+        } else {
+          console.log("Aucune photo supplémentaire pour l'utilisateur.");
+        }
+
+        // Dispatch des données utilisateur
+        dispatch(
+          login({
+            userId: data.userId,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            job: data.job,
+            business: data.business,
+            main_adress: data.main_adress,
+            e_mail: signInE_mail,
+            token: data.token,
+            profile_picture: data.profile_picture,
+            photos: data.photos || [], // Ajout des photos supplémentaires
+            on_boarding: data.on_boarding || {}, // Ajout des préférences d'onboarding
+          })
+        );
+
+        // Obtenir la position actuelle de l'utilisateur
+        try {
+          const { status } = await Location.requestForegroundPermissionsAsync();
+          if (status === 'granted') {
+            const location = await Location.getCurrentPositionAsync({});
+            const { latitude, longitude } = location.coords;
+
+            // Rechercher les propositions à proximité
+            await handleSearchInProximity(latitude, longitude);
+          } else {
+            console.log("Permission de localisation non accordée");
+          }
+        } catch (error) {
+          console.error("Erreur lors de l'obtention de la localisation:", error);
+        }
+
+        navigation.replace('WelcomeScreen');
+      } else {
+        // Gestion des erreurs de connexion
+        console.error("Erreur de connexion:", data.error);
+        setError("Email ou mot de passe incorrect");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la connexion:", error);
+      setError("Une erreur est survenue lors de la connexion");
+    }
   };
 
   return (
@@ -115,7 +175,7 @@ export default function SignInScreen({ navigation }) {
           autoCapitalize="none"
           autoComplete="email"
         />
-         <View style={styles.passwordContainer}>
+        <View style={styles.passwordContainer}>
           <CustomTextInput
             placeholder="Mot de passe"
             value={signInPassword}

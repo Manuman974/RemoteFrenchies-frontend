@@ -18,6 +18,7 @@ import CustomTextInput from "../components/CustomTextInput";
 import CustomCheckBox from "../components/CustomCheckbox";
 import CustomButton from "../components/CustomButton";
 import CustomHeader from "../components/CustomHeader";
+import { API_URL } from '@env';
 import { useDispatch, useSelector } from "react-redux";
 import { addPhoto } from "../reducers/user";
 
@@ -42,7 +43,7 @@ export default function ProposerScreen({ navigation }) {
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
-        fetch("http://192.168.154.186:3000/proposition", {
+        fetch(`${API_URL}/proposition`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -112,7 +113,7 @@ export default function ProposerScreen({ navigation }) {
             });
 
             // Envoi de la photo au serveur
-            fetch('http://192.168.154.186:3000/proposition/upload', {
+            fetch(`${API_URL}/proposition/upload`, {
                 method: "POST",
                 body: formData,
             })
@@ -158,7 +159,7 @@ export default function ProposerScreen({ navigation }) {
             });
 
             // Envoi de la photo au serveur
-            fetch('http://192.168.154.186:3000/proposition/upload', {
+            fetch(`${API_URL}/proposition/upload`, {
                 method: "POST",
                 body: formData,
             })
@@ -195,7 +196,7 @@ export default function ProposerScreen({ navigation }) {
                 >
 
                     <Text style={styles.sectionTitle1}>
-                        Accueillir un télétravailleur
+                        Mon lieu de travail
                     </Text>
 
                     <CustomTextInput
@@ -209,15 +210,18 @@ export default function ProposerScreen({ navigation }) {
                         value={city}
                         onChangeText={setCity}
                     />
-
+                                        <View style={styles.separator} />
+                    <Text style={styles.sectionTitle1}>
+                        Mes disponibilités
+                    </Text>
                     <CustomTextInput
-                        placeholder="Jour d’accueil DD/MM/YYYY"
+                        placeholder="Exemple : Lundi 27 Janvier 2024"
                         value={jourAccueil}
                         onChangeText={setJourAccueil}
                     />
 
                     <CustomTextInput
-                        placeholder="Heure d’accueil hh:mm"
+                        placeholder="Exemple : De 9h à 18h"
                         value={heureAccueil}
                         onChangeText={setHeureAccueil}
                     />

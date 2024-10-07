@@ -15,7 +15,7 @@ import {
         // Redirection après 3 secondes
         const timer = setTimeout(() => {
           navigation.replace('TabNavigator');
-        }, 3000);
+        }, 2000);
     
         return () => clearTimeout(timer); // Nettoie le timer quand le composant est démonté
       }, [navigation]);

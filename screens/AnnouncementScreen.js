@@ -12,8 +12,7 @@ import { useSelector } from 'react-redux';
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomHeader from "../components/CustomHeader";
 import CustomTabBar from '../components/CustomTabBar';
-import { useNavigation } from '@react-navigation/native';
-//import Icon1 from "react-native-vector-icons/Evillcons";
+import { API_URL } from '@env';
 
 export default function AnnouncementScreen({ navigation }) {
     const user = useSelector((state) => state.user.value);
@@ -23,7 +22,7 @@ export default function AnnouncementScreen({ navigation }) {
     // Fonction pour charger les annonces depuis AsyncStorage
     const loadAnnouncements = async () => {
         try {
-            const response = await fetch(`http://192.168.154.186:3000/proposition/${user.token}`);
+            const response = await fetch(`${API_URL}/proposition/${user.token}`);
             const data = await response.json();
 
             if (data.result) {
@@ -50,7 +49,7 @@ export default function AnnouncementScreen({ navigation }) {
         // SUppirmer une annonce //
         const handleDelete = async (announcementId) => {
             try {
-                const response = await fetch(`http://192.168.154.186:3000/proposition/${announcementId}`, {
+                const response = await fetch(`${API_URL}/proposition/${announcementId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -82,8 +81,29 @@ export default function AnnouncementScreen({ navigation }) {
             }
         };
         const handleNavigate = (announcement) => {
-            console.log("Naviguer avec item : ", announcement);
-            navigation.navigate("RemoterSelectedScreen", { item: announcement });
+            const item = {
+                propositionData: {
+                    ...announcement,
+                    main_address: announcement.main_address,
+                    home_photo: announcement.home_photo,
+                    description: announcement.description,
+                    welcome_day: announcement.welcome_day,
+                    reception_hours: announcement.reception_hours,
+                    fiber_connection: announcement.fiber_connection,
+                    coffee_tea: announcement.coffee_tea,
+                    dedicated_office: announcement.dedicated_office,
+                    other: announcement.other
+                },
+                userData: {
+                    _id: announcement.user._id,
+                    profile_picture: announcement.user.profile_picture,
+                    firstname: announcement.user.firstname,
+                    lastname: announcement.user.lastname,
+                    job: announcement.user.job
+                }
+            };
+            console.log("Naviguer avec item : ", item);
+            navigation.navigate("RemoterSelectedScreen", { item });
         };
 
         return (
@@ -100,7 +120,7 @@ export default function AnnouncementScreen({ navigation }) {
                         >
                             <Text style={styles.modifyButtonText}>Voir</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleDelete(item)}>
+                        <TouchableOpacity onPress={() => handleDelete(announcement._id)}>
                             <Icon name="trash-o" size={24} color="#FF6F61" />
                         </TouchableOpacity>
                     </View>

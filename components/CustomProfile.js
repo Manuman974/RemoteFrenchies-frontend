@@ -7,7 +7,6 @@ export const CustomProfile = ({
   profile_picture,
   photoStyle,
   remoterProfileStyle,
-  remoterNameAndJobContainerStyle,
   remoterNameContainerStyle,
   remoterFirstnameStyle,
   firstname,
@@ -27,8 +26,7 @@ export const CustomProfile = ({
       />
       <View
         style={[
-          styles.remoterNameAndJobContainer,
-          remoterNameAndJobContainerStyle,
+          styles.remoterNameAndJobContainerStyle,
         ]}
       >
         <View style={[styles.remoterNameContainer, remoterNameContainerStyle]}>
@@ -77,10 +75,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 150,
-  },
-
-  remoterNameAndJobContainer: {
-
   },
 
   remoterNameContainer: {

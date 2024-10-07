@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
+import { API_URL } from '@env';
 
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -31,6 +32,7 @@ export default function SignUpScreen({ navigation }) {
   const [signUpCity, setSignUpCity] = useState("");
   const [signUpE_mail, setSignUpE_mail] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false)
   const [error, setError] = useState("");
 
   const validateEmail = (email) => {
@@ -54,7 +56,7 @@ export default function SignUpScreen({ navigation }) {
       return;
     }
 
-    fetch("http://192.168.154.186:3000/users/signup", {
+    fetch(`${API_URL}/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -160,14 +162,18 @@ export default function SignUpScreen({ navigation }) {
               autoCapitalize="none"
               autoComplete="email"
             />
-
-            <CustomTextInput
-              placeholder="Mot de passe"
-              value={signUpPassword}
-              onChangeText={setSignUpPassword}
-              secureTextEntry={true}
-            />
-
+            <View style={styles.passwordContainer}>
+              <CustomTextInput
+                placeholder="Mot de passe"
+                value={signUpPassword}
+                onChangeText={setSignUpPassword}
+                secureTextEntry={!passwordVisible}
+                style={styles.passwordInput}
+              />
+              <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={styles.iconButton}>
+                <Icon name={passwordVisible ? "eye-slash" : "eye"} size={20} color="black" />
+              </TouchableOpacity>
+            </View>
             <CustomButton
               title="Continuer"
               onPress={handleRegister}
@@ -185,11 +191,11 @@ export default function SignUpScreen({ navigation }) {
 
 const styles = StyleSheet.create({
 
-button: {
-alignSelf: 'center',
-width: 250,
-marginTop: 20,
-},
+  button: {
+    alignSelf: 'center',
+    width: 250,
+    marginTop: 20,
+  },
 
   safeArea: {
     flex: 1,
@@ -208,6 +214,19 @@ marginTop: 20,
     marginTop: 30,
     width: "100%",
     paddingLeft: 20,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+  passwordInput: {
+    flex: 1,
+    paddingRight: 40, // Espace pour l'icône
+  },
+  iconButton: {
+    position: "absolute",
+    right: 20, // Position de l'icône
   },
 
   image: {
