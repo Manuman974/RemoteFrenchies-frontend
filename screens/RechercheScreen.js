@@ -29,7 +29,7 @@ export default function RechercheScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [filteredCities, setFilteredCities] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [loading, setLoading] = useState(false); // Pour gérer l'état de chargement
+  const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -46,8 +46,6 @@ export default function RechercheScreen({ navigation }) {
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15,
                 });
-
-
             }
         })();
     }, []);
@@ -166,8 +164,6 @@ export default function RechercheScreen({ navigation }) {
         );
     });
 
-    // SECTION REMOTERS PROFILES
-
     //Cette fonction va de pair avec le composant <Flatlist> (qui permet de swiper vers la gauche)
     // Elle permet de récupérer les propriétés et les utiliser dans le composant.
     const renderItem = ({ item }) => (
@@ -214,9 +210,8 @@ export default function RechercheScreen({ navigation }) {
                         style={styles.input}
                         placeholder="Recherche ton Remoter"
                         onChangeText={handleCityInputChange}
-                        //onChangeText={(value) => setCityInput(value)}
                         value={cityInput}
-                        onSubmitEditing={handleSearchSubmit} // Valider la recherche avec le clavier
+                        onSubmitEditing={handleSearchSubmit}
                     />
                 </View>
 
@@ -260,11 +255,11 @@ export default function RechercheScreen({ navigation }) {
                 <View style={styles.profilesContainer}>
                     {searchDone && remoterProfiles.length > 0 ? (
                         <FlatList
-                            data={remoterProfiles} // Données des remoters
-                            renderItem={renderItem} // Fonction qui définit comment chaque élément est affiché
-                            keyExtractor={(item) => item.id} // Clé unique pour chaque élément
-                            horizontal // Affichage horizontal
-                            showsHorizontalScrollIndicator={false} // Désactive l'indicateur de défilement horizontal
+                            data={remoterProfiles}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.id} 
+                            horizontal 
+                            showsHorizontalScrollIndicator={false}
                         />
                     ) : (
                         searchDone && (
@@ -291,33 +286,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
     },
 
-    header: {
-        marginTop: 60,
-        marginLeft: 30,
-        width: "80%",
-        flexDirection: "row",
-        alignItems: "center",
-    },
-
-    h1: {
-        marginTop: 10,
-        fontSize: 20,
-        textAlign: "center",
-        fontFamily: "Poppins-SemiBold",
-        alignSelf: "center",
-    },
-
-    h2: {
-        fontSize: 16,
-        textAlign: "center",
-        fontFamily: "Poppins-Regular",
-        alignSelf: "center",
-    },
-
-    customHeader: {
-        marginTop: 300,
-        backgroundColor: "red",
-    },
     scrollView: {
         paddingTop: 20,
         paddingBottom: 20,
@@ -326,51 +294,39 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 
-    separator: {
-        width: "80%",
-        height: 2,
-        backgroundColor: "#8f8f8f",
-        marginVertical: 20,
-        alignSelf: "center",
-    },
-
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         borderColor: '#8F8F8F',
         borderRadius: 10,
         backgroundColor: '#E7E7E7',
-        paddingLeft: 10, // Pour ajouter de l'espace entre l'icône et la bordure
+        paddingLeft: 10,
         marginLeft: 22,
-        marginRight: 22, // Si besoin d'espace entre les marges
+        marginRight: 22,
         width: '80%',
     },
 
     searchIcon: {
-        padding: 10, // Ajuste l'espacement autour de l'icône
+        padding: 10,
       },
 
     input: {
-        flex: 1, // Prend tout l'espace disponible à droite de l'icône
+        flex: 1,
         height: 50,
-        paddingLeft: 10, // Ajout de l'espace entre l'icône et le texte
+        paddingLeft: 10,
         fontFamily: "Poppins-SemiBold",
         fontSize: 14,
         textAlignVertical: "center",
     },
 
-    iconInput: {
-        marginLeft: 5,
-    },
-
     suggestionsContainer: {
-        position: 'absolute', // Position absolue pour superposer les suggestions
-        top: 70, // Ajustez en fonction de la position de votre champ de saisie
+        position: 'absolute',
+        top: 70,
         width: "80%",
-        backgroundColor: 'white', // Couleur de fond
+        backgroundColor: 'white',
         borderRadius: 0,
-        elevation: 5, // Ombre pour Android
-        zIndex: 10, // Assurez-vous que cela est au-dessus des autres éléments
+        elevation: 5,
+        zIndex: 10,
       },
       suggestionItem: {
         padding: 10,

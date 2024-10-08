@@ -20,11 +20,11 @@ import CustomTabBar from '../components/CustomTabBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomModal from "../components/CustomModal";
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProfile, addPhotoProfile } from '../reducers/user'; // L'action Redux pour mettre à jour le profil
+import { updateProfile, addPhotoProfile } from '../reducers/user';
 
 const ModifyProfilScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.value); // Récupérer les infos utilisateur depuis Redux
+    const user = useSelector((state) => state.user.value);
 
     const [firstname, setFirstname] = useState(user.firstname || '');
     const [lastname, setLastname] = useState(user.lastname || '');
@@ -44,7 +44,7 @@ const ModifyProfilScreen = ({ navigation }) => {
     };
 
     useEffect(() => {
-        loadProfilePicture(); // Charge la photo de profil lorsque le composant est monté
+        loadProfilePicture();
     }, []);
 
 
@@ -124,7 +124,6 @@ const ModifyProfilScreen = ({ navigation }) => {
             city,
         };
 
-        // Appel API pour mettre à jour les informations sur le backend
         fetch(`${API_URL}/users/update/${user.userId}`, {
             method: 'PUT',
             headers: {
@@ -135,9 +134,7 @@ const ModifyProfilScreen = ({ navigation }) => {
             .then((response) => response.json())
             .then((data) => {
                 if (data.result) {
-                    // Mettre à jour le store Redux
                     dispatch(updateProfile(updatedUser));
-                    // Retourner à la page de profil
                     navigation.goBack();
                 } else {
                     alert('Erreur lors de la mise à jour');
@@ -276,7 +273,6 @@ const styles = StyleSheet.create({
 
     profilImage: {
         marginTop: 50,
-        //backgroundColor: '#DDDDDD',
         width: 150,
         height: 150,
         padding: 30,
@@ -308,14 +304,7 @@ const styles = StyleSheet.create({
 
     },
 
-    CustomTextInput: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-        width: 290,
-    },
     sectionTitle1: {
-        // borderWidth: 1,
-        // borderColor: 'red',
         fontSize: 18,
         fontFamily: "Poppins-SemiBold",
         alignSelf: "center",

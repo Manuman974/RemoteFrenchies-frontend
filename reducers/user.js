@@ -13,7 +13,7 @@ const initialState = {
     e_mail: null,
     photos: [],
     profile_picture: "",
-    propositions: [], // Ajout du champ propositions
+    propositions: [],
   },
 };
 
@@ -28,7 +28,7 @@ export const userSlice = createSlice({
       AsyncStorage.setItem('user', JSON.stringify(state.value)).catch(err => console.log(err));
     },
     loadUserData: (state, action) => {
-      state.value = action.payload; // Charge les données utilisateur
+      state.value = action.payload;
     },
     addPhoto: (state, action) => {
       state.value.photos.push(action.payload);
@@ -53,7 +53,6 @@ export const userSlice = createSlice({
 
     setPropositions: (state, action) => {
       state.value.propositions = action.payload;
-      // Optionnel : sauvegarder dans AsyncStorage si nécessaire
       AsyncStorage.setItem('user', JSON.stringify(state.value)).catch(err => console.log(err));
     },
   },
@@ -67,7 +66,7 @@ export const {
   addPhotoProfile, 
   logout, 
   updateProfile,
-  setPropositions // N'oubliez pas d'exporter le nouveau reducer
+  setPropositions 
 } = userSlice.actions;
 
 export default userSlice.reducer;

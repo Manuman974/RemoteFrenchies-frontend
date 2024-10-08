@@ -15,19 +15,18 @@ import CustomProfile, { CustomCity } from "../components/CustomProfile";
 import CustomHeader from "../components/CustomHeader";
 import CustomTabBar from '../components/CustomTabBar';
 import { API_URL } from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 
 export default function RemoterSelectedScreen({ navigation, route }) {
-  const { item } = route.params; // Accès correct à item
+  const { item } = route.params;
 
-  console.log("Item reçu:", item); // Affiche l'objet item
-  console.log("Proposition Data:", item?.propositionData); // Affiche propositionData
+  console.log("Item reçu:", item);
+  console.log("Proposition Data:", item?.propositionData);
 
   // Condition pour les bulletPoints des avantages
   const remoterAdvantages = [];
-  if (item.propositionData) { // Vérifiez si propositionData est défini
+  if (item.propositionData) {
   if (item.propositionData.fiber_connection) {
     remoterAdvantages.push({ bulletText: "Fibre optique" });
   }
@@ -83,8 +82,7 @@ const homePhotoUri =
             otherUserId: item.userData._id,
             discussionId: data.discussionId,
             otherUser: {
-              firstname: item.userData.firstname, // ou utilisez une autre propriété appropriée
-              // Ajoutez d'autres propriétés utiles ici
+              firstname: item.userData.firstname,
             }
           });
         } else {
@@ -180,12 +178,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  icon: {
-    marginTop: 60,
-    width: "100%",
-    paddingLeft: 20,
-  },
-
   scrollView: {
     padding: 50,
     flexGrow: 1,
@@ -235,16 +227,9 @@ const styles = StyleSheet.create({
     lineHeight: 27,
   },
 
-  line: {
-    borderColor: "black",
-    borderWidth: 1,
-    width: 280,
-    marginTop: 20,
-  },
-
   photoCountainer: {
     width: 300,
-    height: 178, // à enlever car s'adaptera en fonction des infos reçues
+    height: 178,
     backgroundColor: "#DDDDDD",
     marginTop: 20,
     borderRadius: 20,

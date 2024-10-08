@@ -17,10 +17,12 @@ import OnboardingScreen from "./screens/OnboardingScreen";
 import PublishScreen from "./screens/PublishScreen";
 import AnnouncementScreen from "./screens/AnnouncementScreen";
 import TchatScreen from './screens/TchatScreen';
-import PwdScreen from "./screens/PwdScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import React, { useEffect, useState } from "react";
 
+// Import des modules necessaires pour importer une font
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 // redux imports
 import { Provider } from "react-redux";
@@ -45,10 +47,6 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
-
-// Import des modules necessaires pour mporter une font
-import * as Font from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 
 // Empêcher l'affichage de l'écran de chargement automatique au démarrage
 SplashScreen.preventAutoHideAsync();
@@ -118,7 +116,6 @@ const TabNavigator = () => {
           paddingTop: 20,
           paddingBottom: 20,
         },
-        // Hide the TabBar when navigating to RemoterSelectedScreen
         tabBarVisible: route.name !== "RemoterSelectedScreen",
         headerShown: false,
       })}
@@ -177,7 +174,6 @@ export default function App() {
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             <Stack.Screen name="Recherche" component={RechercheScreen} />
             <Stack.Screen name="RemoterSelectedScreen" component={RemoterSelectedScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Pwd" component={PwdScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="ProfilScreen" component={ProfilScreen} />
             <Stack.Screen name="ModifyProfilScreen" component={ModifyProfilScreen} />
@@ -204,6 +200,6 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject, // Couvre tout l'écran
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Couleur de fond semi-transparente
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
 });

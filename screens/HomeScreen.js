@@ -14,7 +14,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default function HomeScreen({ navigation }) {
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+  const [ response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId: '869503492853-6einm694em7llj1j0haos7ed6iiapv1u.apps.googleusercontent.com',
     redirectUri: 'https://auth.expo.io/manuelmanriquecobos/remote-frenchies'
   });
@@ -22,7 +22,6 @@ export default function HomeScreen({ navigation }) {
   React.useEffect(() => {
     if (response?.type === 'success') {
       const { id_token } = response.params;
-      // Envoyez le token à votre backend pour authentification
       console.log(id_token);
     }
   }, [response]);
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+
   },
   scrollView: {
     flexGrow: 1,
@@ -74,16 +74,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
   },
-
-  containerLogo: {
-    alignItems: 'center',
-    backgroundColor: 'red',
-  },
   
   image: {
     resizeMode: 'contain',
     width: 200,
     alignSelf: 'center',
+
   },
   image1: {
     resizeMode: 'contain',
@@ -119,27 +115,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: -10,
   },
-  btn2: {
-    width: '100%',
-    height: 80,
-    alignItems: 'center',
-  },
+
   buttonGoogle: {
     alignItems: 'center',
     paddingVertical: 5,
     width: '70%',
     marginTop: 0,
-    flexDirection: 'row', // Pour aligner l'icône et le texte
+    flexDirection: 'row',
     justifyContent: 'center',
+
   },
   textButton: {
     color: 'black',
     fontSize: 11,
     textAlign: 'center',
     fontFamily: 'Poppins-Regular',
+    
   },
   icon: {
-    marginRight: 10, // Espacement entre l'icône et le texte
+    marginRight: 10,
   },
 
 

@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
 
   bulletInnerContainer: {
-    flexDirection: "row", // Pour aligner l'icône et le texte horizontalement
+    flexDirection: "row",
     alignItems: "center",
   },
 

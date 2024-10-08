@@ -6,7 +6,6 @@ const CustomHeader = ({ title, icon, showLogoutButton, onLogoutPress, onPress })
     return (
         <View style={styles.headerWrapper}>
             <View style={styles.header}>
-                {/* Container pour l'icône et le texte */}
                 <View style={styles.iconTextContainer}>
                 <TouchableOpacity onPress={onPress}>
                     <Icon name={icon} style={styles.icon} size={25} color="#49B48C" />
@@ -14,7 +13,6 @@ const CustomHeader = ({ title, icon, showLogoutButton, onLogoutPress, onPress })
                     <Text style={styles.h1}>{title}</Text>
                 </View>
 
-                {/* Bouton Logout */}
                 {showLogoutButton && (
                     <TouchableOpacity style={styles.logoutButton} onPress={onLogoutPress}>
                         <Text style={styles.logoutText}>Déconnection</Text>
@@ -32,10 +30,10 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         backgroundColor: '#F3FFFB',
         width: "100%",
-        shadowColor: "#000",      // Couleur de l'ombre (noir très léger)
-        shadowOffset: { width: 0, height: 4 }, // Décalage vertical de l'ombre
-        shadowOpacity: 1,       // Opacité de l'ombre (faible pour une ombre légère)
-        shadowRadius: 4,          // Rayon de l'ombre (contrôle la diffusion)
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 1,
+        shadowRadius: 4,
         elevation: 10,
         
     },
@@ -46,15 +44,15 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between", // Espace entre l'icône-texte et le bouton Logout
-        width: "100%", // Prend toute la largeur de l'écran
-        paddingHorizontal: 20, // Ajoute un peu de marge sur les côtés
+        justifyContent: "space-between",
+        width: "100%",
+        paddingHorizontal: 20,
     },
 
     iconTextContainer: {
         flexDirection: "row",
         alignItems: "center",
-        flex: 1, // Permet à ce conteneur de prendre toute la place disponible
+        flex: 1,
     },
 
     icon: {
@@ -77,8 +75,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#49B48C",
         padding: 10,
         borderRadius: 40,
-        justifyContent: 'center', // Centre le texte dans le bouton
-        alignItems: 'center', // Centre le texte dans le bouton
+        justifyContent: 'center', 
+        alignItems: 'center', 
     },
 
     logoutText: {

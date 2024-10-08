@@ -28,9 +28,7 @@ export default function PublishScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: 'flex',
     backgroundColor: '#FFFFFF',
-
   },
 
   image: {
@@ -44,12 +42,12 @@ const styles = StyleSheet.create({
     width: '80%',
     marginTop: 20,
     alignSelf: 'center',
-    textAlign: 'center',
   },
 
   h1: {
     fontSize: 24,
     textAlign: 'center',
+    
 },
   btn1: {
     width: '100%',

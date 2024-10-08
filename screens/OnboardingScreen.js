@@ -198,6 +198,12 @@ export default function OnboardingScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
+
+  scrollView: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+},
+
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
@@ -210,7 +216,6 @@ const styles = StyleSheet.create({
     width: "80%",
     marginBottom: 20,
     borderBottomWidth: 1,
-
   },
 
   containerCheckBox: {
@@ -250,6 +255,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     alignSelf: "center",
   },
+
   button: {
     backgroundColor: "#49B48C",
     padding: 10,
@@ -260,24 +266,6 @@ const styles = StyleSheet.create({
     width: 200,
     marginTop: 20,
     marginBottom: 40,
-  },
-
-  btn1: {
-    width: "100%",
-    height: 80,
-    alignItems: "center",
-    marginBottom: 50,
-  },
-
-  button1: {
-    alignItems: "center",
-    paddingTop: 8,
-    height: 50,
-    width: "70%",
-    marginTop: 30,
-    backgroundColor: "#49B48C",
-    borderRadius: 50,
-    marginBottom: 80,
   },
 
   textButton: {

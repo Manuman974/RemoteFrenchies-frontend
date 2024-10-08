@@ -215,18 +215,21 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingLeft: 20,
   },
+
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
   },
+
   passwordInput: {
     flex: 1,
-    paddingRight: 40, // Espace pour l'icône
+    paddingRight: 40,
   },
+  
   iconButton: {
     position: "absolute",
-    right: 20, // Position de l'icône
+    right: 20,
   },
 
   image: {

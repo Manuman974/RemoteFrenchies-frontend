@@ -46,14 +46,14 @@ export default function AnnouncementScreen({ navigation }) {
         const photoUrl = announcement.home_photo.length > 0 ? announcement.home_photo[0] : 'defaultImageUrl'; // Remplace 'defaultImageUrl' par une URL par défaut si aucune image n'est présente.
 
 
-        // SUppirmer une annonce //
+        // Suppirmer une annonce //
         const handleDelete = async (announcementId) => {
             try {
                 const response = await fetch(`${API_URL}/proposition/${announcementId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${user.token}`, // Ajouter le token si nécessaire
+                        'Authorization': `Bearer ${user.token}`,
                     },
                 });
 
@@ -151,28 +151,9 @@ export default function AnnouncementScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
         justifyContent: 'center',
-    },
-    header: {
-        flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
-        marginTop: 60,
-        marginRight: 90,
-    },
-    headerTitle: {
-        fontSize: 24,
-        // fontWeight: 400,
-        marginLeft: 16,
-    },
-    separator: {
-        width: '80%',
-        height: 2,
-        backgroundColor: '#8f8f8f',
-        marginVertical: 20,
-        alignSelf: 'center',
+        backgroundColor: '#ffffff',
     },
     annonceCount: {
         textAlign: 'right',
@@ -183,8 +164,6 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     annonceContainer: {
-        // borderWidth: 1,
-        // borderColor: 'red',
         width: 300,
         backgroundColor: '#FFF',
         borderRadius: 10,

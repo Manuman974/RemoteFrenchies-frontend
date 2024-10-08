@@ -12,7 +12,6 @@ import {
     Image,
 } from "react-native";
 
-import Icon from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import CustomTextInput from "../components/CustomTextInput";
 import CustomCheckBox from "../components/CustomCheckbox";
@@ -33,13 +32,13 @@ export default function ProposerScreen({ navigation }) {
     const dispatch = useDispatch();
 
     const [adresse, setAdresse] = useState("");
-    const [city, setCity] = useState(""); //MODIF K
+    const [city, setCity] = useState("");
     const [jourAccueil, setJourAccueil] = useState("");
     const [heureAccueil, setHeureAccueil] = useState("");
     const [autresAvantages, setAutresAvantages] = useState("");
     const [messageAnnonce, setMessageAnnonce] = useState("");
     const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
-    const [imageUri, setImageUri] = useState(null); // Ajoute un état pour l'image
+    const [imageUri, setImageUri] = useState(null);
 
     const handleSubmit = () => {
         // Gérer l'envoi des données
@@ -47,8 +46,8 @@ export default function ProposerScreen({ navigation }) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                street: adresse, //MODIF K
-                city: city, //MODIF K
+                street: adresse,
+                city: city,
                 welcome_day: jourAccueil,
                 reception_hours: heureAccueil,
                 fiber_connection: checkboxes.fiber_connection,
@@ -70,7 +69,7 @@ export default function ProposerScreen({ navigation }) {
                     setCheckboxes(initialCheckboxes);
                     setAutresAvantages("");
                     setMessageAnnonce("");
-                    setImageUri(null); // Réinitialisez l'URI de l'image
+                    setImageUri(null);
                     navigation.navigate("PublishScreen");
                 }
             });
@@ -101,8 +100,8 @@ export default function ProposerScreen({ navigation }) {
         });
         // Vérifie si l'utilisateur n'a pas annulé la sélection
         if (!result.canceled) {
-                        // Mettre à jour l'état de l'URI de l'image
-                        setImageUri(result.assets[0].uri);
+            // Mettre à jour l'état de l'URI de l'image
+            setImageUri(result.assets[0].uri);
 
             // Préparer les données pour l'envoi
             const formData = new FormData();
@@ -147,8 +146,8 @@ export default function ProposerScreen({ navigation }) {
 
         // Si l'utilisateur n'a pas annulé la prise de photo
         if (!result.canceled) {
-                        // Mettre à jour l'état de l'URI de l'image
-                        setImageUri(result.assets[0].uri);
+            // Mettre à jour l'état de l'URI de l'image
+            setImageUri(result.assets[0].uri);
 
             // Préparer les données pour l'envoi
             const formData = new FormData();
@@ -210,7 +209,7 @@ export default function ProposerScreen({ navigation }) {
                         value={city}
                         onChangeText={setCity}
                     />
-                                        <View style={styles.separator} />
+                    <View style={styles.separator} />
                     <Text style={styles.sectionTitle1}>
                         Mes disponibilités
                     </Text>
@@ -272,7 +271,7 @@ export default function ProposerScreen({ navigation }) {
                     {imageUri && (
                         <Image
                             source={{ uri: imageUri }}
-                            style={styles.imagePreview} // Ajoutez un style pour l'image
+                            style={styles.imagePreview}
                         />
                     )}
 
@@ -317,21 +316,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingVertical: 20,
     },
-
-    header: {
-        marginTop: 40,
-        marginLeft: 0,
-        width: "80%",
-        flexDirection: "row",
-        alignItems: "center",
-    },
-
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
-        paddingLeft: 10,
-    },
     separator: {
         width: "90%",
         height: 1,
@@ -339,8 +323,6 @@ const styles = StyleSheet.create({
         marginVertical: 20,
     },
     sectionTitle1: {
-        // borderWidth: 1,
-        // borderColor: 'red',
         fontSize: 18,
         fontWeight: "bold",
         alignSelf: "flex-start",
@@ -348,14 +330,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingLeft: 30,
     },
-    CustomTextInput: {
-        // borderWidth: 1,
-        // borderColor: 'red',
-        width: 290,
-    },
     sectionTitle2: {
-        // borderWidth: 1,
-        // borderColor: 'red',
         fontSize: 18,
         fontWeight: "bold",
         alignSelf: "flex-start",
@@ -375,16 +350,13 @@ const styles = StyleSheet.create({
         textAlignVertical: "top",
     },
     checkboxes: {
-        // borderWidth: 1,
-        // borderColor: 'red',
         width: 330,
     },
-
     imagePreview: {
-        width: 290, // Largeur de l'aperçu de l'image
-        height: 200, // Hauteur de l'aperçu de l'image
-        borderRadius: 10, // Arrondi des coins
-        marginVertical: 20, // Espace vertical
-        alignSelf: "center", // Centrer l'image
+        width: 290,
+        height: 200,
+        borderRadius: 10,
+        marginVertical: 20,
+        alignSelf: "center",
     },
 });

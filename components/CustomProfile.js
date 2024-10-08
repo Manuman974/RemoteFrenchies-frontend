@@ -14,8 +14,8 @@ export const CustomProfile = ({
   lastname,
   remoterJobStyle,
   job,
-  showCity = true, // prop pour afficher ou non la ville
-  cityName, //Prop pour la ville à afficher
+  showCity = true,
+  cityName,
   showButton = true,
 }) => {
   return (

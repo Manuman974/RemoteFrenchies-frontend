@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useDispatch } from "react-redux";
-import { login, setPropositions } from '../reducers/user'; // Assurez-vous d'avoir une action setPropositions dans votre reducer
+import { login, setPropositions } from '../reducers/user';
 import CustomTextInput from "../components/CustomTextInput";
 import CustomButton from "../components/CustomButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -37,7 +37,7 @@ export default function SignInScreen({ navigation }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ latitude, longitude, radius: 10000 }), // 10km de rayon
+        body: JSON.stringify({ latitude, longitude, radius: 10000 }),
       });
     
       const data = await response.json();
@@ -100,8 +100,6 @@ export default function SignInScreen({ navigation }) {
         } else {
           console.log("Aucune photo supplémentaire pour l'utilisateur.");
         }
-
-        // Dispatch des données utilisateur
         dispatch(
           login({
             userId: data.userId,
@@ -113,8 +111,8 @@ export default function SignInScreen({ navigation }) {
             e_mail: signInE_mail,
             token: data.token,
             profile_picture: data.profile_picture,
-            photos: data.photos || [], // Ajout des photos supplémentaires
-            on_boarding: data.on_boarding || {}, // Ajout des préférences d'onboarding
+            photos: data.photos || [],
+            on_boarding: data.on_boarding || {},
           })
         );
 
@@ -212,18 +210,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
+
   passwordInput: {
     flex: 1,
-    paddingRight: 40, // Espace pour l'icône
+    paddingRight: 40,
   },
+
   iconButton: {
     position: "absolute",
-    right: 20, // Position de l'icône
+    right: 20,
   },
 
   button: {
-    // borderColor: 'red',
-    // borderWidth: '1',
     alignItems: "center",
     paddingTop: 8,
     height: 50,
@@ -252,39 +250,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Poppins-SemiBold",
   },
-  text: {
-    // borderWidth: 1,
-    // borderColor: 'red',
-    width: 190,
-    height: 92,
-    fontFamily: "Poppins-SemiBold",
-    fontWeight: "600",
-    fontSize: 24,
-    lineHeight: 36,
-    textAlign: "center",
-    marginTop: 20,
-  },
+
   input: {
-    // borderWidth: 1,
-    // borderColor: 'red',
     width: 290,
     height: 127,
     justifyContent: "space-between",
     marginTop: 60,
   },
-  nom: {
-    margin: 10,
-    backgroundColor: "#DDD",
-    borderWidth: 1,
-    borderColor: "#8f8f8f",
-    width: 290,
-    height: 50,
-    borderRadius: 10,
-    padding: 6,
-    fontFamily: "Poppins-Regular",
-    fontSize: 13,
-    alignSelf: "center",
-  },
+
   icon: {
     marginTop: 50,
     width: "100%",

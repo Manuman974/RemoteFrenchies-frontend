@@ -18,17 +18,17 @@ export default function ProfilScreen({ navigation }) {
     console.log("User data:", user);
     const dispatch = useDispatch();
 
-        // Fonction pour charger la photo de profil depuis AsyncStorage
-        const loadProfilePicture = async () => {
-            const profilePicture = await AsyncStorage.getItem("profile_picture");
-            if (profilePicture) {
-                dispatch(addPhotoProfile(profilePicture)); // Met à jour l'état Redux
-            }
-        };
-    
-        useEffect(() => {
-            loadProfilePicture(); // Charge la photo de profil lorsque le composant est monté
-        }, []);
+    // Fonction pour charger la photo de profil depuis AsyncStorage
+    const loadProfilePicture = async () => {
+        const profilePicture = await AsyncStorage.getItem("profile_picture");
+        if (profilePicture) {
+            dispatch(addPhotoProfile(profilePicture)); // Met à jour l'état Redux
+        }
+    };
+
+    useEffect(() => {
+        loadProfilePicture(); // Charge la photo de profil lorsque le composant est monté
+    }, []);
 
 
     const handlelogout = () => {
@@ -38,52 +38,52 @@ export default function ProfilScreen({ navigation }) {
     }
 
     return (
-            <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <CustomHeader
-                    title="Profil"
-                    icon="user-o"
-                    showLogoutButton={true} // Affiche le bouton logout sur cette page
-                    onLogoutPress={handlelogout} // Fonction à appeler lors de l'appui
-                />
-            </View>
-                    <View style={styles.profilContainer}>
-                        {user.profile_picture ? (
-                            <Image
-                                source={{ uri: user.profile_picture }}
-                                style={styles.profilImage}
-                            />
-                        ) : (
-                            <Icon
-                                name="user"
-                                style={styles.profilIcon}
-                                size={80}
-                                color="#49B48C"
-                            />
-                        )}
-                        <Text style={styles.h2}>
-                            {" "}
-                            {user.firstname} {user.lastname}
-                        </Text>
-                        <Text style={styles.h3}> {user.job} </Text>
-                        <View>
-                            <CustomProfilButton
+                <View style={styles.headerContainer}>
+                    <CustomHeader
+                        title="Profil"
+                        icon="user-o"
+                        showLogoutButton={true} // Affiche le bouton logout sur cette page
+                        onLogoutPress={handlelogout} // Fonction à appeler lors de l'appui
+                    />
+                </View>
+                <View style={styles.profilContainer}>
+                    {user.profile_picture ? (
+                        <Image
+                            source={{ uri: user.profile_picture }}
+                            style={styles.profilImage}
+                        />
+                    ) : (
+                        <Icon
+                            name="user"
+                            style={styles.profilIcon}
+                            size={80}
+                            color="#49B48C"
+                        />
+                    )}
+                    <Text style={styles.h2}>
+                        {" "}
+                        {user.firstname} {user.lastname}
+                    </Text>
+                    <Text style={styles.h3}> {user.job} </Text>
+                    <View>
+                        <CustomProfilButton
                             icon="pencil-alt"
-                                onPress={() => navigation.navigate("ModifyProfilScreen")}
-                                title="Modifier mon  profil"
-                                style={{borderTopWidth: 1, marginTop: 30}}
-                            />
-                                                        <CustomProfilButton
+                            onPress={() => navigation.navigate("ModifyProfilScreen")}
+                            title="Modifier mon  profil"
+                            style={{ borderTopWidth: 1, marginTop: 30 }}
+                        />
+                        <CustomProfilButton
                             icon="hand-paper"
-                                onPress={() => navigation.navigate("AnnouncementScreen")}
-                                title="Mes annonces"
-                            />
-                                                        <CustomProfilButton
+                            onPress={() => navigation.navigate("AnnouncementScreen")}
+                            title="Mes annonces"
+                        />
+                        <CustomProfilButton
                             icon="cog"
-                                title="Paramètres et sécurité"
-                            />
-                        </View>
+                            title="Paramètres et sécurité"
+                        />
+                    </View>
                 </View>
             </View>
         </SafeAreaView>
@@ -91,7 +91,7 @@ export default function ProfilScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    
+
     safeArea: {
         flex: 1,
         backgroundColor: '#ffffff',
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
 
     headerContainer: {
         flexDirection: "row",
-        alignItems: "center", // Centre les éléments verticalement
-        justifyContent: "space-between", // Espace entre CustomHeader et Logout
+        alignItems: "center",
+        justifyContent: "space-between",
         width: "100%",
     },
 
@@ -115,37 +115,15 @@ const styles = StyleSheet.create({
         backgroundColor: "#49B48C",
         padding: 10,
         borderRadius: 40,
-        justifyContent: 'center', // Centre le texte dans le bouton
-        alignItems: 'center', // Centre le texte dans le bouton
+        justifyContent: 'center',
+        alignItems: 'center',
     },
+    
     logoutText: {
         color: "#fff",
         fontFamily: "Poppins-SemiBold",
         fontSize: 14,
         textAlign: 'center'
-    },
-    header: {
-        marginTop: 5,
-        marginLeft: 30,
-        width: "80%",
-        flexDirection: "row",
-        alignItems: "center",
-    },
-
-    h1: {
-        marginLeft: 10,
-        fontSize: 24,
-        textAlign: "center",
-        fontFamily: "Poppins-SemiBold",
-        alignSelf: "center",
-    },
-
-    separator: {
-        width: "80%",
-        height: 2,
-        backgroundColor: "#8f8f8f",
-        marginVertical: 20,
-        alignSelf: "center",
     },
 
     profilIcon: {
@@ -161,7 +139,6 @@ const styles = StyleSheet.create({
 
     profilImage: {
         marginTop: 50,
-        //backgroundColor: '#DDDDDD',
         width: 150,
         height: 150,
         padding: 30,
@@ -177,8 +154,6 @@ const styles = StyleSheet.create({
         marginBottom: 40,
     },
 
-    buttonContainer: {},
-
     h2: {
         marginTop: 10,
         alignSelf: "center",
@@ -193,19 +168,4 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 
-    body2: {
-        alignSelf: "center",
-        fontSize: 12,
-        fontFamily: "Poppins-Regular",
-    },
-
-    modifyProfil: {
-        width: "60%",
-        alignSelf: "center",
-        justifyContent: "space-evenly",
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 20,
-
-    },
 });
