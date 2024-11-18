@@ -30,7 +30,6 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "apiUrl": "https://remote-frenchies-backend-delta.vercel.app",
       "eas": {
         "projectId": "4cc54b3a-8783-495a-9d1e-d9a22578b06c"
       }
